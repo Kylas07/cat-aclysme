@@ -31,14 +31,14 @@
 1. **Cloner le dépôt :**
 
    ```bash
-   git clone https://github.com/tonutilisateur/ton-depot.git
-   cd ton-depot
+   git clone https://github.com/Kylas07/cat-aclysme.git
+   cd repo
    ```
 
 2. **Naviguer vers le répertoire du backend :**
 
    ```bash
-   cd backend
+   cd back-end
    ```
 
 3. **Restaurer les dépendances .NET :**
@@ -68,7 +68,7 @@
 1. **Naviguer vers le répertoire du frontend :**
 
    ```bash
-   cd frontend
+   cd front-end
    ```
 
 2. **Installer les dépendances Node.js :**
@@ -77,7 +77,13 @@
    npm install
    ```
 
-3. **Exécuter l'application frontend :**
+4. **Installer Axios pour les appels API :**
+
+   ```bash
+   npm install axios
+   ```
+
+4. **Exécuter l'application frontend :**
 
    ```bash
    npm run serve
