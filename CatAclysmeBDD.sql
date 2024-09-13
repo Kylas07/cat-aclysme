@@ -1,24 +1,72 @@
--- Création de la base de données
+-- Drop database if it exists and create a new one
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'CatAclysmeDB')
+BEGIN
+    DROP DATABASE CatAclysmeDB;
+END;
+GO
+
 CREATE DATABASE CatAclysmeDB;
 GO
 
--- Utilisation de la base de données
 USE CatAclysmeDB;
 GO
 
--- Création de la table Cartes
-CREATE TABLE Cartes (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
-    Nom NVARCHAR(100) NOT NULL,
-    PointsDeVie INT NOT NULL,
-    Attaque INT NOT NULL,
-    Illustration NVARCHAR(255) NOT NULL,
-    Description NVARCHAR(MAX)
+-- Table Player
+CREATE TABLE Player (
+    player_id INT PRIMARY KEY IDENTITY(1,1),
+    player_name VARCHAR(50),
+    player_hp INT,
+    player_turn BIT
+);
+
+-- Table Deck
+CREATE TABLE Deck (
+    deck_id INT PRIMARY KEY IDENTITY(1,1),
+    player_id INT,
+    FOREIGN KEY (player_id) REFERENCES Player(player_id)
+);
+
+-- Table Cards
+CREATE TABLE Cards (
+    card_id INT PRIMARY KEY IDENTITY(1,1),
+    card_name VARCHAR(50),
+    card_hp INT,
+    card_atk INT,
+    card_illustration TEXT,
+    card_description TEXT 
+);
+
+-- Table Game
+CREATE TABLE Game (
+    game_id INT PRIMARY KEY IDENTITY(1,1),
+    player1_id INT,
+    player2_id INT,
+    FOREIGN KEY (player1_id) REFERENCES Player(player_id),
+    FOREIGN KEY (player2_id) REFERENCES Player(player_id)
+);
+
+-- Table Score
+CREATE TABLE Score (
+    score_id INT PRIMARY KEY IDENTITY(1,1),
+    game_id INT,
+    player1_score INT,
+    player2_score INT,
+    FOREIGN KEY (game_id) REFERENCES Game(game_id)
+);
+
+-- Table associating Deck and Cards (Deck_Cards)
+CREATE TABLE Deck_Cards (
+    deck_id INT,
+    card_id INT,
+    PRIMARY KEY (deck_id, card_id),
+    FOREIGN KEY (deck_id) REFERENCES Deck(deck_id),
+    FOREIGN KEY (card_id) REFERENCES Cards(card_id)
 );
 GO
 
+
 -- Insertion des 50 cartes
-INSERT INTO Cartes (Nom, PointsDeVie, Attaque, Illustration, Description)
+INSERT INTO Cards (card_name, card_hp, card_atk, card_illustration, card_description)
 VALUES
 (N'Chratgnar', 70, 25, N'images/chratgnar.png', N'Un chat viking avec un casque et une hache, inspiré de Ragnar.'),
 (N'Chatja le Ninja', 40, 50, N'images/chatja_ninja.png', N'Un chat agile avec des étoiles de ninja, expert en furtivité.'),
