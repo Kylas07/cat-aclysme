@@ -4516,19 +4516,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Camille Reverdy\\.nuget\\packages\\": {}
+    "C:\\Users\\ghils\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Camille Reverdy\\Documents\\Projet\\CAT-ACLYSME\\back-end\\back-end.csproj",
+      "projectUniqueName": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\back-end.csproj",
       "projectName": "back-end",
-      "projectPath": "C:\\Users\\Camille Reverdy\\Documents\\Projet\\CAT-ACLYSME\\back-end\\back-end.csproj",
-      "packagesPath": "C:\\Users\\Camille Reverdy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Camille Reverdy\\Documents\\Projet\\CAT-ACLYSME\\back-end\\obj\\",
+      "projectPath": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\back-end.csproj",
+      "packagesPath": "C:\\Users\\ghils\\.nuget\\packages\\",
+      "outputPath": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Camille Reverdy\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ghils\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

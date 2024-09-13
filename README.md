@@ -49,6 +49,7 @@
 
 4. **Créez la base de données :**
 
+- Utilisez le script dans `CatAclysmeBDD.sql` pour créer la base de données.
 
 
 5. **Appliquez les migrations Entity Framework Core :**
