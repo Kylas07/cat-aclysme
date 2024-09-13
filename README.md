@@ -28,36 +28,36 @@
 
 ### Backend
 
-1. **Cloner le dépôt :**
+1. **Clonez le dépôt :**
 
    ```bash
    git clone https://github.com/Kylas07/cat-aclysme.git
    cd repo
    ```
 
-2. **Naviguer vers le répertoire du backend :**
+2. **Naviguez vers le répertoire du backend :**
 
    ```bash
    cd back-end
    ```
 
-3. **Restaurer les dépendances .NET :**
+3. **Restaurez les dépendances .NET :**
 
    ```bash
    dotnet restore
    ```
 
-4. **Créer la base de données :**
+4. **Créez la base de données :**
 
 
 
-5. **Appliquer les migrations Entity Framework Core :**
+5. **Appliquez les migrations Entity Framework Core :**
 
    ```bash
    dotnet ef database update
    ```
 
-6. **Exécuter l'application backend :**
+6. **Exécutez l'application backend :**
 
    ```bash
    dotnet run
@@ -65,25 +65,25 @@
 
 ### Frontend
 
-1. **Naviguer vers le répertoire du frontend :**
+1. **Naviguez vers le répertoire du frontend :**
 
    ```bash
    cd front-end
    ```
 
-2. **Installer les dépendances Node.js :**
+2. **Installez les dépendances Node.js :**
 
    ```bash
    npm install
    ```
 
-4. **Installer Axios pour les appels API :**
+4. **Installez Axios pour les appels API :**
 
    ```bash
    npm install axios
    ```
 
-4. **Exécuter l'application frontend :**
+4. **Exécutez l'application frontend :**
 
    ```bash
    npm run serve
@@ -93,25 +93,22 @@
 
 ### Configuration du Backend
 
-- Modifier `appsettings.json` pour configurer la chaîne de connexion à la base de données :
+- Modifiez `appsettings.json` pour configurer la chaîne de connexion à la base de données :
 
   ```json
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CardGameDB;Trusted_Connection=True;"
+    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CatAclysmeDB;Trusted_Connection=True;"
   }
   ```
 
 ### Configuration du Frontend
 
-- Modifier `.env` ou les fichiers de configuration nécessaires pour les points de terminaison API ou autres paramètres.
 
 ## Utilisation
 
 1. **Accéder à l'API Backend** :
-   - Ouvre un navigateur web ou un client API et accède à `http://localhost:5000/api/`.
+   - Ouvrez un navigateur web ou un client API et aller à `http://localhost:5000/api/`.
 
 2. **Accéder à l'application Frontend** :
-   - Ouvre un navigateur web et accède à `http://localhost:8080`.
+   - Ouvrez un navigateur web et aller à `http://localhost:8080`.
 
-
-N'hésite pas à adapter ce modèle en fonction des besoins spécifiques de ton projet et des détails que tu souhaites inclure.
