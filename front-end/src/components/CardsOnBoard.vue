@@ -1,5 +1,8 @@
 <template>
-  <div class="cards-on-board">
+  <div class="cards-on-board"
+  @drop="onDrop"
+  @dragover.prevent
+  >
     <div v-for="(card, index) in boardSlots" :key="index" class="card-slot">
       <!-- Afficher la carte seulement si elle existe dans cardsOnBoard -->
       <CardComponent v-if="card" :card="card" />
@@ -26,6 +29,12 @@ export default {
       const emptySlots = Array(8 - this.cardsOnBoard.length).fill(null);
       return [...this.cardsOnBoard, ...emptySlots]; 
     }
+  },
+  methods: {
+    onDrop(event) {
+      const card = JSON.parse(event.dataTransfer.getData('card'));
+      this.$emit('card-dropped', card);
+    }
   }
 }
 </script>
@@ -33,14 +42,14 @@ export default {
 <style scoped>
 .cards-on-board {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
 
 .card-slot {
-  width: 100px;  /* Ajuste en fonction de la taille de tes cartes */
-  height: 150px; /* Ajuste en fonction de la taille de tes cartes */
-  background-color: #e0e0e0; /* Couleur des emplacements vides */
+  width: 100px; 
+  height: 150px;
+  background-color: #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;

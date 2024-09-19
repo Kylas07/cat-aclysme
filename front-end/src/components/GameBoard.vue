@@ -8,9 +8,13 @@
         :player1HP="player1HP" 
         :player2HP="player2HP" 
       />
-      <CardsOnBoard :cardsOnBoard="cardsOnBoard" />
+      <CardsOnBoard :cardsOnBoard="cardsOnBoard" 
+      @card-dropped="handleCardDrop"
+      />
       
-      <PlayerHand :playerHand="playerHand" />
+      <PlayerHand :playerHand="playerHand" 
+      @card-dropped="handleCardDrop"
+      />
       <PlayerDeck :cardsLeft="player1DeckSize" />
   </div>
   </template>
@@ -32,7 +36,7 @@ export default {
       playerHand: [
         {
           cardId: 1,
-          name: "Dragon Slayer",
+          name: "Catnado",
           health: 10,
           attack: 7,
           image: require('@/assets/Catnado.png'),
@@ -40,38 +44,38 @@ export default {
         },
         {
           cardId: 2,
-          name: "Forest Guardian",
+          name: "Catnado",
           health: 8,
           attack: 5,
           image: require('@/assets/Catnado.png'),
-          description: "Protector of the enchanted forest."
+          description: "Meow."
         },
         {
           cardId: 3,
-          name: "Fire Elemental",
+          name: "Catnado",
           health: 6,
           attack: 9,
           image: require('@/assets/Catnado.png'),
-          description: "A fierce elemental of fire."
+          description: "Meow."
         }
       ],
       // Cartes sur le plateau de jeu
       cardsOnBoard: [
         {
           cardId: 4,
-          name: "Mountain Giant",
+          name: "Catnado",
           health: 15,
           attack: 4,
           image: require('@/assets/Catnado.png'),
-          description: "A giant that dominates the battlefield."
+          description: "Meow."
         },
         {
           cardId: 5,
-          name: "Water Nymph",
+          name: "Catnado",
           health: 5,
           attack: 6,
           image: require('@/assets/Catnado.png'),
-          description: "A mystical nymph with control over water."
+          description: "Meow."
         }
       ],
       opponentHandSize: 5, // Nombre de cartes dans la main de l'adversaire
@@ -85,6 +89,12 @@ export default {
     CardsOnBoard,
     GameInfo,
     PlayerDeck
+  },
+  methods: {
+    handleCardDrop(card) {
+      this.cardsOnBoard.push(card);
+      this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+    }
   }
 }
 </script>

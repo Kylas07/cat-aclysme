@@ -1,5 +1,7 @@
 <template>
-    <div class="CardComponent">
+    <div class="CardComponent" 
+    @dragstart="onDragStart"
+    draggable="true">
       <img class="card-image" :src="card.image" :alt="card.name" />
       <div class="card-details">
         <h3 class="card-name">{{ card.name }}</h3>
@@ -19,6 +21,11 @@
       card: {
         type: Object,
         required: true
+      }
+    },
+      methods: {
+      onDragStart(event) {
+        event.dataTransfer.setData('card', JSON.stringify(this.card));
       }
     }
   }
