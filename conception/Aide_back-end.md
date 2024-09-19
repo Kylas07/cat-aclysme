@@ -41,6 +41,77 @@ cat-aclysme/
 │   └── Properties/launchSettings.json
 ```
 
+## Compréhension des fichiers 
+
+---
+
+## 1. **`Program.cs`**
+
+**Rôle** :  
+`Program.cs` est le point d'entrée principal de l'application **ASP.NET Core**. Ce fichier contient la logique pour initialiser et configurer l'application. C'est ici que l'on construit l'application, configure les services (comme la base de données, le routage, etc.), et démarre l'application.
+
+**Principales responsabilités** :
+- Configurer les services : par exemple, ajouter le contexte de la base de données avec Entity Framework Core.
+- Configurer le pipeline de requêtes HTTP : par exemple, utiliser des middlewares comme la redirection HTTPS, la gestion des erreurs, etc.
+- Démarrer l'application.
+
+---
+
+## 2. **`Startup.cs`** (Optionnel dans les versions récentes de .NET)
+
+**Rôle** :  
+Ce fichier était traditionnellement utilisé dans les anciennes versions d'ASP.NET Core (avant la version 6) pour configurer les services et le pipeline de requêtes HTTP. À partir de .NET 6, la configuration de `Startup.cs` est intégrée dans `Program.cs`. Cependant, si vous avez un fichier `Startup.cs`, voici ce qu'il fait.
+
+**Principales responsabilités** :
+- Configurer les services via la méthode **`ConfigureServices`** (ajouter des services comme EF Core, MVC, etc.).
+- Configurer le pipeline de requêtes via la méthode **`Configure`** (spécifier les middlewares comme la gestion des erreurs, les fichiers statiques, etc.).
+
+---
+
+## 3. **`back-end.csproj`**
+
+**Rôle** :  
+Le fichier **`.csproj`** (fichier projet) est un fichier **XML** qui définit tous les détails nécessaires à la compilation et à la gestion du projet **back-end**.
+
+**Principales responsabilités** :
+- Déclarer les dépendances (packages NuGet comme Entity Framework, Swashbuckle, etc.).
+- Spécifier la version de .NET utilisée.
+- Gérer les configurations de compilation (Debug, Release).
+- Inclure les fichiers dans le projet.
+
+---
+
+## 4. **`launchSettings.json`**
+
+**Rôle** :  
+Le fichier **`launchSettings.json`** contient les paramètres de lancement de l'application pendant le développement. Il permet de définir les profils de lancement pour différentes configurations (par exemple, IIS Express, HTTP, HTTPS).
+
+**Principales responsabilités** :
+- Configurer les URLs de démarrage (HTTP et HTTPS).
+- Définir les variables d'environnement comme **`ASPNETCORE_ENVIRONMENT`** (Développement, Production).
+- Spécifier si un navigateur doit être lancé automatiquement à l'exécution de l'application.
+
+---
+
+## 5. **`back-end.http`**
+
+**Rôle** :  
+Le fichier **`.http`** est un fichier de requêtes HTTP qui permet de tester les points de terminaison (endpoints) de l'API directement depuis un éditeur comme Visual Studio Code. Il permet d'exécuter facilement des requêtes GET, POST, etc., sur l'API sans avoir besoin de Postman ou d'autres outils.
+
+**Principales responsabilités** :
+- Tester les points d'API sans avoir à utiliser un client externe.
+- Spécifier les méthodes HTTP (GET, POST, PUT, DELETE) et les en-têtes.
+
+---
+
+### Conclusion
+
+- **`Program.cs`** : Point d'entrée de l'application, où les services et le pipeline sont configurés.
+- **`Startup.cs`** : Utilisé dans les versions précédentes pour configurer les services et le pipeline HTTP (fusionné avec `Program.cs` dans .NET 6+).
+- **`back-end.csproj`** : Fichier de projet qui gère les dépendances et les configurations de compilation.
+- **`launchSettings.json`** : Gère les configurations spécifiques au lancement de l'application en développement (URLs, variables d'environnement).
+- **`back-end.http`** : Fichier de requêtes HTTP pour tester facilement les points d'API.
+
 ## Étapes d'Installation et de Configuration
 
 ### 1. Création du Projet **ASP.NET Core MVC**
