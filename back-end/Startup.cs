@@ -40,9 +40,7 @@ namespace CatAclysmeApp
                 app.UseHsts();
             }
 
-            // Assurez-vous que cette ligne est bien commentée pour désactiver la redirection vers HTTPS
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
@@ -51,8 +49,9 @@ namespace CatAclysmeApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");  // Route par défaut
             });
         }
+
     }
 }
