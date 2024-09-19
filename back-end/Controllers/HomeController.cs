@@ -24,12 +24,10 @@ namespace CatAclysmeApp.Controllers
             // Exemple : compter le nombre de joueurs dans la base de données
             var playerCount = _context.Players.Count();
 
+            var cardCount = _context.Cards.Count();
+
             // Afficher le nombre de joueurs sur une page ou dans la console
-            return Content($"Nombre de joueurs dans la base de données : {playerCount}");
-
-            // var cardCount = _context.Cards.Count();
-
-            // return Content($"Nombre de cartes dans la base de données : {cardCount}");
+            return Content($"Nombre de joueurs dans la base de données : {playerCount} et nombre de cartes : {cardCount}" );
         }
     }
 }

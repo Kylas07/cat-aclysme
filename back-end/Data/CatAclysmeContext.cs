@@ -14,6 +14,7 @@ namespace CatAclysmeApp.Data
         {
             // Spécifier le nom exact de la table
             modelBuilder.Entity<Player>().ToTable("Player");
+            modelBuilder.Entity<Card>().ToTable("Card");
         }
     }
 }
