@@ -57,18 +57,7 @@ cat-aclysme/
 
 ---
 
-## 2. **`Startup.cs`** (Optionnel dans les versions récentes de .NET)
-
-**Rôle** :  
-Ce fichier était traditionnellement utilisé dans les anciennes versions d'ASP.NET Core (avant la version 6) pour configurer les services et le pipeline de requêtes HTTP. À partir de .NET 6, la configuration de `Startup.cs` est intégrée dans `Program.cs`. Cependant, si vous avez un fichier `Startup.cs`, voici ce qu'il fait.
-
-**Principales responsabilités** :
-- Configurer les services via la méthode **`ConfigureServices`** (ajouter des services comme EF Core, MVC, etc.).
-- Configurer le pipeline de requêtes via la méthode **`Configure`** (spécifier les middlewares comme la gestion des erreurs, les fichiers statiques, etc.).
-
----
-
-## 3. **`back-end.csproj`**
+## 2. **`back-end.csproj`**
 
 **Rôle** :  
 Le fichier **`.csproj`** (fichier projet) est un fichier **XML** qui définit tous les détails nécessaires à la compilation et à la gestion du projet **back-end**.
@@ -81,7 +70,7 @@ Le fichier **`.csproj`** (fichier projet) est un fichier **XML** qui définit to
 
 ---
 
-## 4. **`launchSettings.json`**
+## 3. **`launchSettings.json`**
 
 **Rôle** :  
 Le fichier **`launchSettings.json`** contient les paramètres de lancement de l'application pendant le développement. Il permet de définir les profils de lancement pour différentes configurations (par exemple, IIS Express, HTTP, HTTPS).
@@ -93,7 +82,7 @@ Le fichier **`launchSettings.json`** contient les paramètres de lancement de l'
 
 ---
 
-## 5. **`back-end.http`**
+## 4. **`back-end.http`**
 
 **Rôle** :  
 Le fichier **`.http`** est un fichier de requêtes HTTP qui permet de tester les points de terminaison (endpoints) de l'API directement depuis un éditeur comme Visual Studio Code. Il permet d'exécuter facilement des requêtes GET, POST, etc., sur l'API sans avoir besoin de Postman ou d'autres outils.
@@ -107,7 +96,6 @@ Le fichier **`.http`** est un fichier de requêtes HTTP qui permet de tester les
 ### Conclusion
 
 - **`Program.cs`** : Point d'entrée de l'application, où les services et le pipeline sont configurés.
-- **`Startup.cs`** : Utilisé dans les versions précédentes pour configurer les services et le pipeline HTTP (fusionné avec `Program.cs` dans .NET 6+).
 - **`back-end.csproj`** : Fichier de projet qui gère les dépendances et les configurations de compilation.
 - **`launchSettings.json`** : Gère les configurations spécifiques au lancement de l'application en développement (URLs, variables d'environnement).
 - **`back-end.http`** : Fichier de requêtes HTTP pour tester facilement les points d'API.
