@@ -10,7 +10,7 @@ L'objectif du jeu est simple : réduire les points de vie de l'adversaire à zé
 
 - **Système de jeu** : Chaque joueur dispose de 30 cartes dans son deck et commence la partie avec 300 points de vie (HP). Le joueur qui perd tous ses points de vie est éliminé.
   
-- **Cartes** : Le jeu propose **50 cartes uniques**, chacune avec ses propres points de vie (HP), points d'attaque (ATK), et une illustration personnalisée dans un style doodle amusant.
+- **Cartes** : Le jeu propose **30 cartes uniques**, chacune avec ses propres points de vie (HP), points d'attaque (ATK), et une illustration personnalisée dans un style doodle amusant.
 
 - **Plateau de jeu** : Les cartes peuvent être placées sur l'une des 4 cases devant chaque joueur. Les cartes attaquent directement les cartes en face ou le joueur si aucune défense n'est présente.
 

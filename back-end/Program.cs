@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-// app.UseStaticFiles(); // Commenté puisque vous n'avez pas de fichiers statiques dans le back-end
+// app.UseStaticFiles(); // Pas de fichiers statiques dans le back-end
 app.UseRouting();
 
 app.UseAuthorization();
