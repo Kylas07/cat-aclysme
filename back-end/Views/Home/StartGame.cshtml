@@ -1,0 +1,12 @@
+<form method="post" asp-action="StartLocalGame">
+    <div>
+        <label for="player2Id">Sélectionner le second joueur :</label>
+        <select id="player2Id" name="player2Id">
+            @foreach (var player in Model.Players)
+            {
+                <option value="@player.PlayerId">@player.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit">Lancer une partie</button>
+</form>

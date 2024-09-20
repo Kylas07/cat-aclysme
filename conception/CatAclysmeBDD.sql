@@ -147,7 +147,7 @@ INSERT INTO Card (name, health, attack, image, description) VALUES
 ('Chat-blier', 10, 6, 'chat_blier.png', 'Un chat qui contrôle le temps, faisant couler les secondes à sa guise'),
 ('Chat-ssassin', 8, 9, 'chat_ssassin.png', 'Un chat qui frappe dans l’ombre, silencieux et mortel'),
 ('Chat-lumeau', 10, 7, 'chat_lumeau.png', 'Un chat brillant qui éclaire les ténèbres avec sa lumière'),
-('Chatt-pitre', 9, 6, 'chat_pitre.png', 'Un chat érudit, maîtrisant chaque chapitre de son savoir pour affaiblir ses adversaires'),
+('Chat-pitre', 9, 6, 'chat_pitre.png', 'Un chat érudit, maîtrisant chaque chapitre de son savoir pour affaiblir ses adversaires'),
 ('Chat-otique', 10, 8, 'cha_otique.png', 'Un chat imprévisible, semant la confusion et le chaos sur le champ de bataille'),
 ('Chat-grin', 8, 7, 'cha_grin.png', 'Un chat mélancolique, dont la tristesse se transforme en force brute'),
 ('Chat-piteau', 8, 7, 'chat_piteau.png', 'Un chat clownesque sous le chapiteau, toujours prêt à surprendre ses ennemis avec ses farces');
