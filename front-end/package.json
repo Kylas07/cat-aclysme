@@ -10,7 +10,9 @@
   "dependencies": {
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vuedraggable": "^2.24.3",
+    "vuetify": "^3.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
