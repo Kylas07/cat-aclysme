@@ -19,7 +19,7 @@ namespace CatAclysmeApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Spécifier le nom exact de la table
+            // Configuration des autres entités
             modelBuilder.Entity<Player>().ToTable("Player");
             modelBuilder.Entity<Card>().ToTable("Card");
             modelBuilder.Entity<Deck>().ToTable("Deck");
@@ -30,12 +30,53 @@ namespace CatAclysmeApp.Data
             modelBuilder.Entity<Build>().ToTable("Build");
             modelBuilder.Entity<GameCard>().ToTable("GameCard");
 
-            // Configuration des relations spécifiques (par exemple, clé composite)
+            // Clé composite pour Build
             modelBuilder.Entity<Build>()
-                .HasKey(b => new { b.DeckId, b.CardId }); // Clé composite pour Build
+                .HasKey(b => new { b.DeckId, b.CardId });
 
+            // Clé composite pour GameCard
             modelBuilder.Entity<GameCard>()
-                .HasKey(gc => new { gc.PlayerId, gc.CardId, gc.GameId }); // Clé composite pour GameCard
+                .HasKey(gc => new { gc.PlayerId, gc.CardId, gc.GameId });
+
+            // Configuration explicite des relations entre Game et Player
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Player)
+                .WithMany()
+                .HasForeignKey(g => g.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Player_1)
+                .WithMany()
+                .HasForeignKey(g => g.PlayerId_1)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuration explicite des relations entre Score et Player
+            modelBuilder.Entity<Score>()
+                .HasOne(s => s.Player)
+                .WithMany()
+                .HasForeignKey(s => s.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Score>()
+                .HasOne(s => s.Player_1)
+                .WithMany()
+                .HasForeignKey(s => s.PlayerId_1)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuration explicite des relations pour Turn et Card
+            modelBuilder.Entity<Turn>()
+                .HasOne(t => t.Card)
+                .WithMany()
+                .HasForeignKey(t => t.CardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Turn>()
+                .HasOne(t => t.Card_1)
+                .WithMany()
+                .HasForeignKey(t => t.CardId_1)
+                .OnDelete(DeleteBehavior.Restrict);
         }
+
     }
 }

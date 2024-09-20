@@ -12,6 +12,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Ajouter les services de session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Durée de vie de la session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configurez le pipeline HTTP
@@ -25,6 +34,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 // app.UseStaticFiles(); // Pas de fichiers statiques dans le back-end
 app.UseRouting();
+
+// Activer la gestion des sessions
+app.UseSession();
 
 app.UseAuthorization();
 

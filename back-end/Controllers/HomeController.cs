@@ -35,45 +35,6 @@ namespace CatAclysmeApp.Controllers
             return Content($"Nombre de joueurs dans la base de données : {playerCount} et nombre de cartes : {cardCount}" );
         }
 
-        public async Task<IActionResult> Register(string name, string password)
-        {
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
-            {
-                return View(); // On renvoie la vue avec un message d'erreur si nécessaire
-            }
-
-            // Hash du mot de passe
-            var passwordHasher = new PasswordHasher<Player>();
-            var player = new Player { Name = name };
-            player.Password = passwordHasher.HashPassword(player, password);
-
-            // Ajouter l'utilisateur dans la base de données
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Login"); // Redirige vers la page de connexion après l'inscription
-        }
-
-        public async Task<IActionResult> Login(string name, string password)
-        {
-            var player = _context.Players.SingleOrDefault(p => p.Name == name);
-
-            if (player != null)
-            {
-                var passwordHasher = new PasswordHasher<Player>();
-                var result = passwordHasher.VerifyHashedPassword(player, player.Password, password);
-
-                if (result == PasswordVerificationResult.Success)
-                {
-                    // Connexion réussie, enregistrer la session utilisateur
-                    HttpContext.Session.SetInt32("PlayerId", player.PlayerId);
-                    return RedirectToAction("StartGame");
-                }
-            }
-
-            return View(); // Si la connexion échoue, revenir à la page de connexion
-        }
-
         public async Task<IActionResult> StartLocalGame(string player1Pseudo, string player2Pseudo)
         {
             // Vérifier et créer Joueur 1 si nécessaire
@@ -94,7 +55,18 @@ namespace CatAclysmeApp.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Créer une nouvelle partie
+            // Vérifier si une partie est déjà en cours pour ces joueurs
+            var existingGame = _context.Games
+                .Where(g => g.PlayerId == player1.PlayerId && g.PlayerId_1 == player2.PlayerId && g.GameStatus == 1)
+                .FirstOrDefault();
+
+            if (existingGame != null)
+            {
+                // Si une partie existe déjà, rediriger vers cette partie
+                return RedirectToAction("GameBoard", new { gameId = existingGame.GameId });
+            }
+
+            // Créer une nouvelle partie si aucune n'est en cours
             var game = new Game
             {
                 Player1HP = 300,
@@ -103,7 +75,9 @@ namespace CatAclysmeApp.Controllers
                 TurnCount = 0,
                 GameStatus = 1, // Statut "en cours"
                 PlayerId = player1.PlayerId,
-                PlayerId_1 = player2.PlayerId
+                PlayerId_1 = player2.PlayerId,
+                Player = player1,     // Initialiser le joueur 1 dans l'objet Game
+                Player_1 = player2    // Initialiser le joueur 2 dans l'objet Game
             };
 
             _context.Games.Add(game);
@@ -112,8 +86,24 @@ namespace CatAclysmeApp.Controllers
             // Rediriger vers le tableau de jeu
             return RedirectToAction("GameBoard", new { gameId = game.GameId });
         }
+
+
         public async Task<IActionResult> EnterGame(string pseudo)
         {
+            // Vérifier si un joueur est déjà en session
+            var sessionPlayerId = HttpContext.Session.GetInt32("PlayerId");
+            if (sessionPlayerId != null)
+            {
+                // Si le joueur est déjà connecté, rediriger vers la page du jeu
+                return RedirectToAction("StartGame");
+            }
+
+            // Si le pseudo est vide ou null, renvoyer une vue avec un message d'erreur
+            if (string.IsNullOrEmpty(pseudo))
+            {
+                return View(); // La vue pourrait afficher un message demandant un pseudo
+            }
+
             // Vérifier si le joueur existe déjà
             var player = _context.Players.SingleOrDefault(p => p.Name == pseudo);
 
