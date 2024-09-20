@@ -20,8 +20,7 @@ GO
 -- Création de la table Player
 CREATE TABLE Player (
    playerId INT PRIMARY KEY IDENTITY(1,1),
-   name VARCHAR(50) NOT NULL,
-   password VARCHAR(255) NOT NULL
+   name VARCHAR(50) NOT NULL
 );
 
 -- Création de la table Deck
