@@ -35,8 +35,23 @@ namespace CatAclysmeApp.Controllers
             return Content($"Nombre de joueurs dans la base de données : {playerCount} et nombre de cartes : {cardCount}" );
         }
 
+        [HttpGet]
+        public IActionResult StartLocalGame()
+        {
+            return View(); // Cette vue affiche le formulaire de saisie
+        }
+
+        [HttpPost]
         public async Task<IActionResult> StartLocalGame(string player1Pseudo, string player2Pseudo)
         {
+            // Ajout de logs pour vérifier les valeurs
+            Console.WriteLine($"Player 1: {player1Pseudo}, Player 2: {player2Pseudo}");
+
+            if (string.IsNullOrEmpty(player1Pseudo) || string.IsNullOrEmpty(player2Pseudo))
+            {
+                return BadRequest("Les pseudonymes des joueurs ne peuvent pas être vides.");
+            }
+
             // Vérifier et créer Joueur 1 si nécessaire
             var player1 = _context.Players.SingleOrDefault(p => p.Name == player1Pseudo);
             if (player1 == null)
@@ -55,22 +70,11 @@ namespace CatAclysmeApp.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Vérifier si une partie est déjà en cours pour ces joueurs
-            var existingGame = _context.Games
-                .Where(g => g.PlayerId == player1.PlayerId && g.PlayerId_1 == player2.PlayerId && g.GameStatus == 1)
-                .FirstOrDefault();
-
-            if (existingGame != null)
-            {
-                // Si une partie existe déjà, rediriger vers cette partie
-                return RedirectToAction("GameBoard", new { gameId = existingGame.GameId });
-            }
-
             // Créer une nouvelle partie si aucune n'est en cours
             var game = new Game
             {
-                Player1HP = 300,
-                Player2HP = 300,
+                Player1HP = 100,
+                Player2HP = 100,
                 PlayerTurn = player1.PlayerId, // Commencer avec le premier joueur
                 TurnCount = 0,
                 GameStatus = 1, // Statut "en cours"
@@ -87,39 +91,25 @@ namespace CatAclysmeApp.Controllers
             return RedirectToAction("GameBoard", new { gameId = game.GameId });
         }
 
-
-        public async Task<IActionResult> EnterGame(string pseudo)
+        public IActionResult GameBoard(int gameId)
         {
-            // Vérifier si un joueur est déjà en session
-            var sessionPlayerId = HttpContext.Session.GetInt32("PlayerId");
-            if (sessionPlayerId != null)
+            var game = _context.Games
+                .Include(g => g.Player)      // Inclure les infos du Joueur 1
+                .Include(g => g.Player_1)    // Inclure les infos du Joueur 2
+                .FirstOrDefault(g => g.GameId == gameId);
+
+            if (game == null)
             {
-                // Si le joueur est déjà connecté, rediriger vers la page du jeu
-                return RedirectToAction("StartGame");
+                return NotFound("Partie non trouvée.");
             }
 
-            // Si le pseudo est vide ou null, renvoyer une vue avec un message d'erreur
-            if (string.IsNullOrEmpty(pseudo))
-            {
-                return View(); // La vue pourrait afficher un message demandant un pseudo
-            }
+            // Déterminer le pseudo du joueur dont c'est le tour
+            string joueurTourPseudo = game.PlayerTurn == game.PlayerId ? game.Player.Name : game.Player_1.Name;
 
-            // Vérifier si le joueur existe déjà
-            var player = _context.Players.SingleOrDefault(p => p.Name == pseudo);
+            // Passer les données à la vue avec ViewBag
+            ViewBag.JoueurTourPseudo = joueurTourPseudo;
 
-            if (player == null)
-            {
-                // Si le joueur n'existe pas, on le crée
-                player = new Player { Name = pseudo };
-                _context.Players.Add(player);
-                await _context.SaveChangesAsync();
-            }
-
-            // Enregistrer l'ID du joueur dans la session
-            HttpContext.Session.SetInt32("PlayerId", player.PlayerId);
-
-            // Rediriger vers la page de lancement de la partie ou le tableau de jeu
-            return RedirectToAction("StartGame");
+            return View(game);
         }
     }
 }

@@ -1,3 +1,11 @@
-<h2>Tableau de jeu</h2>
-<p>Joueur 1 HP: @Model.Game.Player1HP</p>
-<p>Joueur 2 HP: @Model.Game.Player2HP</p>
+@model CatAclysmeApp.Models.Game
+
+<h2>Plateau de Jeu</h2>
+
+<p>Partie ID : @Model.GameId</p>
+
+<p>Joueur 1 (@Model.Player.Name) HP : @Model.Player1HP</p>
+<p>Joueur 2 (@Model.Player_1.Name) HP : @Model.Player2HP</p>
+
+<p>Tour actuel : @ViewBag.JoueurTourPseudo</p>
+<p>Nombre de tours : @Model.TurnCount</p>
