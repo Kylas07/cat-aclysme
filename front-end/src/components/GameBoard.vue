@@ -12,7 +12,9 @@
       @card-dropped="handleCardDrop"
       />
       
-      <PlayerHand :playerHand="playerHand" 
+      <PlayerHand 
+      :playerHand="playerHand" 
+      :isPlayerTurn="currentPlayerTurn === 1"
       @card-dropped="handleCardDrop"
       />
       <PlayerDeck :cardsLeft="player1DeckSize" />
@@ -29,7 +31,8 @@ import PlayerDeck from './PlayerDeck.vue';
 export default {
   data() {
     return {
-      currentTurn: 1,
+      currentTurn: 1, // Tour 1 = Joueur 1, Tour 2 = Joueur 2 etc
+      currentPlayerTurn: 1, // Flag pour indiquer quel joueur joue
       player1HP: 100,
       player2HP: 100,
       // Main du joueur 1 (cartes fictives pour test)
@@ -92,8 +95,20 @@ export default {
   },
   methods: {
     handleCardDrop(card) {
-      this.cardsOnBoard.push(card);
-      this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+      // Vérifie si c'est le tour du bon joueur avant de déposer la carte
+      if (this.currentPlayerTurn === card.player) {
+        this.cardsOnBoard.push(card);
+        this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+      // si on limite une pose par tour
+      //  this.nextTurn();
+      } else {
+        console.log("Ce n'est pas votre tour !");
+      }
+    },
+    // méthode pour changer de tour
+    nextTurn() {
+      // Alterne entre joueur 1 et joueur 2
+      this.currentPlayerTurn = this.currentPlayerTurn === 1 ? 2 : 1;
     }
   }
 }
