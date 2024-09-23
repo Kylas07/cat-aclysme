@@ -6,12 +6,12 @@ Dans ce monde post-apocalyptique rempli de chats guerriers, chaque joueur constr
 
 ### ⚔️ **Gameplay** :
 - 🃏 Piochez des cartes pour renforcer votre armée féline
-- 🛡️ Défendez vos **300 HP** en plaçant stratégiquement vos cartes sur le plateau
+- 🛡️ Défendez vos **100 HP** en plaçant stratégiquement vos cartes sur le plateau
 - 💣 Utilisez des combos dévastateurs et déjouez les plans de votre adversaire
 - 👑 Le dernier joueur à avoir encore des HP est couronné maître du Cat-Aclysme !
 
 ### 🐱 **Fonctionnalités** :
-- **50 cartes uniques** avec des personnages aussi mignons que dangereux
+- **30 cartes uniques** avec des personnages aussi mignons que dangereux
 - Des mécaniques simples mais stratégiques
 - **Design en C# et Vue.js** pour une expérience fluide et captivante
 - Des illustrations de cartes adorables et drôles dans un style doodle

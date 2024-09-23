@@ -1,254 +1,241 @@
+### Aide pour le back-end
 
----
+#### 1. **Installer les outils nécessaires**
 
-# Tutoriel de Configuration pour le Projet **CatAclysme**
+- **.NET SDK** : Télécharge et installe le SDK .NET 6 ou plus récent depuis [dotnet.microsoft.com](https://dotnet.microsoft.com/download).
 
-## Prérequis
+- **SQL Server** ou **SQL Server Express** : Pour la base de données. Si ce n'est pas installé, télécharge-le [ici](https://www.microsoft.com/fr-fr/sql-server/sql-server-downloads).
 
-1. **.NET Core SDK** : Assurez-vous d'avoir installé le .NET Core SDK sur votre machine.
-   - Téléchargement : [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
+- **Visual Studio** ou **Visual Studio Code** : Pour écrire et gérer le code (Visual Studio a de meilleures intégrations pour les projets ASP.NET Core).
 
-2. **SQL Server Express** : Vous aurez besoin de SQL Server Express pour héberger la base de données.
-   - Téléchargement : [https://www.microsoft.com/en-us/sql-server/sql-server-downloads](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+#### 2. **Créer un nouveau projet ASP.NET Core**
 
-3. **Entity Framework Core CLI** (si ce n'est pas déjà installé) :
-   ```bash
-   dotnet tool install --global dotnet-ef
-   ```
-
-4. **Node.js** (pour le front-end avec Vue.js)
-   - Téléchargement : [https://nodejs.org/](https://nodejs.org/)
-
-## Structure du Projet
-
-Votre projet devrait avoir la structure suivante :
-
-```
-cat-aclysme/
-├── back-end/
-│   ├── back-end.csproj
-│   ├── Controllers
-│   │     └──HomeController.cs
-│   ├── Views
-│   │     └──Home
-│   │         └──Index.cshtml
-│   ├── Data
-│   │     └──CatAclysmeContext.cs
-│   ├── Models
-│   │     └── Player.cs
-│   ├── Program.cs
-│   ├── Startup.cs
-│   └── Properties/launchSettings.json
-```
-
-## Compréhension des fichiers 
-
----
-
-## 1. **`Program.cs`**
-
-**Rôle** :  
-`Program.cs` est le point d'entrée principal de l'application **ASP.NET Core**. Ce fichier contient la logique pour initialiser et configurer l'application. C'est ici que l'on construit l'application, configure les services (comme la base de données, le routage, etc.), et démarre l'application.
-
-**Principales responsabilités** :
-- Configurer les services : par exemple, ajouter le contexte de la base de données avec Entity Framework Core.
-- Configurer le pipeline de requêtes HTTP : par exemple, utiliser des middlewares comme la redirection HTTPS, la gestion des erreurs, etc.
-- Démarrer l'application.
-
----
-
-## 2. **`back-end.csproj`**
-
-**Rôle** :  
-Le fichier **`.csproj`** (fichier projet) est un fichier **XML** qui définit tous les détails nécessaires à la compilation et à la gestion du projet **back-end**.
-
-**Principales responsabilités** :
-- Déclarer les dépendances (packages NuGet comme Entity Framework, Swashbuckle, etc.).
-- Spécifier la version de .NET utilisée.
-- Gérer les configurations de compilation (Debug, Release).
-- Inclure les fichiers dans le projet.
-
----
-
-## 3. **`launchSettings.json`**
-
-**Rôle** :  
-Le fichier **`launchSettings.json`** contient les paramètres de lancement de l'application pendant le développement. Il permet de définir les profils de lancement pour différentes configurations (par exemple, IIS Express, HTTP, HTTPS).
-
-**Principales responsabilités** :
-- Configurer les URLs de démarrage (HTTP et HTTPS).
-- Définir les variables d'environnement comme **`ASPNETCORE_ENVIRONMENT`** (Développement, Production).
-- Spécifier si un navigateur doit être lancé automatiquement à l'exécution de l'application.
-
----
-
-## 4. **`back-end.http`**
-
-**Rôle** :  
-Le fichier **`.http`** est un fichier de requêtes HTTP qui permet de tester les points de terminaison (endpoints) de l'API directement depuis un éditeur comme Visual Studio Code. Il permet d'exécuter facilement des requêtes GET, POST, etc., sur l'API sans avoir besoin de Postman ou d'autres outils.
-
-**Principales responsabilités** :
-- Tester les points d'API sans avoir à utiliser un client externe.
-- Spécifier les méthodes HTTP (GET, POST, PUT, DELETE) et les en-têtes.
-
----
-
-### Conclusion
-
-- **`Program.cs`** : Point d'entrée de l'application, où les services et le pipeline sont configurés.
-- **`back-end.csproj`** : Fichier de projet qui gère les dépendances et les configurations de compilation.
-- **`launchSettings.json`** : Gère les configurations spécifiques au lancement de l'application en développement (URLs, variables d'environnement).
-- **`back-end.http`** : Fichier de requêtes HTTP pour tester facilement les points d'API.
-
-## Étapes d'Installation et de Configuration
-
-### 1. Création du Projet **ASP.NET Core MVC**
-
-Commencez par créer un nouveau projet **ASP.NET Core MVC** dans le dossier `back-end` :
+Commence par créer un nouveau projet **ASP.NET Core Web API** :
 
 ```bash
-dotnet new mvc -n back-end
+dotnet new webapi -n CatAclysmeApp
+cd CatAclysmeApp
 ```
 
-### 2. Installer les dépendances nécessaires
+Cela crée la structure de base de ton projet avec un modèle d'API.
 
-- **Entity Framework Core** (pour SQL Server) :
-   ```bash
-   dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-   ```
+#### 3. **Installer les dépendances nécessaires**
 
-- **Swagger** (pour la documentation API) :
-   ```bash
-   dotnet add package Swashbuckle.AspNetCore
-   ```
+Ensuite, installe les packages nécessaires pour gérer l’accès à la base de données et la sécurité.
 
-### 3. Configuration de la base de données SQL Server
+1. **Installer Entity Framework Core** pour la gestion de la base de données SQL Server :
 
-#### A. Chaîne de connexion
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+```
 
-Ajoutez la chaîne de connexion dans **`appsettings.json`** :
+2. **Installer Swagger** pour documenter l'API :
+
+```bash
+dotnet add package Swashbuckle.AspNetCore
+```
+
+#### 4. **Configurer la connexion à la base de données**
+
+Dans le fichier **`appsettings.json`**, ajoute ta chaîne de connexion à la base de données SQL Server :
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CatAclysmeDB;Trusted_Connection=True;TrustServerCertificate=True;"
-  },
-  "AllowedHosts": "*"
+    "DefaultConnection": "Server=your_server_name;Database=CatAclysmeDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
 }
 ```
 
-#### B. Création du contexte de base de données
+Ensuite, dans **`Program.cs`**, configure l'accès à la base de données :
 
-Créez un fichier **`Data/CatAclysmeContext.cs`** pour définir le contexte de base de données :
+```csharp
+builder.Services.AddDbContext<CatAclysmeContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
+#### 5. **Créer le modèle de base de données (entités)**
+
+Crée une structure pour les entités de ton application, comme les joueurs (`Player`) et les parties (`Game`). Ces entités seront utilisées pour mapper les données de la base de données.
+
+Dans le dossier **`Models`**, crée des fichiers comme **Player.cs** et **Game.cs**.
+
+**Exemple pour `Player.cs`** :
+
+```csharp
+public class Player
+{
+    public int PlayerId { get; set; }
+    public string Name { get; set; }
+}
+```
+
+**Exemple pour `Game.cs`** :
+
+```csharp
+public class Game
+{
+    public int GameId { get; set; }
+    public int Player1HP { get; set; }
+    public int Player2HP { get; set; }
+    public int PlayerTurn { get; set; }
+    public int TurnCount { get; set; }
+
+    public int PlayerId { get; set; }
+    public int PlayerId_1 { get; set; }
+    public Player Player { get; set; }
+    public Player Player_1 { get; set; }
+}
+```
+
+#### 6. **Configurer le `DbContext`**
+
+Crée une classe **CatAclysmeContext** dans le dossier **`Data`** pour gérer l'accès à la base de données avec **Entity Framework Core**.
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using CatAclysmeApp.Models;
 
-namespace CatAclysmeApp.Data
+public class CatAclysmeContext : DbContext
 {
-    public class CatAclysmeContext : DbContext
+    public CatAclysmeContext(DbContextOptions<CatAclysmeContext> options) : base(options) { }
+
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Game> Games { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public CatAclysmeContext(DbContextOptions<CatAclysmeContext> options) : base(options) { }
-
-        public DbSet<Player> Players { get; set; }
-        public DbSet<Card> Cards { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Player>().ToTable("Player");  // Nom exact de la table
-            modelBuilder.Entity<Card>().ToTable("Card");
-        }
+        modelBuilder.Entity<Player>().ToTable("Player");
+        modelBuilder.Entity<Game>().ToTable("Game");
     }
 }
 ```
 
-#### C. Configuration de `Program.cs`
+#### 7. **Migrations et base de données**
 
-Dans **`Program.cs`**, ajoutez la configuration du service **Entity Framework** :
+1. Crée la migration initiale pour générer la base de données à partir des modèles :
+
+```bash
+dotnet ef migrations add InitialCreate
+```
+
+2. Applique cette migration pour créer les tables dans ta base de données SQL Server :
+
+```bash
+dotnet ef database update
+```
+
+#### 8. **Créer les contrôleurs d'API**
+
+Maintenant, crée les contrôleurs pour exposer les endpoints API.
+
+1. Dans le dossier **`Controllers`**, crée un fichier **GameController.cs** qui gérera la création des parties et la gestion du jeu :
 
 ```csharp
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Mvc;
+using CatAclysmeApp.Data;
+using CatAclysmeApp.Models;
+using System.Threading.Tasks;
+using System.Linq;
 
-builder.Services.AddDbContext<CatAclysmeContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+[ApiController]
+[Route("api/[controller]")]
+public class GameController : ControllerBase
+{
+    private readonly CatAclysmeContext _context;
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    public GameController(CatAclysmeContext context)
+    {
+        _context = context;
+    }
 
-var app = builder.Build();
+    // POST : api/game/start
+    [HttpPost("start")]
+    public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Player1Pseudo) || string.IsNullOrEmpty(request.Player2Pseudo))
+        {
+            return BadRequest(new { message = "Les pseudos des joueurs sont requis." });
+        }
 
+        var player1 = _context.Players.SingleOrDefault(p => p.Name == request.Player1Pseudo) ?? new Player { Name = request.Player1Pseudo };
+        var player2 = _context.Players.SingleOrDefault(p => p.Name == request.Player2Pseudo) ?? new Player { Name = request.Player2Pseudo };
+
+        if (player1.PlayerId == 0) _context.Players.Add(player1);
+        if (player2.PlayerId == 0) _context.Players.Add(player2);
+
+        await _context.SaveChangesAsync();
+
+        var game = new Game
+        {
+            Player1HP = 100,
+            Player2HP = 100,
+            PlayerTurn = player1.PlayerId,
+            TurnCount = 1,
+            Player = player1,
+            Player_1 = player2
+        };
+
+        _context.Games.Add(game);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { gameId = game.GameId });
+    }
+}
+
+public class GameStartRequest
+{
+    public string Player1Pseudo { get; set; }
+    public string Player2Pseudo { get; set; }
+}
+```
+
+#### 9. **Configurer CORS**
+
+Ajoute une configuration CORS dans **`Program.cs`** pour permettre à ton frontend Vue.js de faire des appels à l'API :
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8080")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
+app.UseCors("AllowVueApp");
+```
+
+#### 10. **Configurer Swagger**
+
+Pour documenter ton API et tester facilement les endpoints, active **Swagger** dans **`Program.cs`** :
+
+```csharp
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
-```
-
-### 4. Création des Modèles
-
-Créez un modèle pour `Player` et `Card` dans **`Models/Player.cs`** et **`Models/Card.cs`**.
-
-**Exemple pour Player** :
-```csharp
-namespace CatAclysmeApp.Models
-{
-    public class Player
+    app.UseSwaggerUI(c =>
     {
-        public int PlayerId { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
-    }
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatAclysmeApp API V1");
+    });
 }
 ```
 
-### 5. Test de la Connexion à la Base de Données
+#### 11. **Exécuter l'application**
 
-Dans **`Controllers/HomeController.cs`**, ajoutez une action pour tester l'accès à la base de données :
-
-```csharp
-public IActionResult TestDb()
-{
-    var playerCount = _context.Players.Count();
-    return Content($"Nombre de joueurs dans la base de données : {playerCount}");
-}
-```
-
-Accédez à l'URL suivante pour tester :
-```
-https://localhost:7111/home/testdb
-```
-
-### 6. Désactiver les Fichiers Statiques
-
-Si vous n'utilisez pas de fichiers statiques dans le back-end, commentez la ligne suivante dans **`Program.cs`** :
-
-```csharp
-// app.UseStaticFiles();
-```
-
-### 7. Configuration HTTPS
-
-Si vous rencontrez des problèmes avec HTTPS, vous pouvez désactiver temporairement **`HttpsRedirection`** dans **`Program.cs`** ou ajuster le certificat via **TrustServerCertificate=True** dans votre chaîne de connexion.
-
-### 10. Résolution des erreurs de version (`Microsoft.Data.SqlClient`)
-
-Si vous voyez des erreurs concernant une vulnérabilité ou des incompatibilités de version pour **`Microsoft.Data.SqlClient`**, assurez-vous d'utiliser la version 5.1.5 ou supérieure :
+Lance ton application en mode développement :
 
 ```bash
-dotnet add package Microsoft.Data.SqlClient --version 5.1.5
+dotnet run
 ```
 
----
+L'API sera disponible à l'adresse **https://localhost:7111** (ou un autre port, selon la configuration). Tu peux tester les endpoints API dans Swagger à l'URL `https://localhost:7111/swagger`.
+
+#### 12. **Tester l'API avec Vue.js**
+
+Le frontend Vue.js enverra des requêtes **POST** à ton API, par exemple à l'endpoint `https://localhost:7111/api/game/start` pour démarrer une partie.
