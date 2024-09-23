@@ -7,5 +7,7 @@ namespace CatAclysmeApp.Models
         public int PlayerId { get; set; }
 
         public required Player Player { get; set; } // Relation vers Player
+
+        public List<Card> Cards { get; set; } = new List<Card>(30); // Un deck est constitué de 30 cartes
     }
 }
