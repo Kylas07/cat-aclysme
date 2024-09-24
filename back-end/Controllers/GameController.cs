@@ -4,6 +4,7 @@ using CatAclysmeApp.Models;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using CatAclysmeApp.Helpers;
 
 namespace CatAclysmeApp.Controllers
 {
@@ -20,22 +21,23 @@ namespace CatAclysmeApp.Controllers
 
         // 1. Démarrage d'une partie
         // POST : api/game/start
-        [HttpPost("start")]
+        [HttpPost("start-game")]
         public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
         {
-            // 1. Valider la requête
-            if (!IsRequestValid(request, out var errorMessage))
+            var player1Name = request.Player1Pseudo;
+            var player2Name = request.Player2Pseudo;
+
+            // Vérification des utilisateurs dans la base de données
+            var player1 = await _context.Players.SingleOrDefaultAsync(p => p.Name == player1Name);
+            var player2 = await _context.Players.SingleOrDefaultAsync(p => p.Name == player2Name);
+
+            // Si Player1 n'existe pas, renvoyer une erreur (dans ton système, ils devraient exister après inscription)
+            if (player1 == null || player2 == null)
             {
-                return BadRequest(new { message = errorMessage });
+                return BadRequest("Un ou plusieurs joueurs n'existent pas. Les utilisateurs doivent être créés avant de commencer une partie.");
             }
 
-            // 2. Trouver ou créer Joueur 1
-            var player1 = await FindOrCreatePlayerAsync(request.Player1Pseudo);
-
-            // 3. Trouver ou créer Joueur 2
-            var player2 = await FindOrCreatePlayerAsync(request.Player2Pseudo);
-
-            // 4. Créer une nouvelle partie
+            // Créer une nouvelle partie avec les deux joueurs existants
             var game = new Game
             {
                 Player1HP = 100,
@@ -52,11 +54,11 @@ namespace CatAclysmeApp.Controllers
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
 
-            // Retourner l'ID du jeu nouvellement créé
             return Ok(new { gameId = game.GameId });
         }
 
-        private bool IsRequestValid(GameStartRequest request, out string errorMessage)
+
+        private bool IsRequestValid(GameStartRequest request, out string? errorMessage)
         {
             if (string.IsNullOrEmpty(request.Player1Pseudo) || string.IsNullOrEmpty(request.Player2Pseudo))
             {
@@ -70,14 +72,18 @@ namespace CatAclysmeApp.Controllers
                 return false;
             }
 
+            // Marquer errorMessage comme null en utilisant un nullable type
             errorMessage = null;
             return true;
         }
+
 
         private async Task<Player> FindOrCreatePlayerAsync(string playerName)
         {
             // Rechercher un joueur dans la base de données
             var player = await _context.Players.SingleOrDefaultAsync(p => p.Name == playerName);
+
+            string tempPassword = PasswordHasher.HashPassword("DefaultTemporaryPassword");
 
             // Si le joueur n'existe pas, le créer avec un Deck
             if (player == null)
@@ -85,6 +91,7 @@ namespace CatAclysmeApp.Controllers
                 player = new Player 
                 { 
                     Name = playerName,
+                    Password = tempPassword,
                     Deck = new Deck
                     {
                         Name = $"Deck de {playerName}",
