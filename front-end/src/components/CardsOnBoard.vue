@@ -1,14 +1,17 @@
 <template>
-  <div class="cards-on-board"
-  @drop="onDrop"
-  @dragover.prevent
-  >
-    <div v-for="(card, index) in boardSlots" :key="index" class="card-slot">
-      <!-- Afficher la carte seulement si elle existe dans cardsOnBoard -->
-      <CardComponent v-if="card" :card="card" />
+  <div class="cards-on-board">
+    <div 
+      v-for="(card, i) in boardSlots" 
+      :key="i" 
+      class="card-slot" 
+      @drop="onDrop($event, i)"
+      @dragover.prevent
+    >
+      <CardComponent v-if="card" :card="card" :isOnBoard="true" />
     </div>
   </div>
 </template>
+
 
 <script>
 import CardComponent from './CardComponent.vue';
@@ -25,15 +28,22 @@ export default {
   },
   computed: {
     boardSlots() {
-      // On veut 8 emplacements (4 pour chaque joueur), remplis ou non
       const emptySlots = Array(8 - this.cardsOnBoard.length).fill(null);
       return [...this.cardsOnBoard, ...emptySlots]; 
     }
   },
   methods: {
-    onDrop(event) {
-      const card = JSON.parse(event.dataTransfer.getData('card'));
-      this.$emit('card-dropped', card);
+    onDrop(event, i) {
+    const card = JSON.parse(event.dataTransfer.getData('card'));
+    const isPlayerOne = this.$parent.currentPlayerTurn === 1;
+
+    // Restreint l'accès à la moitié du plateau
+    if ((isPlayerOne && i >= 4) || (!isPlayerOne && i < 4)) {
+      console.log("Vous ne pouvez pas placer une carte ici !");
+      return;
+    }
+
+    this.$emit('card-dropped', { card, index: i });
     }
   }
 }

@@ -42,14 +42,16 @@ export default {
           name: "Catnado",
           health: 10,
           attack: 7,
+          player: 1,
           image: require('@/assets/Catnado.png'),
-          description: "A powerful dragon slayer."
+          description: "Meow."
         },
         {
           cardId: 2,
           name: "Catnado",
           health: 8,
           attack: 5,
+          player: 1,
           image: require('@/assets/Catnado.png'),
           description: "Meow."
         },
@@ -58,6 +60,7 @@ export default {
           name: "Catnado",
           health: 6,
           attack: 9,
+          player: 1,
           image: require('@/assets/Catnado.png'),
           description: "Meow."
         }
@@ -94,23 +97,20 @@ export default {
     PlayerDeck
   },
   methods: {
-    handleCardDrop(card) {
-      // Vérifie si c'est le tour du bon joueur avant de déposer la carte
-      if (this.currentPlayerTurn === card.player) {
-        this.cardsOnBoard.push(card);
-        this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
-      // si on limite une pose par tour
-      //  this.nextTurn();
-      } else {
-        console.log("Ce n'est pas votre tour !");
-      }
-    },
-    // méthode pour changer de tour
-    nextTurn() {
-      // Alterne entre joueur 1 et joueur 2
-      this.currentPlayerTurn = this.currentPlayerTurn === 1 ? 2 : 1;
+  handleCardDrop({ card, index }) {
+    if (this.currentPlayerTurn === card.player) {
+      // Mets à jour directement l'élément dans cardsOnBoard
+      this.cardsOnBoard[index] = card;
+      // Retire la carte de la main du joueur
+      this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+    } else {
+      console.log("Ce n'est pas votre tour !");
     }
+  },
+  nextTurn() {
+    this.currentPlayerTurn = this.currentPlayerTurn === 1 ? 2 : 1;
   }
+}
 }
 </script>
 

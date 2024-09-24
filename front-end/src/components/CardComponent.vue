@@ -1,7 +1,7 @@
 <template>
     <div class="CardComponent" 
     @dragstart="onDragStart"
-    draggable="true">
+    :draggable="isDraggable">
       <img class="card-image" :src="card.image" :alt="card.name" />
       <div class="card-details">
         <h3 class="card-name">{{ card.name }}</h3>
@@ -15,20 +15,31 @@
   </template>
   
   <script>
-  export default {
-    name: 'CardComponent',
-    props: {
-      card: {
-        type: Object,
-        required: true
-      }
+export default {
+  name: 'CardComponent',
+  props: {
+    card: {
+      type: Object,
+      required: true
     },
-      methods: {
-      onDragStart(event) {
-        event.dataTransfer.setData('card', JSON.stringify(this.card));
-      }
+    isOnBoard: {
+      type: Boolean,
+      required: true
+    }
+  },
+  computed: {
+    isDraggable() {
+      return !this.isOnBoard; // La carte n'est pas déplaçable si elle est sur le plateau
+    }
+  },
+  methods: {
+    onDragStart(event) {
+      if (!this.isDraggable) return; // Empêche le drag si non déplaçable
+      event.dataTransfer.setData('card', JSON.stringify(this.card));
     }
   }
+}
+
   </script>
   
   <style scoped>
