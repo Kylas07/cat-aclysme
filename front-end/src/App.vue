@@ -1,15 +1,27 @@
 <template>
-  <div id="app">
-    <GameBoard />
+  <div>
+    <AuthPage v-if="!isGameStarted" @start-game="launchGame" />
+    <GameBoard v-if="isGameStarted" />
   </div>
 </template>
 
 <script>
+import AuthPage from './components/AuthPage.vue';
 import GameBoard from './components/GameBoard.vue';
 
 export default {
-  name: 'App',
+  data() {
+    return {
+      isGameStarted: false
+    };
+  },
+  methods: {
+    launchGame() {
+      this.isGameStarted = true;
+    }
+  },
   components: {
+    AuthPage,
     GameBoard
   }
 };
