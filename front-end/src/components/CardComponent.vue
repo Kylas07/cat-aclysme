@@ -34,7 +34,13 @@ export default {
   },
   methods: {
     onDragStart(event) {
-      if (!this.isDraggable) return; // Empêche le drag si non déplaçable
+      if (!this.isDraggable) {
+        // Empêche le drag si la carte est sur le plateau et affiche une alerte
+        alert("Cette carte est déjà placée sur le plateau et ne peut pas être déplacée !");
+        event.preventDefault(); // Empêche l'action de drag
+        return;
+      }
+      // Si la carte est draggable, on procède avec le drag
       event.dataTransfer.setData('card', JSON.stringify(this.card));
     }
   }
