@@ -23,53 +23,19 @@ namespace CatAclysmeApp.Controllers
         [HttpPost("start")]
         public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
         {
-            // Vérifier les pseudos des joueurs
-            if (string.IsNullOrEmpty(request.Player1Pseudo) || string.IsNullOrEmpty(request.Player2Pseudo))
+            // 1. Valider la requête
+            if (!IsRequestValid(request, out var errorMessage))
             {
-                return BadRequest(new { message = "Les pseudos des joueurs sont requis." });
+                return BadRequest(new { message = errorMessage });
             }
 
-            // Rechercher ou créer Joueur 1
-            var player1 = _context.Players.SingleOrDefault(p => p.Name == request.Player1Pseudo);
-            player1 ??= new Player 
-            { 
-                Name = request.Player1Pseudo, 
-                Deck = new Deck 
-                { 
-                    Name = "Deck de " + request.Player1Pseudo,
-                    Player = player1  // Initialisation temporaire (sera corrigée après)
-                }
-            };
+            // 2. Trouver ou créer Joueur 1
+            var player1 = await FindOrCreatePlayerAsync(request.Player1Pseudo);
 
-            // Ajouter Joueur 1 s'il a été créé
-            if (player1.PlayerId == 0)
-            {
-                _context.Players.Add(player1);
-                await _context.SaveChangesAsync();  // Sauvegarder pour générer l'ID
-                player1.Deck.Player = player1;  // Corriger la référence du deck après l'insertion
-            }
+            // 3. Trouver ou créer Joueur 2
+            var player2 = await FindOrCreatePlayerAsync(request.Player2Pseudo);
 
-            // Rechercher ou créer Joueur 2
-            var player2 = _context.Players.SingleOrDefault(p => p.Name == request.Player2Pseudo);
-            player2 ??= new Player 
-            { 
-                Name = request.Player2Pseudo, 
-                Deck = new Deck 
-                { 
-                    Name = "Deck de " + request.Player2Pseudo,
-                    Player = player2  // Initialisation temporaire (sera corrigée après)
-                }
-            };
-
-            // Ajouter Joueur 2 s'il a été créé
-            if (player2.PlayerId == 0)
-            {
-                _context.Players.Add(player2);
-                await _context.SaveChangesAsync();  // Sauvegarder pour générer l'ID
-                player2.Deck.Player = player2;  // Corriger la référence du deck après l'insertion
-            }
-
-            // Créer une nouvelle partie
+            // 4. Créer une nouvelle partie
             var game = new Game
             {
                 Player1HP = 100,
@@ -88,6 +54,53 @@ namespace CatAclysmeApp.Controllers
 
             // Retourner l'ID du jeu nouvellement créé
             return Ok(new { gameId = game.GameId });
+        }
+
+        private bool IsRequestValid(GameStartRequest request, out string errorMessage)
+        {
+            if (string.IsNullOrEmpty(request.Player1Pseudo) || string.IsNullOrEmpty(request.Player2Pseudo))
+            {
+                errorMessage = "Les pseudos des joueurs sont requis.";
+                return false;
+            }
+
+            if (request.Player1Pseudo == request.Player2Pseudo)
+            {
+                errorMessage = "Les pseudos des joueurs doivent être différents.";
+                return false;
+            }
+
+            errorMessage = null;
+            return true;
+        }
+
+        private async Task<Player> FindOrCreatePlayerAsync(string playerName)
+        {
+            // Rechercher un joueur dans la base de données
+            var player = await _context.Players.SingleOrDefaultAsync(p => p.Name == playerName);
+
+            // Si le joueur n'existe pas, le créer avec un Deck
+            if (player == null)
+            {
+                player = new Player 
+                { 
+                    Name = playerName,
+                    Deck = new Deck
+                    {
+                        Name = $"Deck de {playerName}",
+                        Cards = new List<Card>()  // Initialiser une liste de cartes vide
+                    }
+                };
+
+                _context.Players.Add(player);
+                await _context.SaveChangesAsync();  // Sauvegarder pour générer l'ID du joueur
+
+                // Assigner le joueur au Deck après avoir obtenu l'ID
+                player.Deck.Player = player;  // Corriger la référence circulaire
+                await _context.SaveChangesAsync();  // Sauvegarder les changements
+            }
+
+            return player;
         }
 
         // 2. Gestion des tours
