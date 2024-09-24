@@ -8,7 +8,7 @@ L'objectif du jeu est simple : réduire les points de vie de l'adversaire à zé
 
 ## 🎮 **Caractéristiques Principales**
 
-- **Système de jeu** : Chaque joueur dispose de 30 cartes dans son deck et commence la partie avec 300 points de vie (HP). Le joueur qui perd tous ses points de vie est éliminé.
+- **Système de jeu** : Chaque joueur dispose de 30 cartes dans son deck et commence la partie avec 100 points de vie (HP). Le joueur qui perd tous ses points de vie est éliminé.
   
 - **Cartes** : Le jeu propose **30 cartes uniques**, chacune avec ses propres points de vie (HP), points d'attaque (ATK), et une illustration personnalisée dans un style doodle amusant.
 

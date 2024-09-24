@@ -76,7 +76,13 @@ namespace CatAclysmeApp.Data
                 .WithMany()
                 .HasForeignKey(t => t.CardId_1)
                 .OnDelete(DeleteBehavior.Restrict);
-        }
 
+            // Configuration explicite des relations entre Player et Deck
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.Deck)
+                .WithOne(d => d.Player)
+                .HasForeignKey<Deck>(d => d.PlayerId)
+                .IsRequired();   
+        }
     }
 }
