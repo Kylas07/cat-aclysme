@@ -20,8 +20,15 @@
   }
   
   .card-back {
-    width: 80px;
-    height: 120px; /* Taille du dos des cartes */
+    width: 128px;
+    height: 200px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    background-color: white;
   }
   </style>
   

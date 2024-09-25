@@ -1,6 +1,5 @@
 <template>
     <div class="game-board">
-      <PlayerDeck :cardsLeft="player2DeckSize" />
       <PlayerAgainstHand :opponentHandSize="opponentHandSize" />
     
       <GameInfo 
@@ -8,16 +7,18 @@
         :player1HP="player1HP" 
         :player2HP="player2HP" 
       />
-      <CardsOnBoard :cardsOnBoard="cardsOnBoard" 
-      @card-dropped="handleCardDrop"
-      />
-      
+      <div class="game-decks">
+        <PlayerDeck :cardsLeft="player2DeckSize" />
+        <CardsOnBoard :cardsOnBoard="cardsOnBoard" 
+        @card-dropped="handleCardDrop"
+        />
+        <PlayerDeck :cardsLeft="player1DeckSize" />
+      </div>
       <PlayerHand 
       :playerHand="playerHand" 
       :isPlayerTurn="currentPlayerTurn === 1"
       @card-dropped="handleCardDrop"
       />
-      <PlayerDeck :cardsLeft="player1DeckSize" />
   </div>
   </template>
   
@@ -120,6 +121,11 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .game-decks {
+    display: flex;
+    align-items: center;
+    gap: 100px;
   }
   </style>
   

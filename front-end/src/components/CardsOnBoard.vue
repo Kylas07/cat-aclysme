@@ -38,7 +38,7 @@ export default {
     const isPlayerOne = this.$parent.currentPlayerTurn === 1;
 
     // Restreint l'accès à la moitié du plateau
-    if ((isPlayerOne && i >= 4) || (!isPlayerOne && i < 4)) {
+    if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
       console.log("Vous ne pouvez pas placer une carte ici !");
       alert("Vous ne pouvez pas placer une carte ici !"); // Alerte en cas d'emplacement invalide
       return;
@@ -58,8 +58,8 @@ export default {
 }
 
 .card-slot {
-  width: 100px; 
-  height: 150px;
+  width: 200px; 
+  height: 350px;
   background-color: #e0e0e0;
   display: flex;
   justify-content: center;
