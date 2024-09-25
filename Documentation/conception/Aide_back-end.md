@@ -1,12 +1,65 @@
 ### Aide pour le back-end
 
-#### 1. **Installer les outils nécessaires**
+#### 1.1 **Installer les outils nécessaires**
 
 - **.NET SDK** : Télécharge et installe le SDK .NET 6 ou plus récent depuis [dotnet.microsoft.com](https://dotnet.microsoft.com/download).
 
 - **SQL Server** ou **SQL Server Express** : Pour la base de données. Si ce n'est pas installé, télécharge-le [ici](https://www.microsoft.com/fr-fr/sql-server/sql-server-downloads).
 
 - **Visual Studio** ou **Visual Studio Code** : Pour écrire et gérer le code (Visual Studio a de meilleures intégrations pour les projets ASP.NET Core).
+
+### 1.2 **La connexion à la base de données**
+
+Voici un guide simple pour les personnes souhaitant configurer la même base de données SQL Server que la vôtre pour le projet **CatAclysme** :
+
+### Prérequis
+
+1. **SQL Server Express** : Assurez-vous d'avoir SQL Server Express installé sur votre machine ou sur un serveur distant.
+   - Téléchargez [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) si vous ne l'avez pas encore installé.
+   - Installez SQL Server Management Studio (SSMS) pour gérer votre base de données : [SSMS](https://aka.ms/ssmsfullsetup).
+
+2. **.NET SDK** : Assurez-vous que le SDK .NET est installé. [Téléchargez-le ici](https://dotnet.microsoft.com/download).
+
+### Étapes pour configurer la base de données
+
+#### A. Créer la base de données
+
+- Connectez-vous à votre serveur SQL local avec **SQL Server Management Studio (SSMS)** en utilisant les informations suivantes :
+  - **Serveur Name** : `.\SQLEXPRESS`
+  - **Authentification** : Windows Authentication.
+  - **Encryption** : Optional.
+
+- Créez une nouvelle base de données nommée `CatAclysmeDB` en exécutant le script suivant : **CatAclysmeBDD.sql**
+
+#### B. Configuration du projet pour se connecter à SQL Server
+
+Dans le fichier **appsettings.json** de votre projet, configurez la connexion à la base de données avec la chaîne de connexion suivante :
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CatAclysmeDB;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}
+```
+
+- **Server** : spécifie l'instance de SQL Server (`localhost\\SQLEXPRESS`).
+- **Database** : nom de la base de données (`CatAclysmeDB`).
+- **Trusted_Connection=True** : utilise l'authentification Windows.
+- **TrustServerCertificate=True** : si le serveur utilise un certificat SSL non approuvé (utile en environnement de développement).
+
+#### C. Vérification des tables créées
+
+- Ouvrez **SQL Server Management Studio (SSMS)** et connectez-vous à votre base de données `CatAclysmeDB`.
+- Naviguez dans le dossier **Tables** sous **CatAclysmeDB** et vous devriez voir toutes les tables qui ont été créées automatiquement (par exemple : `Player`, `Deck`, `Game`, etc.).
+
 
 #### 2. **Créer un nouveau projet ASP.NET Core**
 

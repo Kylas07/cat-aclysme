@@ -1,14 +1,3 @@
--- Forcer la fermeture des connexions à la base de données en mode multi-utilisateurs
-USE master;
-GO
-
--- Mettre la base de données en mode utilisateur unique pour déconnecter toutes les sessions
-ALTER DATABASE CatAclysmeDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-GO
-
--- Supprimer la base de données
-DROP DATABASE CatAclysmeDB;
-GO
 -- Création de la base de données
 CREATE DATABASE CatAclysmeDB;
 GO
@@ -20,7 +9,8 @@ GO
 -- Création de la table Player
 CREATE TABLE Player (
    playerId INT PRIMARY KEY IDENTITY(1,1),
-   name VARCHAR(50) NOT NULL
+   name VARCHAR(50) NOT NULL,
+   password NVARCHAR(255) NOT NULL
 );
 
 -- Création de la table Deck
