@@ -712,3 +712,17 @@ WHERE [p].[Name] = @__request_PlayerName_0
 2024-09-25 11:31:03.395 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 4.8264ms
 2024-09-25 11:31:03.396 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
 2024-09-25 11:31:03.396 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 10.0795ms
+2024-09-25 14:01:37.074 +02:00 [INF] Application is shutting down...
+2024-09-25 14:01:41.383 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 14:01:41.450 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 14:01:41.451 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 14:01:41.452 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 14:01:41.453 +02:00 [INF] Hosting environment: Development
+2024-09-25 14:01:41.453 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 14:28:06.982 +02:00 [INF] Application is shutting down...
+2024-09-25 14:28:10.733 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 14:28:10.805 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 14:28:10.806 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 14:28:10.807 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 14:28:10.808 +02:00 [INF] Hosting environment: Development
+2024-09-25 14:28:10.808 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
