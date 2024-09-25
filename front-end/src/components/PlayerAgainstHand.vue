@@ -1,8 +1,15 @@
 <template>
-    <div class="hand">
-      <img v-for="n in opponentHandSize" :key="n" src="../assets/main_illu.png" alt="Card back" class="card-back"/>
-    </div>
-  </template>
+  <div class="hand" @dragover.prevent>
+    <img 
+      v-for="n in opponentHandSize" 
+      :key="n" 
+      src="../assets/main_illu.png" 
+      alt="Card back" 
+      class="card-back" 
+      draggable="false"
+    />
+  </div>
+</template>
   
   <script>
   export default {
