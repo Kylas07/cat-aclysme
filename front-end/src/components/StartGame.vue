@@ -8,12 +8,12 @@
 <script>
 export default {
   props: {
-    player1Id: {
-      type: Number,
+    player1Pseudo: {
+      type: String,
       required: true
     },
-    player2Id: {
-      type: Number,
+    player2Pseudo: {
+      type: String,
       required: true
     }
   },
@@ -26,13 +26,16 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            Player1Id: this.player1Id,  // Passer les ID des joueurs
-            Player2Id: this.player2Id
+            Player1Pseudo: this.player1Pseudo,
+            Player2Pseudo: this.player2Pseudo
           })
         });
         if (response.ok) {
           const data = await response.json();
           alert(`Partie lancée avec succès. ID de la partie : ${data.gameId}`);
+
+          // Stocker le gameId pour appeler plus tard l'état du jeu
+          this.$emit('game-started', data.gameId);
         } else {
           const errorData = await response.json();
           alert(`Erreur lors du lancement de la partie: ${errorData.message}`);

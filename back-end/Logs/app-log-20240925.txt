@@ -726,3 +726,487 @@ WHERE [p].[Name] = @__request_PlayerName_0
 2024-09-25 14:28:10.807 +02:00 [INF] Application started. Press Ctrl+C to shut down.
 2024-09-25 14:28:10.808 +02:00 [INF] Hosting environment: Development
 2024-09-25 14:28:10.808 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 15:00:53.271 +02:00 [INF] Application is shutting down...
+2024-09-25 15:02:48.555 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 15:02:48.642 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 15:02:48.643 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 15:02:48.645 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 15:02:48.646 +02:00 [INF] Hosting environment: Development
+2024-09-25 15:02:48.647 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 15:02:57.108 +02:00 [INF] Application is shutting down...
+2024-09-25 15:03:18.419 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 15:03:18.489 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 15:03:18.490 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 15:03:18.491 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 15:03:18.492 +02:00 [INF] Hosting environment: Development
+2024-09-25 15:03:18.492 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 15:06:05.209 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 15:06:05.224 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:06:05.227 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 17.7441ms
+2024-09-25 15:06:05.229 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 15:06:05.233 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:06:05.236 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:06:05.246 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 15:06:05.498 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 15:06:05.549 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:06:05.550 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:06:05.551 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:06:05.552 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:06:05.836 +02:00 [INF] Executed DbCommand (20ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 15:06:05.872 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 15:06:05.877 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:06:05.884 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 635.8331ms
+2024-09-25 15:06:05.885 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:06:05.889 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 660.3099ms
+2024-09-25 15:06:16.243 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 15:06:16.247 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:06:16.247 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 3.9705ms
+2024-09-25 15:06:16.248 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 15:06:16.250 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:06:16.251 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:06:16.252 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 15:06:16.263 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 15:06:16.265 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 15:06:16.265 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:06:16.266 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 13.146ms
+2024-09-25 15:06:16.267 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:06:16.268 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 19.787ms
+2024-09-25 15:06:18.489 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - null null
+2024-09-25 15:06:18.493 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:06:18.494 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 15:06:18.499 +02:00 [INF] Route matched with {action = "GetGameState", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetGameState(Int32) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 15:06:18.582 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-09-25 15:06:18.592 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@__gameId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[GameId], [t].[GameStatus], [t].[Player1HP], [t].[Player2HP], [t].[PlayerId], [t].[PlayerId_1], [t].[PlayerTurn], [t].[TurnCount], [t].[PlayerId0], [t].[Name], [t].[Password], [t].[PlayerId1], [p1].[PlayerHandId], [p1].[CardAmount], [p1].[CardId], [p1].[GameId], [p1].[PlayerId], [p1].[PositionInHand], [t].[Name0], [t].[Password0], [p2].[PlayerHandId], [p2].[CardAmount], [p2].[CardId], [p2].[GameId], [p2].[PlayerId], [p2].[PositionInHand]
+FROM (
+    SELECT TOP(1) [g].[GameId], [g].[GameStatus], [g].[Player1HP], [g].[Player2HP], [g].[PlayerId], [g].[PlayerId_1], [g].[PlayerTurn], [g].[TurnCount], [p].[PlayerId] AS [PlayerId0], [p].[Name], [p].[Password], [p0].[PlayerId] AS [PlayerId1], [p0].[Name] AS [Name0], [p0].[Password] AS [Password0]
+    FROM [Game] AS [g]
+    INNER JOIN [Player] AS [p] ON [g].[PlayerId] = [p].[PlayerId]
+    INNER JOIN [Player] AS [p0] ON [g].[PlayerId_1] = [p0].[PlayerId]
+    WHERE [g].[GameId] = @__gameId_0
+) AS [t]
+LEFT JOIN [PlayerHand] AS [p1] ON [t].[PlayerId0] = [p1].[PlayerId]
+LEFT JOIN [PlayerHand] AS [p2] ON [t].[PlayerId1] = [p2].[PlayerId]
+ORDER BY [t].[GameId], [t].[PlayerId0], [t].[PlayerId1], [p1].[PlayerHandId]
+2024-09-25 15:06:18.595 +02:00 [INF] Executing NotFoundObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:06:18.597 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.GetGameState (back-end) in 96.7009ms
+2024-09-25 15:06:18.598 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 15:06:18.598 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - 404 null application/json; charset=utf-8 109.2296ms
+2024-09-25 15:36:26.135 +02:00 [INF] Application is shutting down...
+2024-09-25 15:36:30.066 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 15:36:30.134 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 15:36:30.135 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 15:36:30.136 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 15:36:30.137 +02:00 [INF] Hosting environment: Development
+2024-09-25 15:36:30.137 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 15:36:36.492 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 15:36:36.508 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:36:36.510 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 18.0523ms
+2024-09-25 15:36:36.513 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 15:36:36.516 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:36:36.519 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:36:36.531 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 15:36:36.786 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 15:36:36.837 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:36:36.838 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:36:36.839 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:36:36.840 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:36:37.118 +02:00 [INF] Executed DbCommand (17ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 15:36:37.154 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 15:36:37.160 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:36:37.168 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 634.422ms
+2024-09-25 15:36:37.169 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:36:37.174 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 661.1344ms
+2024-09-25 15:36:47.725 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 15:36:47.727 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:36:47.728 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 3.8237ms
+2024-09-25 15:36:47.729 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 15:36:47.731 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:36:47.732 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:36:47.733 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 15:36:47.746 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 15:36:47.748 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 15:36:47.748 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:36:47.750 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 15.3515ms
+2024-09-25 15:36:47.751 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:36:47.752 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 22.0354ms
+2024-09-25 15:36:50.015 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - null null
+2024-09-25 15:36:50.019 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:36:50.020 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 15:36:50.023 +02:00 [INF] Route matched with {action = "GetGameState", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetGameState(Int32) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 15:36:50.105 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-09-25 15:36:50.114 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[@__gameId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[GameId], [t].[GameStatus], [t].[Player1HP], [t].[Player2HP], [t].[PlayerId], [t].[PlayerId_1], [t].[PlayerTurn], [t].[TurnCount], [t].[PlayerId0], [t].[Name], [t].[Password], [t].[PlayerId1], [p1].[PlayerHandId], [p1].[CardAmount], [p1].[CardId], [p1].[GameId], [p1].[PlayerId], [p1].[PositionInHand], [t].[Name0], [t].[Password0], [p2].[PlayerHandId], [p2].[CardAmount], [p2].[CardId], [p2].[GameId], [p2].[PlayerId], [p2].[PositionInHand]
+FROM (
+    SELECT TOP(1) [g].[GameId], [g].[GameStatus], [g].[Player1HP], [g].[Player2HP], [g].[PlayerId], [g].[PlayerId_1], [g].[PlayerTurn], [g].[TurnCount], [p].[PlayerId] AS [PlayerId0], [p].[Name], [p].[Password], [p0].[PlayerId] AS [PlayerId1], [p0].[Name] AS [Name0], [p0].[Password] AS [Password0]
+    FROM [Game] AS [g]
+    INNER JOIN [Player] AS [p] ON [g].[PlayerId] = [p].[PlayerId]
+    INNER JOIN [Player] AS [p0] ON [g].[PlayerId_1] = [p0].[PlayerId]
+    WHERE [g].[GameId] = @__gameId_0
+) AS [t]
+LEFT JOIN [PlayerHand] AS [p1] ON [t].[PlayerId0] = [p1].[PlayerId]
+LEFT JOIN [PlayerHand] AS [p2] ON [t].[PlayerId1] = [p2].[PlayerId]
+ORDER BY [t].[GameId], [t].[PlayerId0], [t].[PlayerId1], [p1].[PlayerHandId]
+2024-09-25 15:36:50.116 +02:00 [INF] Executing NotFoundObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 15:36:50.118 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.GetGameState (back-end) in 94.3532ms
+2024-09-25 15:36:50.120 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 15:36:50.120 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - 404 null application/json; charset=utf-8 105.7665ms
+2024-09-25 15:56:16.784 +02:00 [INF] Application is shutting down...
+2024-09-25 15:56:20.613 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 15:56:20.680 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 15:56:20.681 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 15:56:20.682 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 15:56:20.683 +02:00 [INF] Hosting environment: Development
+2024-09-25 15:56:20.683 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 15:56:50.001 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 15:56:50.016 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:56:50.018 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 17.505ms
+2024-09-25 15:56:50.020 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 47
+2024-09-25 15:56:50.024 +02:00 [INF] CORS policy execution successful.
+2024-09-25 15:56:50.027 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:56:50.038 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 15:56:50.297 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 15:56:50.349 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:56:50.350 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:56:50.351 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:56:50.352 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 15:56:50.629 +02:00 [INF] Executed DbCommand (17ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 15:56:50.666 +02:00 [WRN] Échec de la connexion pour l'utilisateur : testingun
+2024-09-25 15:56:50.672 +02:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2024-09-25 15:56:50.676 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 635.2424ms
+2024-09-25 15:56:50.677 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 15:56:50.682 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 401 null text/plain; charset=utf-8 661.1696ms
+2024-09-25 16:08:52.998 +02:00 [INF] Application is shutting down...
+2024-09-25 16:09:57.145 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 16:09:57.214 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 16:09:57.215 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 16:09:57.216 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 16:09:57.216 +02:00 [INF] Hosting environment: Development
+2024-09-25 16:09:57.217 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 16:10:08.520 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:10:08.535 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:08.537 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 17.5253ms
+2024-09-25 16:10:08.539 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 16:10:08.543 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:08.546 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:08.566 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:10:08.823 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 16:10:08.876 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:10:08.877 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:10:08.878 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:10:08.879 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:10:09.160 +02:00 [INF] Executed DbCommand (19ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:10:09.197 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 16:10:09.202 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:10:09.210 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 639.3707ms
+2024-09-25 16:10:09.211 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:09.216 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 677.3093ms
+2024-09-25 16:10:21.559 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:10:21.562 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:21.563 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 3.7152ms
+2024-09-25 16:10:21.563 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 49
+2024-09-25 16:10:21.566 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:21.567 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:21.567 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:10:21.578 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:10:21.580 +02:00 [WRN] Échec de la connexion pour l'utilisateur : testingdeux
+2024-09-25 16:10:21.581 +02:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2024-09-25 16:10:21.582 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 13.0295ms
+2024-09-25 16:10:21.583 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:21.583 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 401 null text/plain; charset=utf-8 19.8204ms
+2024-09-25 16:10:35.863 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:10:35.865 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:35.866 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 2.6491ms
+2024-09-25 16:10:35.867 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 16:10:35.869 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:10:35.869 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:35.870 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:10:35.905 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:10:35.906 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 16:10:35.907 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:10:35.908 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 36.8946ms
+2024-09-25 16:10:35.908 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:10:35.909 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 42.3019ms
+2024-09-25 16:20:23.175 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:20:23.177 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:20:23.177 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 2.055ms
+2024-09-25 16:20:23.178 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 16:20:23.180 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:20:23.180 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:20:23.181 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:20:23.187 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:20:23.189 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 16:20:23.189 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:20:23.190 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 8.7648ms
+2024-09-25 16:20:23.191 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:20:23.192 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 14.002ms
+2024-09-25 16:20:31.759 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:20:31.761 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:20:31.762 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 2.7945ms
+2024-09-25 16:20:31.762 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 16:20:31.764 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:20:31.765 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:20:31.766 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:20:31.768 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:20:31.770 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 16:20:31.770 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:20:31.771 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 4.1755ms
+2024-09-25 16:20:31.772 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:20:31.773 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 10.1544ms
+2024-09-25 16:20:34.078 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - null null
+2024-09-25 16:20:34.082 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:20:34.083 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:20:34.086 +02:00 [INF] Route matched with {action = "GetGameState", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetGameState(Int32) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 16:20:34.139 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-09-25 16:20:34.148 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[@__gameId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[GameId], [t].[GameStatus], [t].[Player1HP], [t].[Player2HP], [t].[PlayerId], [t].[PlayerId_1], [t].[PlayerTurn], [t].[TurnCount], [t].[PlayerId0], [t].[Name], [t].[Password], [t].[PlayerId1], [p1].[PlayerHandId], [p1].[CardAmount], [p1].[CardId], [p1].[GameId], [p1].[PlayerId], [p1].[PositionInHand], [t].[Name0], [t].[Password0], [p2].[PlayerHandId], [p2].[CardAmount], [p2].[CardId], [p2].[GameId], [p2].[PlayerId], [p2].[PositionInHand]
+FROM (
+    SELECT TOP(1) [g].[GameId], [g].[GameStatus], [g].[Player1HP], [g].[Player2HP], [g].[PlayerId], [g].[PlayerId_1], [g].[PlayerTurn], [g].[TurnCount], [p].[PlayerId] AS [PlayerId0], [p].[Name], [p].[Password], [p0].[PlayerId] AS [PlayerId1], [p0].[Name] AS [Name0], [p0].[Password] AS [Password0]
+    FROM [Game] AS [g]
+    INNER JOIN [Player] AS [p] ON [g].[PlayerId] = [p].[PlayerId]
+    INNER JOIN [Player] AS [p0] ON [g].[PlayerId_1] = [p0].[PlayerId]
+    WHERE [g].[GameId] = @__gameId_0
+) AS [t]
+LEFT JOIN [PlayerHand] AS [p1] ON [t].[PlayerId0] = [p1].[PlayerId]
+LEFT JOIN [PlayerHand] AS [p2] ON [t].[PlayerId1] = [p2].[PlayerId]
+ORDER BY [t].[GameId], [t].[PlayerId0], [t].[PlayerId1], [p1].[PlayerHandId]
+2024-09-25 16:20:34.150 +02:00 [INF] Executing NotFoundObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:20:34.152 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.GetGameState (back-end) in 64.3846ms
+2024-09-25 16:20:34.152 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:20:34.153 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - 404 null application/json; charset=utf-8 75.0461ms
+2024-09-25 16:25:35.885 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/swagger/index.html - null null
+2024-09-25 16:25:35.913 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/swagger/index.html - 200 null text/html;charset=utf-8 27.6432ms
+2024-09-25 16:25:36.000 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/swagger/v1/swagger.json - null null
+2024-09-25 16:25:36.039 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 39.3791ms
+2024-09-25 16:25:42.947 +02:00 [INF] Application is shutting down...
+2024-09-25 16:25:45.061 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 16:25:45.136 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 16:25:45.137 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 16:25:45.138 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 16:25:45.139 +02:00 [INF] Hosting environment: Development
+2024-09-25 16:25:45.139 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 16:26:10.141 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/Game/start - application/json 68
+2024-09-25 16:26:10.158 +02:00 [INF] CORS policy execution failed.
+2024-09-25 16:26:10.159 +02:00 [INF] Request origin https://localhost:7111 does not have permission to access the resource.
+2024-09-25 16:26:10.162 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.StartGame (back-end)'
+2024-09-25 16:26:10.173 +02:00 [INF] Route matched with {action = "StartGame", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] StartGame(CatAclysmeApp.Controllers.GameStartRequest) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 16:26:10.438 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 16:26:10.496 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:26:10.497 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:26:10.498 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:26:10.499 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:26:10.797 +02:00 [INF] Executed DbCommand (18ms) [Parameters=[@__request_Player1Pseudo_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_Player1Pseudo_0
+2024-09-25 16:26:10.844 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__request_Player2Pseudo_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_Player2Pseudo_0
+2024-09-25 16:26:10.853 +02:00 [ERR] Failed executing DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[CardId], [c].[Attack], [c].[DeckId], [c].[Description], [c].[GameId], [c].[GameId1], [c].[GameId2], [c].[GameId3], [c].[GameId4], [c].[Health], [c].[Image], [c].[Name]
+FROM [Card] AS [c]
+2024-09-25 16:26:10.863 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'CatAclysmeApp.Data.CatAclysmeContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Nom de colonne non valide : 'DeckId'.
+Nom de colonne non valide : 'GameId'.
+Nom de colonne non valide : 'GameId1'.
+Nom de colonne non valide : 'GameId2'.
+Nom de colonne non valide : 'GameId3'.
+Nom de colonne non valide : 'GameId4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:aaee1549-77da-479c-9b79-5395a2ea9aed
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Nom de colonne non valide : 'DeckId'.
+Nom de colonne non valide : 'GameId'.
+Nom de colonne non valide : 'GameId1'.
+Nom de colonne non valide : 'GameId2'.
+Nom de colonne non valide : 'GameId3'.
+Nom de colonne non valide : 'GameId4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:aaee1549-77da-479c-9b79-5395a2ea9aed
+Error Number:207,State:1,Class:16
+2024-09-25 16:26:10.872 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.StartGame (back-end) in 695.6278ms
+2024-09-25 16:26:10.874 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.StartGame (back-end)'
+2024-09-25 16:26:10.876 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Nom de colonne non valide : 'DeckId'.
+Nom de colonne non valide : 'GameId'.
+Nom de colonne non valide : 'GameId1'.
+Nom de colonne non valide : 'GameId2'.
+Nom de colonne non valide : 'GameId3'.
+Nom de colonne non valide : 'GameId4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at CatAclysmeApp.Controllers.GameController.InitializeDeck(Player player) in C:\Projet\Projet_Groupe2\cat-aclysme\back-end\Controllers\GameController.cs:line 106
+   at CatAclysmeApp.Controllers.GameController.StartGame(GameStartRequest request) in C:\Projet\Projet_Groupe2\cat-aclysme\back-end\Controllers\GameController.cs:line 41
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+ClientConnectionId:aaee1549-77da-479c-9b79-5395a2ea9aed
+Error Number:207,State:1,Class:16
+2024-09-25 16:26:10.902 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/Game/start - 500 null text/plain; charset=utf-8 760.9308ms
+2024-09-25 16:29:35.024 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:29:35.027 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:29:35.028 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 3.4378ms
+2024-09-25 16:29:35.029 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 47
+2024-09-25 16:29:35.032 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:29:35.032 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:29:35.036 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:29:35.052 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:29:35.054 +02:00 [WRN] Échec de la connexion pour l'utilisateur : testingun
+2024-09-25 16:29:35.056 +02:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2024-09-25 16:29:35.057 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 20.909ms
+2024-09-25 16:29:35.058 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:29:35.059 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 401 null text/plain; charset=utf-8 29.9011ms
+2024-09-25 16:31:03.401 +02:00 [INF] Application is shutting down...
+2024-09-25 16:31:07.983 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 16:31:08.052 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 16:31:08.053 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 16:31:08.054 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 16:31:08.054 +02:00 [INF] Hosting environment: Development
+2024-09-25 16:31:08.055 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 16:31:18.530 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:31:18.545 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:18.547 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 18.2528ms
+2024-09-25 16:31:18.549 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 16:31:18.553 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:18.556 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:31:18.567 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:31:18.825 +02:00 [WRN] There are multiple relationships between 'Card' and 'Game' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Card' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-09-25 16:31:18.876 +02:00 [WRN] The foreign key property 'Card.GameId1' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:31:18.877 +02:00 [WRN] The foreign key property 'Card.GameId2' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:31:18.878 +02:00 [WRN] The foreign key property 'Card.GameId3' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:31:18.879 +02:00 [WRN] The foreign key property 'Card.GameId4' was created in shadow state because a conflicting property with the simple name 'GameId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-09-25 16:31:19.171 +02:00 [INF] Executed DbCommand (18ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:31:19.209 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 16:31:19.214 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:31:19.224 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 653.4084ms
+2024-09-25 16:31:19.226 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:31:19.231 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 681.864ms
+2024-09-25 16:31:39.480 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 16:31:39.483 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:39.483 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 3.1039ms
+2024-09-25 16:31:39.484 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 16:31:39.486 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:39.487 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:31:39.488 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 16:31:39.501 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 16:31:39.503 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 16:31:39.504 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType6`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:31:39.505 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 15.3606ms
+2024-09-25 16:31:39.506 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 16:31:39.507 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 23.0188ms
+2024-09-25 16:31:41.746 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/api/game/state?gameId=undefined - null null
+2024-09-25 16:31:41.750 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:41.751 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:31:41.755 +02:00 [INF] Route matched with {action = "GetGameState", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetGameState(Int32) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 16:31:41.763 +02:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2024-09-25 16:31:41.775 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.GetGameState (back-end) in 19.6218ms
+2024-09-25 16:31:41.776 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:31:41.777 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/api/game/state?gameId=undefined - 400 null application/problem+json; charset=utf-8 31.3375ms
+2024-09-25 16:31:54.526 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - null null
+2024-09-25 16:31:54.529 +02:00 [INF] CORS policy execution successful.
+2024-09-25 16:31:54.530 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:31:54.530 +02:00 [INF] Route matched with {action = "GetGameState", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetGameState(Int32) on controller CatAclysmeApp.Controllers.GameController (back-end).
+2024-09-25 16:31:54.620 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-09-25 16:31:54.630 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@__gameId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[GameId], [t].[GameStatus], [t].[Player1HP], [t].[Player2HP], [t].[PlayerId], [t].[PlayerId_1], [t].[PlayerTurn], [t].[TurnCount], [t].[PlayerId0], [t].[Name], [t].[Password], [t].[PlayerId1], [p1].[PlayerHandId], [p1].[CardAmount], [p1].[CardId], [p1].[GameId], [p1].[PlayerId], [p1].[PositionInHand], [t].[Name0], [t].[Password0], [p2].[PlayerHandId], [p2].[CardAmount], [p2].[CardId], [p2].[GameId], [p2].[PlayerId], [p2].[PositionInHand]
+FROM (
+    SELECT TOP(1) [g].[GameId], [g].[GameStatus], [g].[Player1HP], [g].[Player2HP], [g].[PlayerId], [g].[PlayerId_1], [g].[PlayerTurn], [g].[TurnCount], [p].[PlayerId] AS [PlayerId0], [p].[Name], [p].[Password], [p0].[PlayerId] AS [PlayerId1], [p0].[Name] AS [Name0], [p0].[Password] AS [Password0]
+    FROM [Game] AS [g]
+    INNER JOIN [Player] AS [p] ON [g].[PlayerId] = [p].[PlayerId]
+    INNER JOIN [Player] AS [p0] ON [g].[PlayerId_1] = [p0].[PlayerId]
+    WHERE [g].[GameId] = @__gameId_0
+) AS [t]
+LEFT JOIN [PlayerHand] AS [p1] ON [t].[PlayerId0] = [p1].[PlayerId]
+LEFT JOIN [PlayerHand] AS [p2] ON [t].[PlayerId1] = [p2].[PlayerId]
+ORDER BY [t].[GameId], [t].[PlayerId0], [t].[PlayerId1], [p1].[PlayerHandId]
+2024-09-25 16:31:54.633 +02:00 [INF] Executing NotFoundObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 16:31:54.634 +02:00 [INF] Executed action CatAclysmeApp.Controllers.GameController.GetGameState (back-end) in 103.1946ms
+2024-09-25 16:31:54.635 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.GameController.GetGameState (back-end)'
+2024-09-25 16:31:54.636 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7111/api/game/state?gameId=1 - 404 null application/json; charset=utf-8 109.7095ms

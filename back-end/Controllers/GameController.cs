@@ -41,35 +41,32 @@ namespace CatAclysmeApp.Controllers
             var deck1 = await InitializeDeck(player1);
             var deck2 = await InitializeDeck(player2);
 
+            // Créer la nouvelle partie en initialisant toutes les propriétés
             var game = new Game
             {
-                Player1HP = 100,
-                Player2HP = 100,
-                PlayerTurn = player1.PlayerId,
-                TurnCount = 1,
-                GameStatus = 1,
-                PlayerId = player1.PlayerId,
-                PlayerId_1 = player2.PlayerId,
-                Player = player1,
-                Player_1 = player2,
-                Player1Deck = deck1, // deck1 est une List<Card>
-                Player2Deck = deck2  // deck2 est une List<Card>
+                Player1HP = 100,  // Points de vie initial pour le joueur 1
+                Player2HP = 100,  // Points de vie initial pour le joueur 2
+                PlayerTurn = player1.PlayerId,  // Le joueur 1 commence
+                TurnCount = 1,  // Tour initial
+                GameStatus = 1,  // Status en cours de la partie
+                PlayerId = player1.PlayerId,  // ID du joueur 1
+                PlayerId_1 = player2.PlayerId,  // ID du joueur 2
+                Player = player1,  // Objet Player pour le joueur 1
+                Player_1 = player2,  // Objet Player pour le joueur 2
+                Player1Deck = deck1,  // Deck du joueur 1
+                Player2Deck = deck2,  // Deck du joueur 2
+                Player1Hand = GenerateStartingHand(deck1),  // Main de départ du joueur 1
+                Player2Hand = GenerateStartingHand(deck2),  // Main de départ du joueur 2
+                CardsOnBoard = new List<Card>()  // Plateau de cartes vide
             };
 
+            // Sauvegarder la partie dans la base de données
             _context.Games.Add(game);
-            await _context.SaveChangesAsync();
-
-            // Générer la main de départ pour chaque joueur (en passant directement la liste de cartes)
-            var player1Hand = GenerateStartingHand(game.Player1Deck);  // deck1 est une List<Card>
-            var player2Hand = GenerateStartingHand(game.Player2Deck);  // deck2 est une List<Card>
-
-            game.Player1Hand = player1Hand;
-            game.Player2Hand = player2Hand;
-
             await _context.SaveChangesAsync();
 
             return Ok(new { gameId = game.GameId });
         }
+
 
         // POST : api/game/state
         [HttpGet("state")]
