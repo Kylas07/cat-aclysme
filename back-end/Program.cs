@@ -1,5 +1,7 @@
 using CatAclysmeApp.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,13 +31,21 @@ builder.Services.AddSwaggerGen();
 // Ajouter la configuration de la journalisation
 builder.Logging.ClearProviders(); // Facultatif, pour retirer les autres providers
 builder.Logging.AddConsole();     // Ajouter la sortie dans la console
-builder.Logging.AddDebug();       // Ajouter la sortie dans le débogueur
+builder.Logging.AddDebug(); 
+// Configurer Serilog pour la journalisation dans la console et dans un fichier
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()  // Affichage des logs dans la console
+    .WriteTo.File("Logs/app-log-.txt", rollingInterval: RollingInterval.Day) // Écriture des logs dans un fichier
+    .CreateLogger();
+
+// Utiliser Serilog comme logger principal
+builder.Host.UseSerilog();
 
 // Ajouter les services de session (si nécessaire)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Durée de vie de la session
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Durée de vie de la session
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

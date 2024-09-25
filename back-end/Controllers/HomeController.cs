@@ -22,12 +22,13 @@ namespace CatAclysmeApp.Controllers
             _logger = logger;
         }
 
-         // Inscription d'un utilisateur
+        // Inscription d'un utilisateur
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (string.IsNullOrEmpty(request.PlayerName) || string.IsNullOrEmpty(request.Password))
             {
+                _logger.LogWarning("Tentative d'inscription avec des informations manquantes.");
                 return BadRequest("Le nom et le mot de passe sont requis.");
             }
 
@@ -35,6 +36,7 @@ namespace CatAclysmeApp.Controllers
             var existingPlayer = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.PlayerName);
             if (existingPlayer != null)
             {
+                _logger.LogWarning($"Tentative d'inscription avec un nom déjà pris : {request.PlayerName}");
                 return BadRequest("Le nom d'utilisateur est déjà pris.");
             }
 
@@ -56,6 +58,7 @@ namespace CatAclysmeApp.Controllers
             _context.Players.Add(newPlayer);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation($"Nouvel utilisateur inscrit : {request.PlayerName}");
             return Ok("Compte créé avec succès.");
         }
 
@@ -65,6 +68,7 @@ namespace CatAclysmeApp.Controllers
         {
             if (string.IsNullOrEmpty(request.PlayerName) || string.IsNullOrEmpty(request.Password))
             {
+                _logger.LogWarning("Tentative de connexion avec des informations manquantes.");
                 return BadRequest("Le nom et le mot de passe sont requis.");
             }
 
@@ -72,6 +76,7 @@ namespace CatAclysmeApp.Controllers
             var player = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.PlayerName);
             if (player == null)
             {
+                _logger.LogWarning($"Tentative de connexion pour un utilisateur non trouvé : {request.PlayerName}");
                 return Unauthorized("Utilisateur non trouvé.");
             }
 
@@ -79,17 +84,19 @@ namespace CatAclysmeApp.Controllers
             var hashedPassword = PasswordHasher.HashPassword(request.Password);
             if (player.Password != hashedPassword)
             {
+                _logger.LogWarning($"Échec de la connexion pour l'utilisateur : {request.PlayerName}");
                 return Unauthorized("Mot de passe incorrect.");
             }
 
+            _logger.LogInformation($"Connexion réussie pour l'utilisateur : {request.PlayerName}");
             return Ok("Connexion réussie.");
         }
-    
 
         // Expose un endpoint de test pour vérifier si l'API fonctionne
         [HttpGet("ping")]
         public IActionResult Ping()
         {
+            _logger.LogInformation("Test de ping effectué avec succès.");
             return Ok(new { message = "API is running" });
         }
 
@@ -100,6 +107,8 @@ namespace CatAclysmeApp.Controllers
             // Exemple : compter le nombre de joueurs dans la base de données
             var playerCount = _context.Players.Count();
             var cardCount = _context.Cards.Count();
+
+            _logger.LogInformation("Accès à la base de données effectué. Nombre de joueurs et de cartes retourné.");
 
             // Retourner le nombre de joueurs et de cartes sous forme de JSON
             return Ok(new { playerCount, cardCount });

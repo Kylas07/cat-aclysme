@@ -6,8 +6,8 @@
 ## 1. **Gestion sécurisée des mots de passe**
 
 ### a. Hachage des mots de passe
-- Les mots de passe des utilisateurs sont hachés avant d'être stockés dans la base de données. Cela signifie que même en cas de fuite de données, les mots de passe ne sont pas stockés en texte clair, ce qui protège les utilisateurs contre le vol de leurs identifiants.
-- Utilisation de **`PasswordHasher`** pour sécuriser les mots de passe avec un algorithme de hachage robuste.
+- Les mots de passe des utilisateurs sont **hachés avant d'être stockés** dans la base de données. Cela signifie que même en cas de fuite de données, les mots de passe ne sont pas stockés en texte clair.
+- **`PasswordHasher`** est utilisé pour sécuriser les mots de passe avec un algorithme de hachage robuste.
 
   Exemple de code :
   ```csharp
@@ -21,7 +21,7 @@
   };
   ```
 
-- À chaque connexion, le mot de passe saisi par l'utilisateur est comparé avec le mot de passe haché stocké dans la base de données.
+- Lors de la connexion, le mot de passe saisi par l'utilisateur est comparé avec le mot de passe haché stocké dans la base de données.
 
   Exemple de vérification :
   ```csharp
@@ -33,10 +33,9 @@
   ```
 
 ### b. Validation de la complexité des mots de passe
-- Les mots de passe doivent respecter des règles de complexité définies pour renforcer la sécurité (minimum 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial).
-- Validation côté serveur dans la classe **`Player`** avec l'attribut **`[RegularExpression]`** et une méthode de validation personnalisée.
-
-  Exemple de validation :
+- Les mots de passe doivent respecter des **règles de complexité** : longueur minimale, majuscules, minuscules, chiffres, et caractères spéciaux.
+  
+  Exemple de validation côté serveur avec **`RegularExpression`** :
   ```csharp
   [Required]
   [StringLength(50, MinimumLength = 12, ErrorMessage = "Le mot de passe doit contenir entre 12 et 50 caractères.")]
@@ -47,7 +46,7 @@
 ## 2. **Validation des entrées utilisateur**
 
 ### a. Validation des pseudonymes des joueurs
-- Les pseudonymes des joueurs sont soumis à des validations pour s'assurer qu'ils respectent certaines règles (longueur minimale et maximale, pas de caractères spéciaux).
+- Les pseudonymes sont **validés** pour respecter certaines règles (longueur et exclusion des caractères spéciaux).
   
   Exemple :
   ```csharp
@@ -58,15 +57,14 @@
   ```
 
 ### b. Validation des données côté serveur
-- Toute donnée envoyée par l'utilisateur est validée côté serveur pour s'assurer qu'elle est correcte et sécurisée avant d'être traitée ou stockée.
-- La validation de la force du mot de passe, des pseudonymes et des entrées est effectuée avant d'enregistrer les données dans la base.
+- Toutes les données envoyées sont validées côté serveur avant d'être traitées ou stockées.
 
 ## 3. **Protection des communications avec HTTPS**
 
 ### a. Redirection automatique vers HTTPS
-- Toutes les communications entre le client et le serveur sont protégées par **HTTPS**, garantissant que les données (comme les mots de passe) sont transmises de manière sécurisée.
-
-  Code pour forcer la redirection HTTP vers HTTPS :
+- Toutes les communications sont protégées par **HTTPS**.
+  
+  Code pour forcer la redirection vers HTTPS :
   ```csharp
   app.UseHttpsRedirection();
   ```
@@ -74,20 +72,17 @@
 ## 4. **Protection contre les scripts malveillants (XSS)**
 
 ### a. Échappement des caractères dangereux
-- Les entrées utilisateur, comme les pseudonymes, sont nettoyées et échappées pour empêcher l'exécution de scripts malveillants dans l'interface utilisateur. Cela empêche les attaques de type **XSS** (Cross-Site Scripting).
+- Les entrées utilisateur, comme les pseudonymes, sont nettoyées pour empêcher l'exécution de scripts malveillants.
 
   Exemple d'encodage HTML :
   ```csharp
   var encodedInput = System.Net.WebUtility.HtmlEncode(input);
   ```
 
-### b. Validation des caractères autorisés
-- Utilisation de **règles de validation** (comme l'attribut **`[RegularExpression]`**) pour restreindre les caractères autorisés dans les entrées utilisateur.
-
 ## 5. **Protection des API avec CORS**
 
-### a. Utilisation de CORS pour protéger l'accès aux API
-- **CORS** (Cross-Origin Resource Sharing) est configuré pour restreindre les appels d'API à des sources de confiance (comme ton front-end Vue.js). Cela protège contre les attaques **XSS** provenant d'autres domaines non autorisés.
+### a. Utilisation de CORS pour protéger les API
+- **CORS** (Cross-Origin Resource Sharing) est configuré pour restreindre l'accès aux API uniquement aux sources de confiance (comme ton front-end Vue.js).
 
   Exemple de configuration CORS :
   ```csharp
@@ -106,8 +101,8 @@
 ## 6. **Journalisation et traçabilité**
 
 ### a. Journalisation des événements critiques
-- Utilisation de **`ILogger`** pour suivre et journaliser les événements critiques, tels que les connexions réussies, les tentatives échouées, et les modifications de données sensibles (comme les mots de passe).
-  
+- Utilisation de **`ILogger`** pour journaliser les événements tels que les tentatives de connexion réussies ou échouées.
+
   Exemple de journalisation :
   ```csharp
   _logger.LogInformation($"Tentative de connexion pour l'utilisateur : {username}");
@@ -115,9 +110,9 @@
 
 ## 7. **Gestion des sessions et cookies**
 
-### a. Gestion sécurisée des sessions utilisateur
-- Les sessions sont gérées de manière sécurisée avec une durée d'expiration configurée et des cookies marqués comme **HttpOnly** et **Secure** pour empêcher leur accès via du JavaScript ou des connexions non sécurisées.
-  
+### a. Gestion sécurisée des sessions
+- Les sessions sont configurées avec une durée d'expiration et des cookies sécurisés **HttpOnly** et **Secure**.
+
   Exemple de gestion des sessions :
   ```csharp
   builder.Services.AddSession(options =>
@@ -128,18 +123,47 @@
   });
   ```
 
-## 8. **Mesures supplémentaires à envisager pour améliorer la sécurité**
+## 8. **Journalisation dans un fichier avec Serilog**
 
-### a. Protection contre les attaques CSRF (Cross-Site Request Forgery)
-- Implémenter une protection **CSRF** pour empêcher les attaques de type **Cross-Site Request Forgery**. Cela garantit que les actions sensibles (comme la modification d'un profil ou l'envoi de formulaires) ne peuvent être effectuées que depuis le site légitime.
+### a. Utilisation de Serilog pour enregistrer les logs dans un fichier
+- **Serilog** est utilisé pour journaliser dans la console et dans un fichier.
+  
+  Pour cela, tu dois installer les packages **`Serilog.AspNetCore`** et **`Serilog.Sinks.File`** :
+  
+  ```bash
+  dotnet add package Serilog.AspNetCore
+  dotnet add package Serilog.Sinks.File
+  ```
+
+  Ensuite, configure Serilog dans **`Program.cs`** :
+  
+  ```csharp
+  using Serilog;
+
+  var builder = WebApplication.CreateBuilder(args);
+
+  Log.Logger = new LoggerConfiguration()
+      .WriteTo.Console()
+      .WriteTo.File("Logs/app-log-.txt", rollingInterval: RollingInterval.Day)
+      .CreateLogger();
+
+  builder.Host.UseSerilog();
+
+  var app = builder.Build();
+  ```
+
+## 9. **Mesures supplémentaires à envisager**
+
+### a. Protection contre les attaques CSRF
+- Implémenter des jetons **CSRF** pour protéger les actions sensibles.
 
 ### b. Limitation des tentatives de connexion
-- Limiter le nombre de tentatives de connexion échouées pour se protéger contre les attaques par **force brute**. Après plusieurs tentatives échouées, un utilisateur pourrait être temporairement bloqué ou soumis à un CAPTCHA.
+- Limiter les tentatives de connexion pour empêcher les attaques par **force brute**.
 
 ### c. Authentification à deux facteurs (2FA)
-- Pour renforcer la sécurité, implémenter l'authentification à deux facteurs (2FA), exigeant une validation supplémentaire (comme un code SMS ou une application de type Google Authenticator) lors de la connexion.
+- Ajouter l'authentification à deux facteurs pour une sécurité renforcée.
 
 ### d. Tests de pénétration
-- Effectuer régulièrement des **tests de pénétration** pour identifier et corriger les failles de sécurité potentielles.
+- Effectuer des **tests de pénétration** pour identifier et corriger les vulnérabilités.
 
 ---
