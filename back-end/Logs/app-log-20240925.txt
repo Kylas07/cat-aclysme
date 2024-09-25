@@ -618,3 +618,97 @@ VALUES (@p2, @p3);
 2024-09-25 10:57:15.937 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Register (back-end) in 686.7043ms
 2024-09-25 10:57:15.938 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Register (back-end)'
 2024-09-25 10:57:15.944 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/register - 200 null text/plain; charset=utf-8 713.2162ms
+2024-09-25 11:29:48.642 +02:00 [INF] User profile is available. Using 'C:\Users\ghils\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-25 11:29:48.712 +02:00 [INF] Now listening on: https://localhost:7111
+2024-09-25 11:29:48.712 +02:00 [INF] Now listening on: http://localhost:5000
+2024-09-25 11:29:48.714 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-25 11:29:48.714 +02:00 [INF] Hosting environment: Development
+2024-09-25 11:29:48.715 +02:00 [INF] Content root path: C:\Projet\Projet_Groupe2\cat-aclysme\back-end
+2024-09-25 11:30:11.230 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/register - null null
+2024-09-25 11:30:11.245 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:11.247 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/register - 204 null null 17.6369ms
+2024-09-25 11:30:11.249 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/register - application/json 46
+2024-09-25 11:30:11.253 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:11.256 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Register (back-end)'
+2024-09-25 11:30:11.267 +02:00 [INF] Route matched with {action = "Register", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(RegisterRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 11:30:11.843 +02:00 [INF] Executed DbCommand (18ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 11:30:11.939 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (Size = 20), @p1='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Player] ([Name], [Password])
+OUTPUT INSERTED.[PlayerId]
+VALUES (@p0, @p1);
+2024-09-25 11:30:11.951 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@p2='?' (Size = 4000), @p3='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Deck] ([Name], [PlayerId])
+OUTPUT INSERTED.[DeckId]
+VALUES (@p2, @p3);
+2024-09-25 11:30:11.961 +02:00 [INF] Nouvel utilisateur inscrit : testingun
+2024-09-25 11:30:11.964 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2024-09-25 11:30:11.967 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Register (back-end) in 695.3138ms
+2024-09-25 11:30:11.968 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Register (back-end)'
+2024-09-25 11:30:11.973 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/register - 200 null text/plain; charset=utf-8 723.9709ms
+2024-09-25 11:30:21.006 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/register - null null
+2024-09-25 11:30:21.008 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:21.009 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/register - 204 null null 3.6174ms
+2024-09-25 11:30:21.010 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/register - application/json 48
+2024-09-25 11:30:21.012 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:21.013 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Register (back-end)'
+2024-09-25 11:30:21.014 +02:00 [INF] Route matched with {action = "Register", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(RegisterRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 11:30:21.024 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 11:30:21.027 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 20), @p1='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Player] ([Name], [Password])
+OUTPUT INSERTED.[PlayerId]
+VALUES (@p0, @p1);
+2024-09-25 11:30:21.028 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@p2='?' (Size = 4000), @p3='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Deck] ([Name], [PlayerId])
+OUTPUT INSERTED.[DeckId]
+VALUES (@p2, @p3);
+2024-09-25 11:30:21.031 +02:00 [INF] Nouvel utilisateur inscrit : testingdeux
+2024-09-25 11:30:21.032 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2024-09-25 11:30:21.033 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Register (back-end) in 18.3857ms
+2024-09-25 11:30:21.034 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Register (back-end)'
+2024-09-25 11:30:21.035 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/register - 200 null text/plain; charset=utf-8 24.8819ms
+2024-09-25 11:30:53.595 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 11:30:53.596 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:53.597 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 2.2963ms
+2024-09-25 11:30:53.598 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 46
+2024-09-25 11:30:53.600 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:30:53.600 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 11:30:53.603 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 11:30:53.643 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 11:30:53.646 +02:00 [INF] Connexion réussie pour l'utilisateur : testingun
+2024-09-25 11:30:53.646 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 11:30:53.651 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 46.6756ms
+2024-09-25 11:30:53.652 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 11:30:53.653 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 54.7746ms
+2024-09-25 11:31:03.383 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7111/api/home/login - null null
+2024-09-25 11:31:03.385 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:31:03.385 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7111/api/home/login - 204 null null 2.6229ms
+2024-09-25 11:31:03.386 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7111/api/home/login - application/json 48
+2024-09-25 11:31:03.388 +02:00 [INF] CORS policy execution successful.
+2024-09-25 11:31:03.389 +02:00 [INF] Executing endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 11:31:03.389 +02:00 [INF] Route matched with {action = "Login", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(LoginRequest) on controller CatAclysmeApp.Controllers.HomeController (back-end).
+2024-09-25 11:31:03.392 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__request_PlayerName_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [p].[PlayerId], [p].[Name], [p].[Password]
+FROM [Player] AS [p]
+WHERE [p].[Name] = @__request_PlayerName_0
+2024-09-25 11:31:03.393 +02:00 [INF] Connexion réussie pour l'utilisateur : testingdeux
+2024-09-25 11:31:03.394 +02:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-09-25 11:31:03.395 +02:00 [INF] Executed action CatAclysmeApp.Controllers.HomeController.Login (back-end) in 4.8264ms
+2024-09-25 11:31:03.396 +02:00 [INF] Executed endpoint 'CatAclysmeApp.Controllers.HomeController.Login (back-end)'
+2024-09-25 11:31:03.396 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7111/api/home/login - 200 null application/json; charset=utf-8 10.0795ms
