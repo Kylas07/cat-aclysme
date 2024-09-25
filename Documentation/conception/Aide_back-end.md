@@ -26,7 +26,7 @@ Voici un guide simple pour les personnes souhaitant configurer la même base de 
 
 - Connectez-vous à votre serveur SQL local avec **SQL Server Management Studio (SSMS)** en utilisant les informations suivantes :
   - **Serveur Name** : `.\SQLEXPRESS`
-  - **Authentification** : Windows Authentication (ou la méthode d'authentification que vous avez configurée).
+  - **Authentification** : Windows Authentication.
   - **Encryption** : Optional.
 
 - Créez une nouvelle base de données nommée `CatAclysmeDB` en exécutant le script suivant : **CatAclysmeBDD.sql**
