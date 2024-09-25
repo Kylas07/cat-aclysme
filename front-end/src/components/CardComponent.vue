@@ -34,7 +34,13 @@ export default {
   },
   methods: {
     onDragStart(event) {
-      if (!this.isDraggable) return; // Empêche le drag si non déplaçable
+      if (!this.isDraggable) {
+        alert("Cette carte est déjà placée sur le plateau et ne peut pas être déplacée !");
+        event.preventDefault(); // Empêche l'action de drag
+        return;
+      }
+      
+      // Si la carte est draggable, on procède avec le drag
       event.dataTransfer.setData('card', JSON.stringify(this.card));
     }
   }
@@ -44,12 +50,12 @@ export default {
   
   <style scoped>
   .CardComponent {
-    width: 150px;
+    width: 180px;
+    height: 280px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 10px;
     padding: 10px;
     background-color: white;
   }

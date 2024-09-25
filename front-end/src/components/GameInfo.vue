@@ -1,8 +1,8 @@
 <template>
   <div class="game-info">
     <p>Turn: {{ currentTurn }}</p>
-    <p>Player 1 HP: {{ player1HP }}</p>
-    <p>Player 2 HP: {{ player2HP }}</p>
+    <p>Player 1 : {{ player1HP }} ❤️</p>
+    <p>Player 2 : {{ player2HP }} ❤️</p>
   </div>
 </template>
 
