@@ -89,8 +89,11 @@ namespace CatAclysmeApp.Controllers
             }
 
             _logger.LogInformation($"Connexion réussie pour l'utilisateur : {request.PlayerName}");
-            return Ok("Connexion réussie.");
+
+            // Retourner l'ID du joueur avec le message de succès
+            return Ok(new { message = "Connexion réussie.", playerId = player.PlayerId });
         }
+
 
         // Expose un endpoint de test pour vérifier si l'API fonctionne
         [HttpGet("ping")]

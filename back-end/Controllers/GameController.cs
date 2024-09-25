@@ -21,34 +21,30 @@ namespace CatAclysmeApp.Controllers
 
         // 1. Démarrage d'une partie
         // POST : api/game/start
-        [HttpPost("start-game")]
+        [HttpPost("start")]
         public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
         {
-            var player1Name = request.Player1Pseudo;
-            var player2Name = request.Player2Pseudo;
+            // Récupérer les joueurs de la base de données en utilisant les pseudos
+            var player1 = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.Player1Pseudo);
+            var player2 = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.Player2Pseudo);
 
-            // Vérification des utilisateurs dans la base de données
-            var player1 = await _context.Players.SingleOrDefaultAsync(p => p.Name == player1Name);
-            var player2 = await _context.Players.SingleOrDefaultAsync(p => p.Name == player2Name);
-
-            // Si Player1 n'existe pas, renvoyer une erreur (dans ton système, ils devraient exister après inscription)
             if (player1 == null || player2 == null)
             {
-                return BadRequest("Un ou plusieurs joueurs n'existent pas. Les utilisateurs doivent être créés avant de commencer une partie.");
+                return BadRequest("Les joueurs doivent être valides.");
             }
 
-            // Créer une nouvelle partie avec les deux joueurs existants
+            // Créer une nouvelle partie
             var game = new Game
             {
                 Player1HP = 100,
                 Player2HP = 100,
-                PlayerTurn = player1.PlayerId, // Commencer avec le premier joueur
+                PlayerTurn = player1.PlayerId, // Joueur 1 commence
                 TurnCount = 1,
-                GameStatus = 1, // Statut "en cours"
+                GameStatus = 1,
                 PlayerId = player1.PlayerId,
                 PlayerId_1 = player2.PlayerId,
-                Player = player1,
-                Player_1 = player2
+                Player = player1, // Initialisation de Player
+                Player_1 = player2 // Initialisation de Player_1
             };
 
             _context.Games.Add(game);

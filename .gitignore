@@ -39,4 +39,5 @@ Thumbs.db
 .env
 
 # Logs
+back-end/Logs/*.txt
 *.log
