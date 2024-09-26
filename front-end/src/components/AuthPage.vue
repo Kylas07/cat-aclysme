@@ -148,7 +148,7 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
-          this.$emit('start-game');  // Émet l'événement de démarrage de la partie
+          this.$emit('start-game', data.gameId, data.currentTurn, data.player1HP, data.player2HP, data.turnCount); 
           alert(`Partie lancée avec succès. ID de la partie : ${data.gameId}`);
         } else {
           const errorData = await response.json();
