@@ -10,6 +10,7 @@
 <script>
 export default {
   props: {
+    gameId: Number,
     currentTurn: Number,
     player1HP: Number,
     player2HP: Number

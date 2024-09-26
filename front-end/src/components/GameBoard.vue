@@ -31,13 +31,14 @@ import GameInfo from './GameInfo.vue';
 import PlayerDeck from './PlayerDeck.vue';
   
 export default {
+  props: {
+    gameId: Number,
+    currentTurn: Number,
+    player1HP: Number,
+    player2HP: Number
+  },
   data() {
     return {
-      gameId:1,
-      currentTurn: 1, // Tour 1 = Joueur 1, Tour 2 = Joueur 2 etc
-      currentPlayerTurn: 1, // Flag pour indiquer quel joueur joue
-      player1HP: 100,
-      player2HP: 100,
       // Main du joueur 1 (cartes fictives pour test)
       playerHand: [
         {
@@ -99,9 +100,16 @@ export default {
     GameInfo,
     PlayerDeck
   },
+  computed: {
+    isPlayerTurn() {
+      // Si c'est le tour du joueur 1 et que ce composant est le joueur 1, il peut jouer
+      // Sinon, si c'est le tour du joueur 2 et que c'est le joueur 2, il peut jouer
+      return (this.currentTurn === 1 && this.isPlayer1) || (this.currentTurn === 2 && !this.isPlayer1);
+    }
+  },
   methods: {
   handleCardDrop({ card, index }) {
-    if (this.currentPlayerTurn === card.player) {
+    if (this.isPlayerTurn) {
       // Mets à jour directement l'élément dans cardsOnBoard
       this.cardsOnBoard[index] = card;
       // Retire la carte de la main du joueur
@@ -111,7 +119,7 @@ export default {
     }
   },
   nextTurn() {
-    this.currentPlayerTurn = this.currentPlayerTurn === 1 ? 2 : 1;
+    this.$emit('update-turn');
   }
 }
 }

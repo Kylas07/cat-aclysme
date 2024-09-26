@@ -1,7 +1,11 @@
 <template>
   <div>
     <AuthPage v-if="!isGameStarted" @start-game="launchGame" />
-    <GameBoard v-if="isGameStarted" />
+    <GameBoard v-if="isGameStarted" 
+      :gameId="gameId" 
+      :currentTurn="currentTurn" 
+      :player1HP="player1HP" 
+      :player2HP="player2HP" />
   </div>
 </template>
 
@@ -13,13 +17,27 @@ export default {
   data() {
     return {
       isGameStarted: false,
-      player1Pseudo: '', // Ajoutez cette ligne pour stocker le pseudo du joueur 1
-      player2Pseudo: ''  // Ajoutez cette ligne pour stocker le pseudo du joueur 2
+      gameId: null,       // Ajouter la variable pour stocker l'ID de la partie
+      currentTurn: null,  // Ajouter la variable pour stocker le tour actuel
+      player1HP: null,    // Ajouter la variable pour stocker les HP du joueur 1
+      player2HP: null     // Ajouter la variable pour stocker les HP du joueur 2
     };
   },
   methods: {
-    launchGame() {
-      this.isGameStarted = true;  // Passe à true lorsque l'événement est reçu
+    launchGame(gameId, currentTurn, player1HP, player2HP, turnCount) 
+    {
+      // Mettre à jour le state avec les informations reçues de l'API
+      this.isGameStarted = true;
+      this.gameId = gameId;
+      this.currentTurn = currentTurn;
+      this.player1HP = player1HP;
+      this.player2HP = player2HP;
+      this.turnCount = turnCount;
+    },
+    updateTurn() 
+    {
+    // Inverser le tour : passer au joueur 2 si c'est le joueur 1, ou vice versa
+    this.currentTurn = this.currentTurn === 1 ? 2 : 1;
     }
   },
   components: {
