@@ -5859,11 +5859,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\back-end.csproj",
+      "projectUniqueName": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj",
       "projectName": "back-end",
-      "projectPath": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\back-end.csproj",
+      "projectPath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj",
       "packagesPath": "C:\\Users\\ghils\\.nuget\\packages\\",
-      "outputPath": "C:\\Projet\\Projet_Groupe2\\cat-aclysme\\back-end\\obj\\",
+      "outputPath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ghils\\AppData\\Roaming\\NuGet\\NuGet.Config"
