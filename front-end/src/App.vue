@@ -12,12 +12,14 @@ import GameBoard from './components/GameBoard.vue';
 export default {
   data() {
     return {
-      isGameStarted: false
+      isGameStarted: false,
+      player1Pseudo: '', // Ajoutez cette ligne pour stocker le pseudo du joueur 1
+      player2Pseudo: ''  // Ajoutez cette ligne pour stocker le pseudo du joueur 2
     };
   },
   methods: {
     launchGame() {
-      this.isGameStarted = true;
+      this.isGameStarted = true;  // Passe à true lorsque l'événement est reçu
     }
   },
   components: {

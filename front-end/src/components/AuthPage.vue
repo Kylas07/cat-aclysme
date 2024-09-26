@@ -87,6 +87,7 @@ export default {
           this.isPlayer1LoggedIn = true;
           this.player1.id = data.playerId;
           alert(data.message || "Joueur 1 connecté avec succès !");
+          this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
         } else {
           alert(data.message || "Connexion Joueur 1 échouée. Veuillez vérifier vos identifiants.");
         }
@@ -102,6 +103,7 @@ export default {
           this.isPlayer2LoggedIn = true;
           this.player2.id = data.playerId;
           alert(data.message || "Joueur 2 connecté avec succès !");
+          this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
         } else {
           alert(data.message || "Connexion Joueur 2 échouée. Veuillez vérifier vos identifiants.");
         }
@@ -122,8 +124,41 @@ export default {
       });
       return response;
     },
-    startGame() {
-      this.$emit('start-game', { player1: this.player1, player2: this.player2 });
+    checkPlayers() {
+      // Vérifiez si les deux joueurs sont connectés
+      if (this.isPlayer1LoggedIn && this.isPlayer2LoggedIn) {
+        this.startGame();
+      }
+    },
+    async startGame() {
+      console.log('coucou');
+          try {
+        const requestBody = {
+          Player1Pseudo: this.player1.name,
+          Player2Pseudo: this.player2.name
+        };
+        console.log('Request Body:', requestBody); // Ajoutez cette ligne
+        
+        const response = await fetch('https://localhost:7111/api/game/start', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.$emit('start-game');  // Émet l'événement de démarrage de la partie
+          alert(`Partie lancée avec succès. ID de la partie : ${data.gameId}`);
+        } else {
+          const errorData = await response.json();
+          console.error('Error Response:', errorData);
+          alert(`Erreur lors du lancement de la partie: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la communication avec le serveur');
+      }
     }
   }
 };

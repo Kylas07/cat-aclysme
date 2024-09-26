@@ -1,5 +1,6 @@
 <template>
   <div class="game-info">
+    <p>Game ID: {{ gameId }}</p>
     <p>Turn: {{ currentTurn }}</p>
     <p>Player 1 : {{ player1HP }} ❤️</p>
     <p>Player 2 : {{ player2HP }} ❤️</p>
