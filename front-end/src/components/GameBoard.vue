@@ -3,6 +3,7 @@
       <PlayerAgainstHand :opponentHandSize="opponentHandSize" />
     
       <GameInfo 
+        :gameId="gameId"
         :currentTurn="currentTurn" 
         :player1HP="player1HP" 
         :player2HP="player2HP" 
@@ -32,6 +33,7 @@ import PlayerDeck from './PlayerDeck.vue';
 export default {
   data() {
     return {
+      gameId:1,
       currentTurn: 1, // Tour 1 = Joueur 1, Tour 2 = Joueur 2 etc
       currentPlayerTurn: 1, // Flag pour indiquer quel joueur joue
       player1HP: 100,

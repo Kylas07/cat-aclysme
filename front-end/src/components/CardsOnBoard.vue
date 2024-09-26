@@ -7,7 +7,10 @@
       @drop="onDrop($event, i)"
       @dragover.prevent
     >
-      <CardComponent v-if="card" :card="card" :isOnBoard="true" />
+      <CardComponent v-if="card" 
+      :card="card" 
+      :isOnBoard="true" 
+      @card-attacked="handleCardAttack(card, i)"/>
     </div>
   </div>
 </template>
