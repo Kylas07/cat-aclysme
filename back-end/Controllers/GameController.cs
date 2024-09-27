@@ -50,7 +50,16 @@ namespace CatAclysmeApp.Controllers
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
 
-            return Ok(new { gameId = game.GameId });
+            return Ok(new
+            {
+                gameId = game.GameId,
+                player1HP = game.Player1HP,
+                player2HP = game.Player2HP,
+                currentTurn = game.PlayerTurn,
+                turnCount = game.TurnCount,
+                player1Id = game.PlayerId,
+                player2Id = game.PlayerId_1
+            });
         }
 
 

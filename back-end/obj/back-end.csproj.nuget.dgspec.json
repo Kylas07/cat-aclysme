@@ -14,7 +14,7 @@
         "outputPath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ghils\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Administrateur\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
