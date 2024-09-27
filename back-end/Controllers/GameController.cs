@@ -19,19 +19,34 @@ namespace CatAclysmeApp.Controllers
             _context = context;
         }
 
+        public Task<List<Card>> ShuffleDeck(Deck Deck, int PlayerId) {
+            
+        }
+        public async Task<(PlayerHand, PlayerHand)> GetPlayersHandAsync(int player1Id, int player2Id, int gameId)
+        {
+            var player1 = await _context.PlayerHands.SingleOrDefaultAsync(x => x.Name == player1Name);
+            var player2 = await _context.PlayerHands.SingleOrDefaultAsync(x => x.Name == player2Name);
+
+            if(player1  ==  null || player2 == null) throw new ArgumentException("Les joueurs doivent être valides.");
+
+            return (player1, player2);
+        }
+        public async Task<(Player, Player)> GetPlayersAsync(string player1Name, string player2Name)
+        {
+            var player1 = await _context.Players.SingleOrDefaultAsync(x => x.Name == player1Name);
+            var player2 = await _context.Players.SingleOrDefaultAsync(x => x.Name == player2Name);
+
+            if(player1  ==  null || player2 == null) throw new ArgumentException("Les joueurs doivent être valides.");
+
+            return (player1, player2);
+        }
         // 1. Démarrage d'une partie
         // POST : api/game/start
         [HttpPost("start")]
         public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
         {
             // Récupérer les joueurs de la base de données en utilisant les pseudos
-            var player1 = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.Player1Pseudo);
-            var player2 = await _context.Players.SingleOrDefaultAsync(p => p.Name == request.Player2Pseudo);
-
-            if (player1 == null || player2 == null)
-            {
-                return BadRequest("Les joueurs doivent être valides.");
-            }
+            var (player1, player2) = await GetPlayersAsync(request.Player1Pseudo, request.Player2Pseudo);
 
             // Créer une nouvelle partie
             var game = new Game
@@ -49,7 +64,9 @@ namespace CatAclysmeApp.Controllers
 
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
-
+            
+            var (player1Hand, player2Hand) = await GetPlayersHandsAsync(player1.PlayerId, player2.PlayerId, game.GameId);
+            
             return Ok(new
             {
                 gameId = game.GameId,
@@ -100,7 +117,7 @@ namespace CatAclysmeApp.Controllers
                     Deck = new Deck
                     {
                         Name = $"Deck de {playerName}",
-                        Cards = new List<Card>()  // Initialiser une liste de cartes vide
+                        // Cards = new List<Card>()  // Initialiser une liste de cartes vide
                     }
                 };
 
@@ -118,51 +135,51 @@ namespace CatAclysmeApp.Controllers
         // 2. Gestion des tours
         // POST : api/game/draw-card
         [HttpPost("draw-card")]
-        public async Task<IActionResult> DrawCard([FromBody] DrawCardRequest request)
-        {
-            // Récupérer la partie
-            var game = await _context.Games
-                .Include(g => g.Player)
-                .Include(g => g.Player_1)
-                .FirstOrDefaultAsync(g => g.GameId == request.GameId);
+        // public async Task<IActionResult> DrawCard([FromBody] DrawCardRequest request)
+        // {
+        //     // Récupérer la partie
+        //     var game = await _context.Games
+        //         .Include(g => g.Player)
+        //         .Include(g => g.Player_1)
+        //         .FirstOrDefaultAsync(g => g.GameId == request.GameId);
 
-            if (game == null)
-                return NotFound(new { message = "Partie non trouvée." });
+        //     if (game == null)
+        //         return NotFound(new { message = "Partie non trouvée." });
 
-            // Vérifier que c'est bien le tour du joueur
-            if (game.PlayerTurn != request.PlayerId)
-                return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
+        //     // Vérifier que c'est bien le tour du joueur
+        //     if (game.PlayerTurn != request.PlayerId)
+        //         return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
 
-            // Récupérer le joueur
-            var player = await _context.Players
-                .Include(p => p.Deck)
-                .ThenInclude(d => d.Cards)
-                .Include(p => p.Hand)  // Inclure la main du joueur
-                .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
+        //     // Récupérer le joueur
+        //     var player = await _context.Players
+        //         .Include(p => p.Deck)
+        //         .ThenInclude(d => d.Cards)
+        //         .Include(p => p.Hand)  // Inclure la main du joueur
+        //         .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
 
-            if (player == null || player.Deck.Cards.Count == 0)
-                return BadRequest(new { message = "Le joueur n'a plus de cartes à piocher." });
+        //     if (player == null || player.Deck.Cards.Count == 0)
+        //         return BadRequest(new { message = "Le joueur n'a plus de cartes à piocher." });
 
-            // Tirer une carte du deck
-            var card = player.Deck.Cards.First();  // Choisit la première carte pour simplifier
-            player.Deck.Cards.Remove(card);  // Retirer la carte du deck
+        //     // Tirer une carte du deck
+        //     var card = player.Deck.Cards.First();  // Choisit la première carte pour simplifier
+        //     player.Deck.Cards.Remove(card);  // Retirer la carte du deck
 
-            // Ajouter la carte à la main du joueur sous forme de PlayerHand
-            var playerHand = new PlayerHand
-            {
-                PlayerId = player.PlayerId,
-                Player = player,
-                CardId = card.CardId,
-                Card = card,
-                Game = game  // Initialiser la propriété Game
-            };
+        //     // Ajouter la carte à la main du joueur sous forme de PlayerHand
+        //     var playerHand = new PlayerHand
+        //     {
+        //         PlayerId = player.PlayerId,
+        //         Player = player,
+        //         CardId = card.CardId,
+        //         Card = card,
+        //         Game = game  // Initialiser la propriété Game
+        //     };
 
-            player.Hand.Add(playerHand);  // Ajouter l'objet PlayerHand à la main du joueur
+        //     player.Hand.Add(playerHand);  // Ajouter l'objet PlayerHand à la main du joueur
 
-            await _context.SaveChangesAsync();
+        //     await _context.SaveChangesAsync();
 
-            return Ok(new { cardId = card.CardId, cardName = card.Name });
-        }
+        //     return Ok(new { cardId = card.CardId, cardName = card.Name });
+        // }
 
 
         // POST : api/game/end-turn
@@ -189,6 +206,51 @@ namespace CatAclysmeApp.Controllers
             return Ok(new { message = "Tour terminé", nextPlayer = game.PlayerTurn });
         }
 
+        // // POST : api/game/draw-initial-cards
+        // [HttpPost("draw-initial-cards")]
+        // public async Task<IActionResult> DrawInitialCards([FromBody] DrawCardRequest request)
+        // {
+        //     // Récupérer la partie
+        //     var game = await _context.Games
+        //         .Include(g => g.Player)
+        //         .Include(g => g.Player_1)
+        //         .FirstOrDefaultAsync(g => g.GameId == request.GameId);
+
+        //     if (game == null)
+        //         return NotFound(new { message = "Partie non trouvée." });
+
+        //     // Récupérer le joueur
+        //     var player = await _context.Players
+        //         .Include(p => p.Deck)
+        //         .ThenInclude(d => d.Cards)
+        //         .Include(p => p.Hand)  // Inclure la main du joueur
+        //         .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
+
+        //     if (player == null || player.Deck.Cards.Count < 5)
+        //         return BadRequest(new { message = "Le joueur n'a pas assez de cartes à piocher." });
+
+        //     // Appeler la méthode DrawCard 5 fois
+        //     for (int i = 0; i < 5; i++)
+        //     {
+        //         var drawCardRequest = new DrawCardRequest
+        //         {
+        //             GameId = request.GameId,
+        //             PlayerId = request.PlayerId
+        //         };
+
+        //         var result = await DrawCard(drawCardRequest);
+
+        //         if (result is BadRequestObjectResult || result is NotFoundObjectResult)
+        //         {
+        //             // Si une erreur survient pendant la pioche, on la renvoie
+        //             return result;
+        //         }
+        //     }
+
+        //     // Retourner une réponse indiquant que 5 cartes ont été piochées avec succès
+        //     return Ok(new { message = "5 cartes ont été piochées avec succès." });
+        // }
+
         // 3. Gestion des cartes (pose et attaque)
         // POST : api/game/play-card
         [HttpPost("play-card")]
@@ -213,6 +275,7 @@ namespace CatAclysmeApp.Controllers
 
             // Vérifier que la carte est dans la main du joueur
             var card = player.Hand.FirstOrDefault(c => c.CardId == request.CardId);
+
             if (card == null)
                 return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
 
@@ -223,7 +286,6 @@ namespace CatAclysmeApp.Controllers
             game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
 
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Carte posée avec succès." });
         }
 
@@ -305,4 +367,10 @@ namespace CatAclysmeApp.Controllers
     {
         public int GameId { get; set; }
     }
+
+    public class InitializeDeckRequest
+    {
+        public int PlayerId { get; set; } 
+    }
+
 }

@@ -26,6 +26,10 @@ export default {
     isOnBoard: {
       type: Boolean,
       required: true
+    },
+    gameId: { 
+      type: Number,
+      required: true
     }
   },
   computed: {
@@ -41,7 +45,7 @@ export default {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        GameId: this.$parent.gameId,  // ID de la partie
+        GameId: this.gameId,  // ID de la partie
         PlayerId: this.card.player,    // Le joueur qui attaque
         BoardSlotId: this.card.boardSlotId, // Emplacement de la carte attaquante
         TargetBoardSlotId: targetCard.boardSlotId // Emplacement de la carte cible
@@ -54,6 +58,7 @@ export default {
       // Mettre à jour l'interface selon la réponse
     } else {
       console.log("Erreur d'attaque", result.message);
+      console.log(this.gameId);
       alert(result.message);
     }
   },

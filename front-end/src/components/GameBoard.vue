@@ -10,8 +10,10 @@
       />
       <div class="game-decks">
         <PlayerDeck :cardsLeft="player2DeckSize" />
-        <CardsOnBoard :cardsOnBoard="cardsOnBoard" 
-        @card-dropped="handleCardDrop"
+        <CardsOnBoard 
+          :cardsOnBoard="cardsOnBoard" 
+          :gameId="gameId"
+          @card-dropped="handleCardDrop"
         />
         <PlayerDeck :cardsLeft="player1DeckSize" />
       </div>
@@ -44,33 +46,22 @@ export default {
     return {
       // Main du joueur 1 (cartes fictives pour test)
       playerHand: [
-        {
-          cardId: 1,
-          name: "Catnado",
-          health: 10,
-          attack: 7,
-          player: 1,
-          image: require('@/assets/Catnado.png'),
-          description: "Meow."
-        },
-        {
+      {
           cardId: 2,
           name: "Catnado",
-          health: 8,
-          attack: 5,
-          player: 1,
+          health: 15,
+          attack: 4,
           image: require('@/assets/Catnado.png'),
           description: "Meow."
         },
         {
-          cardId: 3,
-          name: "Catnado",
-          health: 6,
-          attack: 9,
-          player: 1,
-          image: require('@/assets/Catnado.png'),
-          description: "Meow."
-        }
+            cardId: 3,
+            name: "Catnado",
+            health: 15,
+            attack: 4,
+            image: require('@/assets/Catnado.png'),
+            description: "Meow."
+          }
       ],
       // Cartes sur le plateau de jeu
       cardsOnBoard: [
@@ -111,15 +102,32 @@ export default {
     }
   },
   methods: {
-  handleCardDrop({ card, index }) {
-    if (this.currentPlayerId === this.currentTurn) {
-      // Mets à jour directement l'élément dans cardsOnBoard
-      this.cardsOnBoard[index] = card;
-      // Retire la carte de la main du joueur
-      this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
-      console.log("Le joueur", this.currentPlayerId, "pose une carte.");
-    } else {
-      console.log("Ce n'est pas votre tour !");
+    async handleCardDrop({ card, index }) {
+      console.log("Carte envoyée :", card);
+      const response = await fetch('https://localhost:7111/api/game/play-card', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          GameId: this.gameId, 
+          PlayerId: this.currentPlayerId,
+          CardId: card.cardId, 
+          BoardSlotIndex: index
+        })
+      });
+      const data = await response.json();
+    if (response.ok) {
+        console.log("Réponse de l'API :", data);
+        // Mets à jour directement l'élément dans cardsOnBoard
+        this.cardsOnBoard[index] = card;
+        // Retire la carte de la main du joueur
+        this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+        console.log("Le joueur", this.currentPlayerId, "pose une carte.");
+      } else {
+      console.log("Erreur de placement", data.message);
+      console.log("La carte de ", this.currentPlayerId, "n'a pas pu être posée", "à l'emplacement ", index);
+      alert(data.message);
     }
   },
   nextTurn() {

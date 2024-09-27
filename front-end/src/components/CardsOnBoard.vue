@@ -10,6 +10,7 @@
       <CardComponent v-if="card" 
       :card="card" 
       :isOnBoard="true" 
+      :gameId="gameId"
       @card-attacked="handleCardAttack(card, i)"/>
     </div>
   </div>
@@ -24,6 +25,7 @@ export default {
     CardComponent
   },
   props: {
+    gameId: Number,
     cardsOnBoard: {
       type: Array,
       required: true
@@ -41,7 +43,7 @@ export default {
     const isPlayerOne = this.$parent.currentPlayerTurn === 1;
 
     // Restreint l'accès à la moitié du plateau
-    if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
+    if ((isPlayerOne && i >= 4) || (!isPlayerOne && i < 4)) {
       console.log("Vous ne pouvez pas placer une carte ici !");
       alert("Vous ne pouvez pas placer une carte ici !"); // Alerte en cas d'emplacement invalide
       return;

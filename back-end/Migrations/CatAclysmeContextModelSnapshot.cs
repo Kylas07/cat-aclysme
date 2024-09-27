@@ -51,9 +51,6 @@ namespace back_end.Migrations
                     b.Property<int>("Attack")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DeckId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -70,8 +67,6 @@ namespace back_end.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CardId");
-
-                    b.HasIndex("DeckId");
 
                     b.ToTable("Card", (string)null);
                 });
@@ -176,11 +171,13 @@ namespace back_end.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("PlayerId");
 
@@ -189,32 +186,27 @@ namespace back_end.Migrations
 
             modelBuilder.Entity("CatAclysmeApp.Models.PlayerHand", b =>
                 {
-                    b.Property<int>("PlayerHandId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerHandId"));
-
-                    b.Property<int>("CardAmount")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<int>("CardId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GameId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
+                    b.Property<int>("CardAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerHandId")
                         .HasColumnType("int");
 
                     b.Property<int?>("PositionInHand")
                         .HasColumnType("int");
 
-                    b.HasKey("PlayerHandId");
+                    b.HasKey("GameId", "CardId", "PlayerId");
 
                     b.HasIndex("CardId");
-
-                    b.HasIndex("GameId");
 
                     b.HasIndex("PlayerId");
 
@@ -296,13 +288,6 @@ namespace back_end.Migrations
                     b.Navigation("Card");
 
                     b.Navigation("Deck");
-                });
-
-            modelBuilder.Entity("CatAclysmeApp.Models.Card", b =>
-                {
-                    b.HasOne("CatAclysmeApp.Models.Deck", null)
-                        .WithMany("Cards")
-                        .HasForeignKey("DeckId");
                 });
 
             modelBuilder.Entity("CatAclysmeApp.Models.Deck", b =>
@@ -425,11 +410,6 @@ namespace back_end.Migrations
                     b.Navigation("Card");
 
                     b.Navigation("Card_1");
-                });
-
-            modelBuilder.Entity("CatAclysmeApp.Models.Deck", b =>
-                {
-                    b.Navigation("Cards");
                 });
 
             modelBuilder.Entity("CatAclysmeApp.Models.Player", b =>
