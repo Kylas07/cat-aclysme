@@ -213,7 +213,10 @@ namespace CatAclysmeApp.Controllers
 
             // Vérifier que la carte est dans la main du joueur
             var card = player.Hand.FirstOrDefault(c => c.CardId == request.CardId);
+            Console.WriteLine($"Main du joueur {player.PlayerId}: {string.Join(", ", player.Hand.Select(c => c.CardId))}");
+
             if (card == null)
+                Console.WriteLine($"ID de la carte reçu : {request.CardId}");
                 return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
 
             // Le front-end gère maintenant la pose de la carte sur le plateau
@@ -223,7 +226,6 @@ namespace CatAclysmeApp.Controllers
             game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
 
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Carte posée avec succès." });
         }
 

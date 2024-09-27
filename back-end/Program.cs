@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8080") // Adresse de ton app Vue.js
+            builder.WithOrigins("http://localhost:8081") // Adresse de ton app Vue.js
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
