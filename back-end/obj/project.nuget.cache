@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R7m42yiUBc0=",
+  "dgSpecHash": "/xvYjQD0Nvo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj",
+  "projectFilePath": "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\back-end.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrateur\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Administrateur\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

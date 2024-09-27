@@ -5,7 +5,12 @@
       :gameId="gameId" 
       :currentTurn="currentTurn" 
       :player1HP="player1HP" 
-      :player2HP="player2HP" />
+      :player2HP="player2HP"
+      :player1Id="player1Id"
+      :player2Id="player2Id"
+      :currentPlayerId="currentPlayerId"
+      @update-turn="updateTurn"
+    />
   </div>
 </template>
 
@@ -17,27 +22,35 @@ export default {
   data() {
     return {
       isGameStarted: false,
-      gameId: null,       // Ajouter la variable pour stocker l'ID de la partie
-      currentTurn: null,  // Ajouter la variable pour stocker le tour actuel
-      player1HP: null,    // Ajouter la variable pour stocker les HP du joueur 1
-      player2HP: null     // Ajouter la variable pour stocker les HP du joueur 2
+      gameId: null,
+      currentTurn: null,  // Tour actuel (ID du joueur qui joue)
+      player1HP: null,
+      player2HP: null,
+      player1Id: null,    // ID du joueur 1
+      player2Id: null,    // ID du joueur 2
+      currentPlayerId: null  // ID du joueur en cours de jeu
     };
   },
   methods: {
-    launchGame(gameId, currentTurn, player1HP, player2HP, turnCount) 
+    launchGame(gameId, currentTurn, player1HP, player2HP, player1Id, player2Id, turnCount) 
     {
-      // Mettre à jour le state avec les informations reçues de l'API
       this.isGameStarted = true;
       this.gameId = gameId;
       this.currentTurn = currentTurn;
       this.player1HP = player1HP;
       this.player2HP = player2HP;
+      this.player1Id = player1Id;
+      this.player2Id = player2Id;
       this.turnCount = turnCount;
+      // On commence avec le premier joueur
+      this.currentPlayerId = currentTurn; 
+      console.log("Le joueur", this.currentPlayerId, "commence la partie.");
     },
-    updateTurn() 
-    {
-    // Inverser le tour : passer au joueur 2 si c'est le joueur 1, ou vice versa
-    this.currentTurn = this.currentTurn === 1 ? 2 : 1;
+    updateTurn() {
+      // Inverser le tour entre le joueur 1 et le joueur 2
+      this.currentPlayerId = this.currentPlayerId === this.player1Id ? this.player2Id : this.player1Id;
+      this.currentTurn = this.currentPlayerId;
+      console.log("Changement de tour, on est le ", this.currentTurn , " c'est au tour de", this.currentPlayerId)
     }
   },
   components: {
