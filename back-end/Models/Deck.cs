@@ -14,6 +14,7 @@ namespace CatAclysmeApp.Models
         public Player? Player { get; set; }
 
         // Liste des cartes dans le deck
-        public List<Card> Cards { get; set; } = new List<Card>();
+        // public List<Card> Cards { get; set; } = new List<Card>();
+
     }
 }

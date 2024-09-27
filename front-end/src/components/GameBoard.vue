@@ -45,7 +45,24 @@ export default {
   data() {
     return {
       // Main du joueur 1 (cartes fictives pour test)
-      playerHand: [],
+      playerHand: [
+      {
+          cardId: 2,
+          name: "Catnado",
+          health: 15,
+          attack: 4,
+          image: require('@/assets/Catnado.png'),
+          description: "Meow."
+        },
+        {
+            cardId: 3,
+            name: "Catnado",
+            health: 15,
+            attack: 4,
+            image: require('@/assets/Catnado.png'),
+            description: "Meow."
+          }
+      ],
       // Cartes sur le plateau de jeu
       cardsOnBoard: [
         {

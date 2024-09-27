@@ -51,13 +51,22 @@ namespace CatAclysmeApp.Controllers
                 Deck = new Deck
                 {
                     Name = $"Deck de {request.PlayerName}",
-                    Cards = new List<Card>()
                 }
             };
 
             _context.Players.Add(newPlayer);
             await _context.SaveChangesAsync();
+            var builds = _context.Cards.Select(card => new Build
+            {
+                Deck = newPlayer.Deck,
+                DeckId = newPlayer.Deck.DeckId,
+                Card = card,
+                CardId = card.CardId,
+                Amount = 1
+            }).ToList();
 
+            _context.Builds.AddRange(builds);
+            await _context.SaveChangesAsync();
             _logger.LogInformation($"Nouvel utilisateur inscrit : {request.PlayerName}");
             return Ok("Compte créé avec succès.");
         }

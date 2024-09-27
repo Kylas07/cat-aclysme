@@ -5,7 +5,7 @@
 namespace back_end.Migrations
 {
     /// <inheritdoc />
-    public partial class RemovePasswordColumn : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,8 @@ namespace back_end.Migrations
                 {
                     PlayerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,17 +211,16 @@ namespace back_end.Migrations
                 name: "PlayerHand",
                 columns: table => new
                 {
-                    PlayerHandId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PositionInHand = table.Column<int>(type: "int", nullable: false),
-                    CardAmount = table.Column<int>(type: "int", nullable: false),
                     GameId = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
-                    CardId = table.Column<int>(type: "int", nullable: false)
+                    CardId = table.Column<int>(type: "int", nullable: false),
+                    PlayerHandId = table.Column<int>(type: "int", nullable: false),
+                    PositionInHand = table.Column<int>(type: "int", nullable: true),
+                    CardAmount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerHand", x => x.PlayerHandId);
+                    table.PrimaryKey("PK_PlayerHand", x => new { x.GameId, x.CardId, x.PlayerId });
                     table.ForeignKey(
                         name: "FK_PlayerHand_Card_CardId",
                         column: x => x.CardId,
@@ -249,7 +249,8 @@ namespace back_end.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Deck_PlayerId",
                 table: "Deck",
-                column: "PlayerId");
+                column: "PlayerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Game_PlayerId",
@@ -275,11 +276,6 @@ namespace back_end.Migrations
                 name: "IX_PlayerHand_CardId",
                 table: "PlayerHand",
                 column: "CardId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerHand_GameId",
-                table: "PlayerHand",
-                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerHand_PlayerId",

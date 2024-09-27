@@ -30,6 +30,9 @@ namespace CatAclysmeApp.Data
             modelBuilder.Entity<Build>().ToTable("Build");
             modelBuilder.Entity<GameCard>().ToTable("GameCard");
 
+            modelBuilder.Entity<PlayerHand>()
+                .HasKey(ph => new {ph.GameId, ph.CardId, ph.PlayerId});
+
             // Clé composite pour Build
             modelBuilder.Entity<Build>()
                 .HasKey(b => new { b.DeckId, b.CardId });
