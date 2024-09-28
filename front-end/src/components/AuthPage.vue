@@ -147,9 +147,11 @@ export default {
           body: JSON.stringify(requestBody)
         });
         if (response.ok) {
-          const data = await response.json();
-          this.$emit('start-game', data.gameId, data.currentTurn, data.player1HP, data.player2HP, data.player1Id, data.player2Id , data.turnCount); 
-          alert(`Partie lancée avec succès. ID de la partie : ${data.gameId}`);
+            const data = await response.json();
+            const game = data.game; // Récupère l'objet game
+
+            this.$emit('start-game', game.gameId, game.playerTurn, game.player1HP, game.player2HP, game.player.playerId, game.player_1.playerId, game.turnCount); 
+            alert(`Partie lancée avec succès. ID de la partie : ${game.gameId}`);
         } else {
           const errorData = await response.json();
           console.error('Error Response:', errorData);

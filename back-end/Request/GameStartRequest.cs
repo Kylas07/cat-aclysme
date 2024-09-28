@@ -1,4 +1,4 @@
-namespace CatAclysmeApp.Models
+namespace back_end.Request
 {
     public class GameStartRequest
     {

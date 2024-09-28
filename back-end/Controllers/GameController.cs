@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+using back_end.Request;
+using back_end.Response;
+using back_end.Services;
 using CatAclysmeApp.Data;
-using CatAclysmeApp.Models;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using CatAclysmeApp.Helpers;
+using CatAclysmeApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatAclysmeApp.Controllers
 {
@@ -13,70 +14,21 @@ namespace CatAclysmeApp.Controllers
     public class GameController : ControllerBase
     {
         private readonly CatAclysmeContext _context;
+        private readonly GameService _gameService;
 
-        public GameController(CatAclysmeContext context)
+        public GameController(CatAclysmeContext context, GameService gameService)
         {
             _context = context;
+            _gameService = gameService;
         }
 
-        public Task<List<Card>> ShuffleDeck(Deck Deck, int PlayerId) {
-            
-        }
-        public async Task<(PlayerHand, PlayerHand)> GetPlayersHandAsync(int player1Id, int player2Id, int gameId)
-        {
-            var player1 = await _context.PlayerHands.SingleOrDefaultAsync(x => x.Name == player1Name);
-            var player2 = await _context.PlayerHands.SingleOrDefaultAsync(x => x.Name == player2Name);
-
-            if(player1  ==  null || player2 == null) throw new ArgumentException("Les joueurs doivent être valides.");
-
-            return (player1, player2);
-        }
-        public async Task<(Player, Player)> GetPlayersAsync(string player1Name, string player2Name)
-        {
-            var player1 = await _context.Players.SingleOrDefaultAsync(x => x.Name == player1Name);
-            var player2 = await _context.Players.SingleOrDefaultAsync(x => x.Name == player2Name);
-
-            if(player1  ==  null || player2 == null) throw new ArgumentException("Les joueurs doivent être valides.");
-
-            return (player1, player2);
-        }
         // 1. Démarrage d'une partie
         // POST : api/game/start
+        [ProducesResponseType(typeof(GameStartResponse), 200)]
         [HttpPost("start")]
         public async Task<IActionResult> StartGame([FromBody] GameStartRequest request)
         {
-            // Récupérer les joueurs de la base de données en utilisant les pseudos
-            var (player1, player2) = await GetPlayersAsync(request.Player1Pseudo, request.Player2Pseudo);
-
-            // Créer une nouvelle partie
-            var game = new Game
-            {
-                Player1HP = 100,
-                Player2HP = 100,
-                PlayerTurn = player1.PlayerId, // Joueur 1 commence
-                TurnCount = 1,
-                GameStatus = 1,
-                PlayerId = player1.PlayerId,
-                PlayerId_1 = player2.PlayerId,
-                Player = player1, // Initialisation de Player
-                Player_1 = player2 // Initialisation de Player_1
-            };
-
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
-            
-            var (player1Hand, player2Hand) = await GetPlayersHandsAsync(player1.PlayerId, player2.PlayerId, game.GameId);
-            
-            return Ok(new
-            {
-                gameId = game.GameId,
-                player1HP = game.Player1HP,
-                player2HP = game.Player2HP,
-                currentTurn = game.PlayerTurn,
-                turnCount = game.TurnCount,
-                player1Id = game.PlayerId,
-                player2Id = game.PlayerId_1
-            });
+            return Ok(await _gameService.StartGame(request));
         }
 
 
@@ -110,8 +62,8 @@ namespace CatAclysmeApp.Controllers
             // Si le joueur n'existe pas, le créer avec un Deck
             if (player == null)
             {
-                player = new Player 
-                { 
+                player = new Player
+                {
                     Name = playerName,
                     Password = tempPassword,
                     Deck = new Deck
@@ -253,41 +205,41 @@ namespace CatAclysmeApp.Controllers
 
         // 3. Gestion des cartes (pose et attaque)
         // POST : api/game/play-card
-        [HttpPost("play-card")]
-        public async Task<IActionResult> PlayCard([FromBody] PlayCardRequest request)
-        {
-            // Récupérer la partie
-            var game = await _context.Games.FirstOrDefaultAsync(g => g.GameId == request.GameId);
-            if (game == null)
-                return NotFound(new { message = "Partie non trouvée." });
+        //[HttpPost("play-card")]
+        //public async Task<IActionResult> PlayCard([FromBody] PlayCardRequest request)
+        //{
+        //    // Récupérer la partie
+        //    var game = await _context.Games.FirstOrDefaultAsync(g => g.GameId == request.GameId);
+        //    if (game == null)
+        //        return NotFound(new { message = "Partie non trouvée." });
 
-            // Vérifier que c'est bien le tour du joueur
-            if (game.PlayerTurn != request.PlayerId)
-                return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
+        //    // Vérifier que c'est bien le tour du joueur
+        //    if (game.PlayerTurn != request.PlayerId)
+        //        return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
 
-            // Récupérer le joueur
-            var player = await _context.Players
-                .Include(p => p.Hand)
-                .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
+        //    // Récupérer le joueur
+        //    var player = await _context.Players
+        //        .Include(p => p.Hand)
+        //        .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
 
-            if (player == null)
-                return NotFound(new { message = "Joueur non trouvé." });
+        //    if (player == null)
+        //        return NotFound(new { message = "Joueur non trouvé." });
 
-            // Vérifier que la carte est dans la main du joueur
-            var card = player.Hand.FirstOrDefault(c => c.CardId == request.CardId);
+        //    // Vérifier que la carte est dans la main du joueur
+        //    var card = player.Hand.FirstOrDefault(c => c.CardId == request.CardId);
 
-            if (card == null)
-                return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
+        //    if (card == null)
+        //        return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
 
-            // Le front-end gère maintenant la pose de la carte sur le plateau
-            player.Hand.Remove(card);  // Retirer la carte de la main
+        //    // Le front-end gère maintenant la pose de la carte sur le plateau
+        //    player.Hand.Remove(card);  // Retirer la carte de la main
 
-            // Finir le tour (passe au joueur suivant)
-            game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
+        //    // Finir le tour (passe au joueur suivant)
+        //    game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
 
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Carte posée avec succès." });
-        }
+        //    await _context.SaveChangesAsync();
+        //    return Ok(new { message = "Carte posée avec succès." });
+        //}
 
         // POST : api/game/attack
         [HttpPost("attack")]
@@ -328,49 +280,4 @@ namespace CatAclysmeApp.Controllers
             return Ok(new { message = "Partie terminée." });
         }
     }
-
-    // Modèles de requêtes
-    public class GameStartRequest
-    {
-        public required string Player1Pseudo { get; set; }
-        public required string Player2Pseudo { get; set; }
-    }
-
-    public class DrawCardRequest
-    {
-        public int GameId { get; set; }
-        public int PlayerId { get; set; }
-    }
-
-    public class PlayCardRequest
-    {
-        public int GameId { get; set; }
-        public int PlayerId { get; set; }
-        public int CardId { get; set; }
-    }
-
-    public class AttackRequest
-    {
-        public int GameId { get; set; }
-        public int PlayerId { get; set; }
-        public int BoardSlotId { get; set; }  // Emplacement de la carte qui attaque
-        public int TargetBoardSlotId { get; set; }  // Carte cible
-    }
-
-    public class EndTurnRequest
-    {
-        public int GameId { get; set; }
-        public int PlayerId { get; set; }
-    }
-
-    public class EndGameRequest
-    {
-        public int GameId { get; set; }
-    }
-
-    public class InitializeDeckRequest
-    {
-        public int PlayerId { get; set; } 
-    }
-
 }

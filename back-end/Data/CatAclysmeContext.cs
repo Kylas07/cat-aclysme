@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+using back_end.Models;
 using CatAclysmeApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatAclysmeApp.Data
 {
@@ -12,7 +13,7 @@ namespace CatAclysmeApp.Data
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Score> Scores { get; set; }
-        public DbSet<PlayerHand> PlayerHands { get; set; }
+        public DbSet<GameDeck> GameDecks { get; set; }
         public DbSet<Turn> Turns { get; set; }
         public DbSet<Build> Builds { get; set; }
         public DbSet<GameCard> GameCards { get; set; }
@@ -25,13 +26,13 @@ namespace CatAclysmeApp.Data
             modelBuilder.Entity<Deck>().ToTable("Deck");
             modelBuilder.Entity<Game>().ToTable("Game");
             modelBuilder.Entity<Score>().ToTable("Score");
-            modelBuilder.Entity<PlayerHand>().ToTable("PlayerHand");
+            modelBuilder.Entity<GameDeck>().ToTable("GameDeck");
             modelBuilder.Entity<Turn>().ToTable("Turn");
             modelBuilder.Entity<Build>().ToTable("Build");
             modelBuilder.Entity<GameCard>().ToTable("GameCard");
 
-            modelBuilder.Entity<PlayerHand>()
-                .HasKey(ph => new {ph.GameId, ph.CardId, ph.PlayerId});
+            modelBuilder.Entity<GameDeck>()
+                .HasKey(gd => new { gd.PlayerId, gd.CardId, gd.GameId });
 
             // Clé composite pour Build
             modelBuilder.Entity<Build>()
@@ -85,7 +86,7 @@ namespace CatAclysmeApp.Data
                 .HasOne(p => p.Deck)
                 .WithOne(d => d.Player)
                 .HasForeignKey<Deck>(d => d.PlayerId)
-                .IsRequired();   
+                .IsRequired();
         }
     }
 }
