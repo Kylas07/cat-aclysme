@@ -1,3 +1,4 @@
+using back_end.Services;
 using CatAclysmeApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -5,9 +6,18 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//ajouter la sérialisation
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 // Ajouter la connexion à la base de données pour CatAclysmeContext
 builder.Services.AddDbContext<CatAclysmeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Ajouter les services
+builder.Services.AddScoped<GameService>();
 
 // Ajouter les services pour les API controllers (sans vues)
 builder.Services.AddControllers();

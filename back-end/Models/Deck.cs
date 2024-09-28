@@ -12,9 +12,5 @@ namespace CatAclysmeApp.Models
 
         // Relation avec le joueur (peut être définie après la création du joueur)
         public Player? Player { get; set; }
-
-        // Liste des cartes dans le deck
-        // public List<Card> Cards { get; set; } = new List<Card>();
-
     }
 }

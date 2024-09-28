@@ -5,11 +5,11 @@ namespace CatAclysmeApp.Models
     public class Player
     {
         public int PlayerId { get; set; }
-        
+
         [Required]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Le nom doit avoir entre 3 et 20 caractères.")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Caractères spéciaux non autorisés.")]        
-        public required string Name { get; set; } 
+        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Caractères spéciaux non autorisés.")]
+        public required string Name { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 12, ErrorMessage = "Le mot de passe doit contenir entre 12 et 50 caractères.")]
@@ -18,8 +18,5 @@ namespace CatAclysmeApp.Models
 
         // Le deck du joueur (30 cartes)
         public required Deck Deck { get; set; }
-
-        // La main du joueur (aucune limite imposée ici)
-        public List<PlayerHand> Hand { get; set; } = new List<PlayerHand>();
     }
 }
