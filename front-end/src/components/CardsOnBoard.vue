@@ -3,15 +3,18 @@
     <div 
       v-for="(card, i) in boardSlots" 
       :key="i" 
-      class="card-slot" 
+      class="card-slot"
+      @click="handleCardClick(card, i)"
       @drop="onDrop($event, i)"
       @dragover.prevent
     >
-      <CardComponent v-if="card" 
-      :card="card" 
-      :isOnBoard="true" 
-      :gameId="gameId"
-      @card-attacked="handleCardAttack(card, i)"/>
+      <CardComponent 
+        v-if="card" 
+        :card="card" 
+        :isOnBoard="true" 
+        :gameId="gameId"
+        @card-attacked="handleCardAttack(card, i)"
+      />
     </div>
   </div>
 </template>
@@ -25,11 +28,12 @@ export default {
     CardComponent
   },
   props: {
+    cardsOnBoard: Array,
     gameId: Number,
-    cardsOnBoard: {
-      type: Array,
-      required: true
-    }
+    currentTurn: Number,
+    currentPlayerTurn: Number,
+    player1Id: Number,
+    player2Id: Number,
   },
   computed: {
     // Remplit les emplacements vides pour afficher 8 cases de jeu
@@ -39,6 +43,67 @@ export default {
     }
   },
   methods: {
+        // Gère le clic sur une carte
+        handleCardClick(card, index) {
+      // Assurez-vous que la carte appartient au joueur actif et qu'elle peut attaquer
+      if (card && this.canAttack(card)) {
+        const targetIndex = this.getTargetIndex(index);
+        if (targetIndex !== null) {
+          this.initiateAttack(card, index, targetIndex);
+        } else {
+          alert("Aucune cible en face !");
+        }
+      } else {
+        alert("Cette carte ne peut pas attaquer.");
+      }
+    },
+
+    // Vérifie si la carte peut attaquer
+    canAttack(card) {
+      return card.isPlacedPreviousTurn && !card.hasAttackedThisTurn && card.ownerId === this.currentPlayerTurn;
+    },
+
+    // Calcule l'index de la cible (carte en face ou joueur)
+    getTargetIndex(attackerIndex) {
+      if (this.currentPlayerTurn === this.player1Id) {
+        // Le joueur 1 attaque les cartes en face (index 4 à 7)
+        return attackerIndex + 4 < this.cardsOnBoard.length ? attackerIndex + 4 : null;
+      } else {
+        // Le joueur 2 attaque les cartes en face (index 0 à 3)
+        return attackerIndex - 4 >= 0 ? attackerIndex - 4 : null;
+      }
+    },
+
+    // Envoie la requête d'attaque au serveur
+    async initiateAttack(card, attackerIndex, targetIndex) {
+      try {
+        const response = await fetch('https://localhost:7111/api/game/attack', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            GameId: this.gameId,
+            PlayerId: this.currentPlayerTurn,
+            AttackerIndex: attackerIndex,
+            TargetIndex: targetIndex,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Attaque réussie :", data);
+          // Mettre à jour l'état de la carte pour marquer qu'elle a attaqué ce tour
+          card.hasAttackedThisTurn = true;
+        } else {
+          const errorData = await response.json();
+          console.error("Erreur d'attaque :", errorData.message);
+        }
+      } catch (error) {
+        console.error("Erreur lors de l'attaque :", error);
+      }
+    },
+  
     onDrop(event, i) {
   // Récupération des données transférées
   const cardData = event.dataTransfer.getData('card');

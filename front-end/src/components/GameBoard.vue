@@ -58,24 +58,7 @@ export default {
     return {
       currentPlayerTurn: this.currentPlayerId,  // Démarre avec le joueur courant
       playerHand: [],
-      cardsOnBoard: [
-        {
-          cardId: 4,
-          name: "Catnado",
-          health: 15,
-          attack: 4,
-          image: '/image/Catnado.png',
-          description: "Meow."
-        },
-        {
-          cardId: 5,
-          name: "Catnado",
-          health: 5,
-          attack: 6,
-          image: '/image/Catnado.png',
-          description: "Meow."
-        }
-      ],
+      cardsOnBoard: [],
       opponentHandSize: 5, // Nombre de cartes dans la main de l'adversaire
       player1DeckSize: 25, // Cartes restantes dans le deck du joueur 1
       player2DeckSize: 25  // Cartes restantes dans le deck du joueur 2
@@ -108,6 +91,13 @@ export default {
 
           // Alterner le joueur
           this.currentPlayerTurn = this.currentPlayerTurn === this.player1Id ? this.player2Id : this.player1Id;
+
+          this.cardsOnBoard.forEach(card => {
+        if (card) {
+          card.isPlacedPreviousTurn = true;   // La carte peut attaquer lors du prochain tour
+          card.hasAttackedThisTurn = false;   // Réinitialiser la capacité d'attaque
+        }
+      });
 
           // Charger la main du joueur suivant
           await this.loadPlayerHand(this.currentPlayerTurn);
