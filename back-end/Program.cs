@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8081") // Adresse de ton app Vue.js
+            builder.WithOrigins("http://localhost:8080") // Adresse de ton app Vue.js
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
@@ -51,6 +51,12 @@ Log.Logger = new LoggerConfiguration()
 // Utiliser Serilog comme logger principal
 builder.Host.UseSerilog();
 
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
+
 // Ajouter les services de session (si nécessaire)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -59,6 +65,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 
 var app = builder.Build();
 
