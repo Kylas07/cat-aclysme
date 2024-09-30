@@ -32,6 +32,7 @@ export default {
     }
   },
   computed: {
+    // Remplit les emplacements vides pour afficher 8 cases de jeu
     boardSlots() {
       const emptySlots = Array(8 - this.cardsOnBoard.length).fill(null);
       return [...this.cardsOnBoard, ...emptySlots]; 
@@ -39,21 +40,45 @@ export default {
   },
   methods: {
     onDrop(event, i) {
-    const card = JSON.parse(event.dataTransfer.getData('card'));
-    const isPlayerOne = this.$parent.currentPlayerTurn === 1;
+  // Récupération des données transférées
+  const cardData = event.dataTransfer.getData('card');
+  
+  if (!cardData) {
+    console.error("Aucune donnée de carte trouvée lors du drag-and-drop !");
+    alert("Erreur de transfert de carte.");
+    return;
+  }
 
-    // Restreint l'accès à la moitié du plateau
-    if ((isPlayerOne && i >= 4) || (!isPlayerOne && i < 4)) {
-      console.log("Vous ne pouvez pas placer une carte ici !");
-      alert("Vous ne pouvez pas placer une carte ici !"); // Alerte en cas d'emplacement invalide
-      return;
-    }
+  // Conversion en objet JavaScript
+  const card = JSON.parse(cardData);
 
-    this.$emit('card-dropped', { card, index: i });
-    }
+  // Comparer avec player1Id et player2Id
+  const isPlayerOne = this.$parent.currentPlayerTurn === this.$parent.player1Id;
+
+  console.log("Joueur courant : ", this.$parent.currentPlayerTurn);
+  console.log("Player 1 ID : ", this.$parent.player1Id);
+  console.log("Player 2 ID : ", this.$parent.player2Id);
+
+  // Restriction d'accès aux emplacements en fonction du joueur
+  // Si c'est le joueur 1, il doit poser sur les emplacements 4 à 7
+  // Si c'est le joueur 2, il doit poser sur les emplacements 0 à 3
+  if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
+    console.log("Vous ne pouvez pas placer une carte ici !");
+    alert("Vous ne pouvez pas placer une carte ici !");
+    return;
+  }
+
+  // Émission de l'événement pour indiquer que la carte a été déposée
+  this.$emit('card-dropped', {
+    card,
+    index: i
+  });
+}
+
   }
 }
 </script>
+
 
 <style scoped>
 .cards-on-board {

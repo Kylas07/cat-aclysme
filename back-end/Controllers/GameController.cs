@@ -243,81 +243,94 @@ namespace CatAclysmeApp.Controllers
 
 
 
-        // POST : api/game/attack
-        [HttpPost("attack")]
-        public async Task<IActionResult> AttackCard([FromBody] AttackRequest request)
+// POST : api/game/attack
+[HttpPost("attack")]
+public async Task<IActionResult> AttackCard([FromBody] AttackRequest request)
+{
+    Console.WriteLine($"Request received for attack: GameId={request.GameId}, PlayerId={request.PlayerId}, BoardSlotId={request.BoardSlotId}, TargetBoardSlotId={request.TargetBoardSlotId}");
+
+    // Récupérer la partie et le plateau
+    var game = await _context.Games
+        .Include(g => g.Board) // Inclure le plateau
+        .FirstOrDefaultAsync(g => g.GameId == request.GameId);
+
+    if (game == null)
+    {
+        return NotFound(new { message = "Partie non trouvée." });
+    }
+
+    Console.WriteLine($"PlayerTurn: {game.PlayerTurn}, PlayerId={game.PlayerId}, PlayerId_1={game.PlayerId_1}");
+    Console.WriteLine($"Game found: GameId={game.GameId}, Board size={game.Board.Count}");
+
+    // Vérifier que c'est bien le tour du joueur
+    if (game.PlayerTurn != request.PlayerId)
+    {
+        Console.WriteLine($"Erreur: Ce n'est pas le tour de ce joueur. PlayerId envoyé={request.PlayerId}");
+        return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
+    }
+
+    // Récupérer la carte attaquante sur le plateau
+    var attackingSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.BoardSlotId);
+    if (attackingSlot == null || attackingSlot.Card == null)
+    {
+        Console.WriteLine($"No card found at BoardSlotId={request.BoardSlotId}");
+        return BadRequest(new { message = "Carte attaquante introuvable." });
+    }
+
+    var attackingCard = attackingSlot.Card;
+    Console.WriteLine($"Attacking card found: {attackingCard.Name} with {attackingCard.Health} HP and {attackingCard.Attack} Attack.");
+
+    // Vérifier si la cible est une carte ou le joueur adverse
+    var targetSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.TargetBoardSlotId);
+
+    if (targetSlot != null && targetSlot.Card != null)
+    {
+        // Il y a une carte en face, effectuer une confrontation entre les deux cartes
+        var defendingCard = targetSlot.Card;
+
+        // L'attaquant inflige des dégâts à la carte défenseur
+        defendingCard.Health -= attackingCard.Attack;
+
+        // Si la carte défenseur a encore des HP, elle riposte
+        if (defendingCard.Health > 0)
         {
-            // Récupérer la partie et le plateau
-            var game = await _context.Games
-                .Include(g => g.Board) // Inclure le plateau
-                .FirstOrDefaultAsync(g => g.GameId == request.GameId);
-
-            if (game == null)
-                return NotFound(new { message = "Partie non trouvée." });
-
-            // Vérifier que c'est bien le tour du joueur
-            if (game.PlayerTurn != request.PlayerId)
-                return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
-
-            // Récupérer la carte attaquante sur le plateau
-            var attackingSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.BoardSlotId);
-            if (attackingSlot == null || attackingSlot.Card == null)
-            {
-                return BadRequest(new { message = "Carte attaquante introuvable." });
-            }
-
-            var attackingCard = attackingSlot.Card;
-
-            // Vérifier si la cible est une carte ou le joueur adverse
-            var targetSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.TargetBoardSlotId);
-
-            if (targetSlot != null && targetSlot.Card != null)
-            {
-                // Il y a une carte en face, effectuer une confrontation entre les deux cartes
-                var defendingCard = targetSlot.Card;
-
-                // L'attaquant inflige des dégâts à la carte défenseur
-                defendingCard.Health -= attackingCard.Attack;
-
-                // Si la carte défenseur a encore des HP, elle riposte
-                if (defendingCard.Health > 0)
-                {
-                    // La défense riposte et inflige des dégâts à l'attaquant
-                    attackingCard.Health -= defendingCard.Attack;
-                }
-
-                // Si la carte défenseur est détruite, la retirer du plateau
-                if (defendingCard.Health <= 0)
-                {
-                    targetSlot.Card = null; // Retirer la carte
-                }
-
-                // Si la carte attaquante est détruite, la retirer du plateau
-                if (attackingCard.Health <= 0)
-                {
-                    attackingSlot.Card = null; // Retirer la carte
-                }
-            }
-            else
-            {
-                // Aucune carte en face, infliger les dégâts directement au joueur adverse
-                if (request.PlayerId == game.PlayerId)
-                {
-                    // Le joueur adverse est le joueur 2
-                    game.Player2HP -= attackingCard.Attack;
-                }
-                else
-                {
-                    // Le joueur adverse est le joueur 1
-                    game.Player1HP -= attackingCard.Attack;
-                }
-            }
-
-            // Sauvegarder les changements dans la base de données
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Attaque effectuée." });
+            // La défense riposte et inflige des dégâts à l'attaquant
+            attackingCard.Health -= defendingCard.Attack;
         }
+
+        // Si la carte défenseur est détruite, la retirer du plateau
+        if (defendingCard.Health <= 0)
+        {
+            targetSlot.Card = null; // Retirer la carte
+        }
+
+        // Si la carte attaquante est détruite, la retirer du plateau
+        if (attackingCard.Health <= 0)
+        {
+            attackingSlot.Card = null; // Retirer la carte
+        }
+    }
+    else
+    {
+        // Aucune carte en face, infliger les dégâts directement au joueur adverse
+        if (request.PlayerId == game.PlayerId)
+        {
+            // Le joueur adverse est le joueur 2
+            game.Player2HP -= attackingCard.Attack;
+        }
+        else
+        {
+            // Le joueur adverse est le joueur 1
+            game.Player1HP -= attackingCard.Attack;
+        }
+    }
+
+    // Sauvegarder les changements dans la base de données
+    await _context.SaveChangesAsync();
+
+    return Ok(new { message = "Attaque effectuée." });
+}
+
 
 
 
