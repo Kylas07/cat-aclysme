@@ -75,7 +75,7 @@ namespace back_end.Services
             await _context.SaveChangesAsync();
 
             return (gameDeckPlayer1, gameDeckPlayer2);
-        }
+        } 
 
         public async Task<(Player, Player)> GetPlayersAsync(string player1Pseudo, string player2Pseudo)
         {
@@ -122,6 +122,15 @@ namespace back_end.Services
         {
             var random = new Random();
             return cards.OrderBy(_ => random.Next()).ToList();
+        }
+
+        //récupérer les decks dans la partie de chaque joueur
+        public async Task<List<GameDeck>> GetGameDecksByPlayerIdAsync(int playerId)
+        {
+            return await _context.GameDecks
+                .Include(g => g.Card) // Inclure les informations sur les cartes
+                .Where(g => g.PlayerId == playerId)
+                .ToListAsync();
         }
     }
 }

@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     async launchGame(gameId, currentTurn, player1HP, player2HP, player1Id, player2Id, turnCount) {
+    console.log("Démarrage du jeu avec les paramètres :", { gameId, currentTurn, player1HP, player2HP, player1Id, player2Id });
     this.isGameStarted = true;
     this.gameId = gameId;
     this.currentTurn = currentTurn;
@@ -43,61 +44,6 @@ export default {
     this.turnCount = turnCount;
     this.currentPlayerId = currentTurn;
   },
-  //   async initializeDeck(playerId) {
-  //   console.log("ça lance la méthode");
-  //   try {
-  //     const response = await fetch('https://localhost:7111/api/game/initialize-deck', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         playerId: playerId,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       throw new Error(`Erreur ${response.status}: ${errorData.message}`);
-  //     }
-
-  //     const data = await response.json();
-  //     console.log(`Deck du joueur ${playerId} initialisé avec succès:`, data.deck);
-
-  //   } catch (error) {
-  //     console.error(`Erreur lors de l'initialisation du deck pour le joueur ${playerId}:`, error.message);
-  //   }
-  // },
-  //   async drawInitialCards(playerId) {
-  //   try {
-  //     const response = await fetch('https://localhost:7111/api/game/draw-initial-cards', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         gameId: this.gameId,
-  //         playerId: playerId,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       throw new Error(`Erreur ${response.status}: ${errorData.message}`);
-  //     }
-
-  //     const data = await response.json();
-  //     console.log(`5 cartes piochées pour le joueur ${playerId}:`, data);
-
-  //     // Mettre à jour la main du joueur
-  //     if (playerId === this.player1Id) {
-  //       this.playerHand = data.cards;  // Assurez-vous que l'API renvoie les cartes dans `data.cards`
-  //     }
-
-  //   } catch (error) {
-  //     console.error(`Erreur lors de la pioche des cartes pour le joueur ${playerId}:`, error.message);
-  //   }
-  // },
     updateTurn() {
       // Inverser le tour entre le joueur 1 et le joueur 2
       this.currentPlayerId = this.currentPlayerId === this.player1Id ? this.player2Id : this.player1Id;

@@ -6,6 +6,7 @@ using CatAclysmeApp.Helpers;
 using CatAclysmeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using back_end.Enums;
 
 namespace CatAclysmeApp.Controllers
 {
@@ -83,10 +84,25 @@ namespace CatAclysmeApp.Controllers
 
             return player;
         }
+        
+        [HttpGet("deck/{gameId}/{playerId}")]
+        public async Task<IActionResult> GetGameDeck(int gameId, int playerId)
+        {
+            var gameDecks = await _context.GameDecks
+                .Where(d => d.GameId == gameId && d.PlayerId == playerId)
+                .Include(d => d.Card) // Inclure les informations de carte
+                .ToListAsync();
 
+            if (gameDecks == null || !gameDecks.Any())
+            {
+                return NotFound(new { message = "pas de deck associé" });
+            }
+
+            return Ok(new { values = gameDecks });
+        }
         // 2. Gestion des tours
         // POST : api/game/draw-card
-        [HttpPost("draw-card")]
+        // [HttpPost("draw-card")]
         // public async Task<IActionResult> DrawCard([FromBody] DrawCardRequest request)
         // {
         //     // Récupérer la partie
@@ -157,51 +173,6 @@ namespace CatAclysmeApp.Controllers
 
             return Ok(new { message = "Tour terminé", nextPlayer = game.PlayerTurn });
         }
-
-        // // POST : api/game/draw-initial-cards
-        // [HttpPost("draw-initial-cards")]
-        // public async Task<IActionResult> DrawInitialCards([FromBody] DrawCardRequest request)
-        // {
-        //     // Récupérer la partie
-        //     var game = await _context.Games
-        //         .Include(g => g.Player)
-        //         .Include(g => g.Player_1)
-        //         .FirstOrDefaultAsync(g => g.GameId == request.GameId);
-
-        //     if (game == null)
-        //         return NotFound(new { message = "Partie non trouvée." });
-
-        //     // Récupérer le joueur
-        //     var player = await _context.Players
-        //         .Include(p => p.Deck)
-        //         .ThenInclude(d => d.Cards)
-        //         .Include(p => p.Hand)  // Inclure la main du joueur
-        //         .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
-
-        //     if (player == null || player.Deck.Cards.Count < 5)
-        //         return BadRequest(new { message = "Le joueur n'a pas assez de cartes à piocher." });
-
-        //     // Appeler la méthode DrawCard 5 fois
-        //     for (int i = 0; i < 5; i++)
-        //     {
-        //         var drawCardRequest = new DrawCardRequest
-        //         {
-        //             GameId = request.GameId,
-        //             PlayerId = request.PlayerId
-        //         };
-
-        //         var result = await DrawCard(drawCardRequest);
-
-        //         if (result is BadRequestObjectResult || result is NotFoundObjectResult)
-        //         {
-        //             // Si une erreur survient pendant la pioche, on la renvoie
-        //             return result;
-        //         }
-        //     }
-
-        //     // Retourner une réponse indiquant que 5 cartes ont été piochées avec succès
-        //     return Ok(new { message = "5 cartes ont été piochées avec succès." });
-        // }
 
         // 3. Gestion des cartes (pose et attaque)
         // POST : api/game/play-card
