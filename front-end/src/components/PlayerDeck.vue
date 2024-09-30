@@ -1,24 +1,22 @@
 <template>
     <div class="playerdeck">
       <div class="stack-deck">
-        <img :src="deckImage" alt="Deck image" class="deck-image"/>
-        <img :src="deckImage" alt="Deck image" class="deck-image"/>
-        <img :src="deckImage" alt="Deck image" class="deck-image"/>
+        <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
+        <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
+        <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
       </div>
       <p>{{ cardsLeft }} cards left</p>
     </div>
   </template>
   
   <script>
-  import defaultDeckImage from '../assets/main_illu.png';
-
   export default {
     props: {
       cardsLeft: Number,
-      deckImage: {
-        type: String,
-        default: defaultDeckImage 
-      }
+      // deckImage: {
+      //   type: String,
+      //   default: defaultDeckImage 
+      // }
     }
   }
   </script>

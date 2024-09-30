@@ -53,7 +53,7 @@ export default {
           name: "Catnado",
           health: 15,
           attack: 4,
-          image: require('@/assets/Catnado.png'),
+          image: '/image/Catnado.png',
           description: "Meow."
         },
         {
@@ -61,7 +61,7 @@ export default {
           name: "Catnado",
           health: 5,
           attack: 6,
-          image: require('@/assets/Catnado.png'),
+          image: '/image/Catnado.png',
           description: "Meow."
         }
       ],
@@ -127,14 +127,17 @@ export default {
                 // Récupérer les cartes avec cardState = 1
                 this.playerHand = data.values.$values
                     .filter(card => card.cardState === 1)
-                    .map(card => ({
-                        cardId: card.cardId,
-                        name: card.card.name,
-                        health: card.card.health,
-                        attack: card.card.attack,
-                        image: card.card.image,
-                        description: card.card.description
-                    }));
+                    .map(card => {
+                        const imagePath = `/image/${card.card.image}`; // Construire le chemin de l'image
+                        return {
+                            cardId: card.cardId,
+                            name: card.card.name,
+                            health: card.card.health,
+                            attack: card.card.attack,
+                            image: `${imagePath}`, // Utiliser require pour charger l'image
+                            description: card.card.description
+                        };
+                    });
                 console.log("Cartes de la main du joueur :", this.playerHand);
             } else {
                 console.error('$values est undefined ou n\'est pas un tableau.', data);
