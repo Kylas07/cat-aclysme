@@ -16,7 +16,15 @@
             <v-text-field label="Pseudo Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player1.name" required ></v-text-field>
           </div>
           <div>
-            <v-text-field label="Password Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player1.name" required ></v-text-field>
+            <v-text-field
+                label="Password Joueur 1"
+                prepend-icon="mdi-cat"
+                :type="showPassword ? 'text' : 'password'"
+                variant="outlined"
+                v-model="player1.password"
+                required
+              >
+            </v-text-field>
           </div>
           <button type="submit">Se connecter</button>
         </form>
@@ -30,7 +38,15 @@
             <v-text-field label="Pseudo Joueur 2" prepend-icon="mdi-cat" variant="outlined"  v-model="player2.name" required ></v-text-field>
           </div>
           <div>
-            <v-text-field label="Password Joueur 2" prepend-icon="mdi-cat" variant="outlined"  v-model="player2.password" required ></v-text-field>
+            <v-text-field                 
+                label="Password Joueur 1"
+                prepend-icon="mdi-cat"
+                :type="showPassword ? 'text' : 'password'"
+                variant="outlined"
+                v-model="player2.password"
+                required
+              >
+            </v-text-field>
           </div>
           <button type="submit">Se connecter</button>
         </form>
