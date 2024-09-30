@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="conteneur-login">
     <h1>Bienvenue</h1>
 
     <!-- Bouton pour basculer entre la connexion et la création de joueur -->
@@ -7,18 +7,16 @@
     <button v-else @click="showCreatePlayer = false">Retour à la connexion</button>
 
     <!-- Formulaire de connexion -->
-    <div v-if="!showCreatePlayer">
+    <div class="login-player" v-if="!showCreatePlayer">
       <!-- Formulaire pour le premier joueur -->
       <div v-if="!isPlayer1LoggedIn">
         <h2>Connexion du Joueur 1</h2>
         <form @submit.prevent="handleSubmitPlayer1">
           <div>
-            <label for="name1">Pseudo Joueur 1 :</label>
-            <input type="text" v-model="player1.name" required />
+            <v-text-field label="Pseudo Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player1.name" required ></v-text-field>
           </div>
           <div>
-            <label for="password1">Mot de passe :</label>
-            <input type="password" v-model="player1.password" required />
+            <v-text-field label="Password Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player1.name" required ></v-text-field>
           </div>
           <button type="submit">Se connecter</button>
         </form>
@@ -29,12 +27,10 @@
         <h2>Connexion du Joueur 2</h2>
         <form @submit.prevent="handleSubmitPlayer2">
           <div>
-            <label for="name2">Pseudo Joueur 2 :</label>
-            <input type="text" v-model="player2.name" required />
+            <v-text-field label="Pseudo Joueur 2" prepend-icon="mdi-cat" variant="outlined"  v-model="player2.name" required ></v-text-field>
           </div>
           <div>
-            <label for="password2">Mot de passe :</label>
-            <input type="password" v-model="player2.password" required />
+            <v-text-field label="Password Joueur 2" prepend-icon="mdi-cat" variant="outlined"  v-model="player2.password" required ></v-text-field>
           </div>
           <button type="submit">Se connecter</button>
         </form>
@@ -165,3 +161,20 @@ export default {
   }
 };
 </script>
+
+<style>
+.login-player {
+  width: 50%;
+    border: 10px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+}
+.conteneur-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
