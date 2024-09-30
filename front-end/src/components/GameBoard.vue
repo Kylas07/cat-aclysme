@@ -44,24 +44,7 @@ export default {
   },
   data() {
     return {
-      // Main du joueur 1 (cartes fictives pour test)
       playerHand: [
-      {
-          cardId: 2,
-          name: "Catnado",
-          health: 15,
-          attack: 4,
-          image: require('@/assets/Catnado.png'),
-          description: "Meow."
-        },
-        {
-            cardId: 3,
-            name: "Catnado",
-            health: 15,
-            attack: 4,
-            image: require('@/assets/Catnado.png'),
-            description: "Meow."
-          }
       ],
       // Cartes sur le plateau de jeu
       cardsOnBoard: [
@@ -94,13 +77,6 @@ export default {
     GameInfo,
     PlayerDeck
   },
-  computed: {
-    isPlayerTurn() {
-      // Comparer l'ID du joueur actuel avec currentTurn
-      return (this.currentTurn === this.player1Id && this.isPlayer1) || 
-            (this.currentTurn === this.player2Id && !this.isPlayer1);
-    }
-  },
   methods: {
     async handleCardDrop({ card, index }) {
       console.log("Carte envoyée :", card);
@@ -117,22 +93,58 @@ export default {
         })
       });
       const data = await response.json();
-    if (response.ok) {
-        console.log("Réponse de l'API :", data);
-        // Mets à jour directement l'élément dans cardsOnBoard
-        this.cardsOnBoard[index] = card;
-        // Retire la carte de la main du joueur
-        this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
-        console.log("Le joueur", this.currentPlayerId, "pose une carte.");
-      } else {
-      console.log("Erreur de placement", data.message);
-      console.log("La carte de ", this.currentPlayerId, "n'a pas pu être posée", "à l'emplacement ", index);
-      alert(data.message);
-    }
+      if (response.ok) {
+          console.log("Réponse de l'API :", data);
+          // Mets à jour directement l'élément dans cardsOnBoard
+          this.cardsOnBoard[index] = card;
+          // Retire la carte de la main du joueur
+          this.playerHand = this.playerHand.filter(c => c.cardId !== card.cardId);
+          console.log("Le joueur", this.currentPlayerId, "pose une carte.");
+        } else {
+        console.log("Erreur de placement", data.message);
+        console.log("La carte de ", this.currentPlayerId, "n'a pas pu être posée", "à l'emplacement ", index);
+        alert(data.message);
+      }
+    },
+    nextTurn() {
+      this.$emit('update-turn');
+    },
   },
-  nextTurn() {
-    this.$emit('update-turn');
-  }
+  async mounted() {
+    console.log("Méthode mounted appelée");
+    try {
+        const response = await fetch(`https://localhost:7111/api/game/deck/${this.gameId}/${this.currentPlayerId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            // Vérifiez que values.$values existe et est un tableau
+            if (data.values && data.values.$values && Array.isArray(data.values.$values)) {
+                // Récupérer les cartes avec cardState = 1
+                this.playerHand = data.values.$values
+                    .filter(card => card.cardState === 1)
+                    .map(card => ({
+                        cardId: card.cardId,
+                        name: card.card.name,
+                        health: card.card.health,
+                        attack: card.card.attack,
+                        image: card.card.image,
+                        description: card.card.description
+                    }));
+                console.log("Cartes de la main du joueur :", this.playerHand);
+            } else {
+                console.error('$values est undefined ou n\'est pas un tableau.', data);
+            }
+        } else {
+            console.error('Erreur lors de la récupération du deck:', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la communication avec le serveur:', error);
+    }
 }
 }
 </script>
