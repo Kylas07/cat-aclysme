@@ -4,6 +4,7 @@
     <p>Turn: {{ currentTurn }}</p>
     <p>Player 1 : {{ player1HP }} ❤️</p>
     <p>Player 2 : {{ player2HP }} ❤️</p>
+    <button @click="endTurn">Fin de tour</button>
   </div>
 </template>
 

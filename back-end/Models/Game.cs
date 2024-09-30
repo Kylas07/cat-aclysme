@@ -16,6 +16,8 @@ namespace CatAclysmeApp.Models
 
         public List<BoardSlot> Board { get; set; } = new List<BoardSlot>();
 
+        public bool HasPlayedCardThisTurn { get; set; } = false;
+
     }
 
 }

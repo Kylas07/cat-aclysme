@@ -166,6 +166,9 @@ namespace CatAclysmeApp.Controllers
             // Passer au joueur suivant
             game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
 
+            // Réinitialiser l'état de jeu (le joueur suivant pourra jouer une carte)
+            game.HasPlayedCardThisTurn = false;
+
             // Incrémenter le nombre de tours
             game.TurnCount++;
 
@@ -173,6 +176,7 @@ namespace CatAclysmeApp.Controllers
 
             return Ok(new { message = "Tour terminé", nextPlayer = game.PlayerTurn });
         }
+
 
         // POST : api/game/play-card
         [HttpPost("play-card")]
@@ -189,6 +193,10 @@ namespace CatAclysmeApp.Controllers
             // Vérifier que c'est bien le tour du joueur
             if (game.PlayerTurn != request.PlayerId)
                 return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
+
+            // Vérifier si le joueur a déjà joué une carte ce tour
+            if (game.HasPlayedCardThisTurn)
+                return BadRequest(new { message = "Vous ne pouvez jouer qu'une seule carte par tour." });
 
             // Récupérer les cartes du joueur dans cette partie (main et deck)
             var playerGameDecks = await _context.GameDecks
@@ -224,6 +232,9 @@ namespace CatAclysmeApp.Controllers
             boardSlot.Card = cardToPlay.Card;
             cardToPlay.CardState = CardState.OnBoard;
 
+            // Marquer que le joueur a joué une carte ce tour
+            game.HasPlayedCardThisTurn = true;
+
             // Sauvegarder les changements dans la base de données
             await _context.SaveChangesAsync();
 
@@ -231,12 +242,16 @@ namespace CatAclysmeApp.Controllers
         }
 
 
+
         // POST : api/game/attack
         [HttpPost("attack")]
-        public async Task<IActionResult> Attack([FromBody] AttackRequest request)
+        public async Task<IActionResult> AttackCard([FromBody] AttackRequest request)
         {
-            // Récupérer la partie
-            var game = await _context.Games.FirstOrDefaultAsync(g => g.GameId == request.GameId);
+            // Récupérer la partie et le plateau
+            var game = await _context.Games
+                .Include(g => g.Board) // Inclure le plateau
+                .FirstOrDefaultAsync(g => g.GameId == request.GameId);
+
             if (game == null)
                 return NotFound(new { message = "Partie non trouvée." });
 
@@ -244,13 +259,67 @@ namespace CatAclysmeApp.Controllers
             if (game.PlayerTurn != request.PlayerId)
                 return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
 
-            // Logique d'attaque à implémenter selon les règles de ton jeu (attaquer une carte ou l'adversaire)
+            // Récupérer la carte attaquante sur le plateau
+            var attackingSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.BoardSlotId);
+            if (attackingSlot == null || attackingSlot.Card == null)
+            {
+                return BadRequest(new { message = "Carte attaquante introuvable." });
+            }
 
-            // Mettre à jour les HP des joueurs ou des cartes
+            var attackingCard = attackingSlot.Card;
+
+            // Vérifier si la cible est une carte ou le joueur adverse
+            var targetSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.TargetBoardSlotId);
+
+            if (targetSlot != null && targetSlot.Card != null)
+            {
+                // Il y a une carte en face, effectuer une confrontation entre les deux cartes
+                var defendingCard = targetSlot.Card;
+
+                // L'attaquant inflige des dégâts à la carte défenseur
+                defendingCard.Health -= attackingCard.Attack;
+
+                // Si la carte défenseur a encore des HP, elle riposte
+                if (defendingCard.Health > 0)
+                {
+                    // La défense riposte et inflige des dégâts à l'attaquant
+                    attackingCard.Health -= defendingCard.Attack;
+                }
+
+                // Si la carte défenseur est détruite, la retirer du plateau
+                if (defendingCard.Health <= 0)
+                {
+                    targetSlot.Card = null; // Retirer la carte
+                }
+
+                // Si la carte attaquante est détruite, la retirer du plateau
+                if (attackingCard.Health <= 0)
+                {
+                    attackingSlot.Card = null; // Retirer la carte
+                }
+            }
+            else
+            {
+                // Aucune carte en face, infliger les dégâts directement au joueur adverse
+                if (request.PlayerId == game.PlayerId)
+                {
+                    // Le joueur adverse est le joueur 2
+                    game.Player2HP -= attackingCard.Attack;
+                }
+                else
+                {
+                    // Le joueur adverse est le joueur 1
+                    game.Player1HP -= attackingCard.Attack;
+                }
+            }
+
+            // Sauvegarder les changements dans la base de données
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Attaque réussie." });
+            return Ok(new { message = "Attaque effectuée." });
         }
+
+
 
         // 4. Fin de la partie
         // POST : api/game/end

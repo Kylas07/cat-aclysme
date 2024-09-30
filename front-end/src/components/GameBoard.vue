@@ -24,6 +24,7 @@
       :isPlayerTurn="currentPlayerTurn === 1"
       @card-dropped="handleCardDrop"
       />
+
   </div>
   </template>
   
@@ -80,6 +81,31 @@ export default {
     PlayerDeck
   },
   methods: {
+
+    async endTurn() {
+        try {
+            const response = await fetch('https://localhost:7111/api/game/end-turn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    GameId: this.gameId,
+                    PlayerId: this.currentPlayerId
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log("Tour terminé :", data);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error("Erreur lors du passage de tour :", error);
+        }
+    },
+
     async handleCardDrop({ card, index }) {
       console.log("Carte envoyée :", card);
       const response = await fetch('https://localhost:7111/api/game/play-card', {
