@@ -1,13 +1,15 @@
 <template>
     <div class="game-board">
-      <PlayerAgainstHand :opponentHandSize="opponentHandSize" />
-    
-      <GameInfo 
-        :gameId="gameId"
-        :currentTurn="currentTurn" 
-        :player1HP="player1HP" 
-        :player2HP="player2HP" 
-      />
+      <div class="board-top">
+        <PlayerAgainstHand :opponentHandSize="opponentHandSize" />
+      
+        <GameInfo 
+          :gameId="gameId"
+          :currentTurn="currentTurn" 
+          :player1HP="player1HP" 
+          :player2HP="player2HP" 
+        />
+      </div>
       <div class="game-decks">
         <PlayerDeck :cardsLeft="player2DeckSize" />
         <CardsOnBoard 
@@ -159,10 +161,18 @@ export default {
     flex-direction: column;
     align-items: center;
   }
+  .board-top {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 1rem;
+    align-items: center;
+  }
   .game-decks {
     display: flex;
     align-items: center;
     gap: 100px;
+    padding: 1rem;
   }
+  
   </style>
   
