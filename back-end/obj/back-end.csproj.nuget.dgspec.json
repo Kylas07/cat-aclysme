@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\back-end.csproj": {}
+    "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\back-end.csproj": {
+    "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\back-end.csproj",
+        "projectUniqueName": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj",
         "projectName": "back-end",
-        "projectPath": "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\back-end.csproj",
-        "packagesPath": "C:\\Users\\Administrateur\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrateur\\Documents\\Projet-chat\\cat-aclysme\\back-end\\obj\\",
+        "projectPath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\back-end.csproj",
+        "packagesPath": "C:\\Users\\ghils\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ghils\\Desktop\\Projet\\Projet_groupe\\Cat-Aclysme\\cat-aclysme\\back-end\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Administrateur\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ghils\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
