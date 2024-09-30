@@ -24,18 +24,22 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin: 0 5rem;
   }
   
   .card-back {
-    width: 128px;
-    height: 200px;
+
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 10px;
     background-color: white;
   }
+  .hand .card-back {
+    width: 4rem;
+    height: 6rem;
+    padding: .5rem;
+}
   </style>
   

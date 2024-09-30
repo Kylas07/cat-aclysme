@@ -20,7 +20,12 @@ export default {
 
 <style scoped>
 .game-info {
-  text-align: center;
-  margin-bottom: 20px;
+  width: 180px;
+    border: 10px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    background-color: white;
 }
 </style>

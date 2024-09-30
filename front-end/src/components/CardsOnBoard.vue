@@ -63,12 +63,18 @@ export default {
 }
 
 .card-slot {
-  width: 200px; 
-  height: 350px;
+  width: 7rem;
+  height: 10rem;
   background-color: #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid #ccc;
 }
+.cards-on-board .CardComponent {
+  width: 6rem;
+  height: 9rem;
+  padding: .5rem;
+}
+
 </style>
