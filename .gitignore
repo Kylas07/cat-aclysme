@@ -12,6 +12,9 @@ artifacts/
 *.dll
 *.exe
 *.pdb
+**/packages/*
+*.nugget.props
+*. nugget.targets
 
 # SQL Server Express
 *.mdf

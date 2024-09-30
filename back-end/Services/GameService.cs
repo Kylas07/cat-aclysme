@@ -37,8 +37,20 @@ namespace back_end.Services
                 PlayerId = player1.PlayerId,
                 PlayerId_1 = player2.PlayerId,
                 Player = player1, // Initialisation de Player
-                Player_1 = player2 // Initialisation de Player_1
+                Player_1 = player2, // Initialisation de Player_1
+                Board = new List<BoardSlot>() // Initialisation du plateau
             };
+
+            // Initialiser les slots du plateau (par exemple 8 slots, 4 pour chaque joueur)
+            for (int i = 0; i < 8; i++)
+            {
+                game.Board.Add(new BoardSlot
+                {
+                    Index = i,   // Chaque slot a un index unique
+                    Card = null, // Pas de carte initialement
+                    Game = game
+                });
+            }
 
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
@@ -53,7 +65,6 @@ namespace back_end.Services
                 Player2GameDeck = player2GameDeck,
             };
         }
-
 
         public async Task<(List<GameDeck>, List<GameDeck>)> InitializeDeck(Player player1, Player player2, Game game)
         {

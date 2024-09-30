@@ -174,43 +174,62 @@ namespace CatAclysmeApp.Controllers
             return Ok(new { message = "Tour terminé", nextPlayer = game.PlayerTurn });
         }
 
-        // 3. Gestion des cartes (pose et attaque)
         // POST : api/game/play-card
-        //[HttpPost("play-card")]
-        //public async Task<IActionResult> PlayCard([FromBody] PlayCardRequest request)
-        //{
-        //    // Récupérer la partie
-        //    var game = await _context.Games.FirstOrDefaultAsync(g => g.GameId == request.GameId);
-        //    if (game == null)
-        //        return NotFound(new { message = "Partie non trouvée." });
+        [HttpPost("play-card")]
+        public async Task<IActionResult> PlayCard([FromBody] PlayCardRequest request)
+        {
+            // Récupérer la partie avec le plateau
+            var game = await _context.Games
+                .Include(g => g.Board) // Inclure le plateau
+                .FirstOrDefaultAsync(g => g.GameId == request.GameId);
 
-        //    // Vérifier que c'est bien le tour du joueur
-        //    if (game.PlayerTurn != request.PlayerId)
-        //        return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
+            if (game == null)
+                return NotFound(new { message = "Partie non trouvée." });
 
-        //    // Récupérer le joueur
-        //    var player = await _context.Players
-        //        .Include(p => p.Hand)
-        //        .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
+            // Vérifier que c'est bien le tour du joueur
+            if (game.PlayerTurn != request.PlayerId)
+                return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
 
-        //    if (player == null)
-        //        return NotFound(new { message = "Joueur non trouvé." });
+            // Récupérer les cartes du joueur dans cette partie (main et deck)
+            var playerGameDecks = await _context.GameDecks
+                .Where(gd => gd.PlayerId == request.PlayerId && gd.GameId == request.GameId)
+                .Include(gd => gd.Card) // Inclure les détails des cartes
+                .ToListAsync();
 
-        //    // Vérifier que la carte est dans la main du joueur
-        //    var card = player.Hand.FirstOrDefault(c => c.CardId == request.CardId);
+            if (playerGameDecks == null || !playerGameDecks.Any())
+                return NotFound(new { message = "Le joueur n'a pas de deck associé à cette partie." });
 
-        //    if (card == null)
-        //        return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
+            // Filtrer pour obtenir les cartes qui sont dans la main du joueur
+            var playerHand = playerGameDecks.Where(gd => gd.CardState == CardState.InHand).ToList();
 
-        //    // Le front-end gère maintenant la pose de la carte sur le plateau
-        //    player.Hand.Remove(card);  // Retirer la carte de la main
+            // Vérifier que la carte est bien dans la main du joueur
+            var cardToPlay = playerHand.FirstOrDefault(c => c.CardId == request.CardId);
 
-        //    // Finir le tour (passe au joueur suivant)
-        //    game.PlayerTurn = (game.PlayerTurn == game.PlayerId) ? game.PlayerId_1 : game.PlayerId;
+            if (cardToPlay == null)
+                return BadRequest(new { message = "Carte non trouvée dans la main du joueur." });
 
-        //    await _context.SaveChangesAsync();
-        //    return Ok(new { message = "Carte posée avec succès." });
-        //}
+            // Valider l'index du slot (doit être entre 0 et 7 pour un plateau de 8 slots)
+            if (request.BoardSlotIndex < 0 || request.BoardSlotIndex >= game.Board.Count)
+            {
+                return BadRequest(new { message = "Index de l'emplacement invalide." });
+            }
+
+            var boardSlot = game.Board.FirstOrDefault(slot => slot.Index == request.BoardSlotIndex);
+            if (boardSlot == null || boardSlot.Card != null)
+            {
+                return BadRequest(new { message = "L'emplacement est déjà occupé ou invalide." });
+            }
+
+            // Placer la carte sur le plateau
+            boardSlot.Card = cardToPlay.Card;
+            cardToPlay.CardState = CardState.OnBoard;
+
+            // Sauvegarder les changements dans la base de données
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Carte posée avec succès." });
+        }
+
 
         // POST : api/game/attack
         [HttpPost("attack")]

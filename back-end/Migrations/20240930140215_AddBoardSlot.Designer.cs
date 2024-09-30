@@ -4,6 +4,7 @@ using CatAclysmeApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace back_end.Migrations
 {
     [DbContext(typeof(CatAclysmeContext))]
-    partial class CatAclysmeContextModelSnapshot : ModelSnapshot
+    [Migration("20240930140215_AddBoardSlot")]
+    partial class AddBoardSlot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace back_end.Migrations
                     b.Property<int?>("CardId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GameId")
+                    b.Property<int?>("GameId")
                         .HasColumnType("int");
 
                     b.Property<int>("Index")
@@ -300,15 +303,11 @@ namespace back_end.Migrations
                         .WithMany()
                         .HasForeignKey("CardId");
 
-                    b.HasOne("CatAclysmeApp.Models.Game", "Game")
+                    b.HasOne("CatAclysmeApp.Models.Game", null)
                         .WithMany("Board")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId");
 
                     b.Navigation("Card");
-
-                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("CatAclysmeApp.Models.Build", b =>

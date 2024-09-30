@@ -13,5 +13,9 @@ namespace CatAclysmeApp.Models
 
         public required Player Player { get; set; } // Relation vers Player (Player 1)
         public required Player Player_1 { get; set; } // Relation vers Player (Player 2)
+
+        public List<BoardSlot> Board { get; set; } = new List<BoardSlot>();
+
     }
+
 }

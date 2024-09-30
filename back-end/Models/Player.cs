@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using back_end.Models;
 
 namespace CatAclysmeApp.Models
 {
@@ -18,5 +19,8 @@ namespace CatAclysmeApp.Models
 
         // Le deck du joueur (30 cartes)
         public required Deck Deck { get; set; }
+
+        public List<GameDeck> GameDecks { get; set; }
+
     }
 }
