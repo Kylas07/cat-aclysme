@@ -127,13 +127,13 @@ export default {
     padding: 5px;
   }
   .cards-on-board .card-name  {
-  font-size: 14px;
+  display:none;
 }
 .cards-on-board .card-description{
   display:none;
 }
 .cards-on-board img{
-  width: 50px;
- }
+  width: 5rem;
+}
   </style>
   
