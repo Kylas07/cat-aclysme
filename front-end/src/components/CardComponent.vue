@@ -2,7 +2,6 @@
     <div class="CardComponent"
     :gameId="gameId"
     :isOnBoard="false"
-    @click="attack" 
     @dragstart="onDragStart"
     :draggable="isDraggable">
       <img class="card-image" :src="card.image" :alt="card.name" />
@@ -42,30 +41,7 @@ export default {
     }
   },
   methods: {
-    async attack(targetCard) {
-    const response = await fetch('https://localhost:7111/api/game/attack', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        GameId: this.gameId,  // ID de la partie
-        PlayerId: this.card.player,    // Le joueur qui attaque
-        BoardSlotId: this.card.boardSlotId, // Emplacement de la carte attaquante
-        TargetBoardSlotId: targetCard.boardSlotId // Emplacement de la carte cible
-      })
-    });
 
-    const result = await response.json();
-    if (response.ok) {
-      console.log("Attaque réussie", result);
-      // Mettre à jour l'interface selon la réponse
-    } else {
-      console.log("Erreur d'attaque", result.message);
-      console.log(this.gameId);
-      alert(result.message);
-    }
-  },
     onDragStart(event) {
       if (!this.isDraggable) {
         alert("Cette carte est déjà placée sur le plateau et ne peut pas être déplacée !");

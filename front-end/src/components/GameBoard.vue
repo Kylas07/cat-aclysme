@@ -10,6 +10,7 @@
         :player1HP="player1HP" 
         :player2HP="player2HP"
         @end-turn="endTurn"
+        :current-player-turn="currentPlayerTurn"
       />
     </div>
 

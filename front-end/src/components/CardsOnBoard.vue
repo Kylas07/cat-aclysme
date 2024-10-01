@@ -4,7 +4,7 @@
       v-for="(card, i) in boardSlots" 
       :key="i" 
       class="card-slot"
-      @click="handleCardClick(card, i)"
+      @click="attack(card, i)" 
       @drop="onDrop($event, i)"
       @dragover.prevent
       v-bind:style="[currentPlayerTurn === player1Id ? stylePlayer1 : stylePlayer2]"
@@ -14,12 +14,12 @@
         :card="card" 
         :isOnBoard="true" 
         :gameId="gameId"
+        :slotIndex="i"
         @card-attacked="handleCardAttack(card, i)"
       />
     </div>
   </div>
 </template>
-
 
 <script>
 import CardComponent from './CardComponent.vue';
@@ -54,107 +54,88 @@ export default {
     }
   },
   methods: {
-        // Gère le clic sur une carte
-        handleCardClick(card, index) {
-      // Assurez-vous que la carte appartient au joueur actif et qu'elle peut attaquer
-      if (card && this.canAttack(card)) {
-        const targetIndex = this.getTargetIndex(index);
-        if (targetIndex !== null) {
-          this.initiateAttack(card, index, targetIndex);
-        } else {
-          alert("Aucune cible en face !");
-        }
-      } else {
+    async attack(card, attackerSlotIndex) {
+      if (!card || !this.canAttack(card)) {
         alert("Cette carte ne peut pas attaquer.");
+        return;
+      }
+
+      // Récupérer la cible en face selon la position de l'attaquant
+      const targetIndex = this.getTargetIndex(attackerSlotIndex);
+      if (targetIndex === null || !this.boardSlots[targetIndex]) {
+        alert("Aucune cible en face !");
+        return;
+      }
+
+      const targetCard = this.boardSlots[targetIndex];
+
+      // Émettre un événement au parent pour notifier que la carte a attaqué
+      this.$emit('card-attacked', card);
+
+      console.log({
+        GameId: this.gameId,
+        PlayerId: this.currentPlayerTurn,
+        BoardSlotId: attackerSlotIndex,
+        TargetBoardSlotId: targetIndex
+      });
+
+      // Envoyer la requête d'attaque au serveur
+      const response = await fetch('https://localhost:7111/api/game/attack', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          GameId: this.gameId,
+          PlayerId: this.currentPlayerTurn,
+          BoardSlotId: attackerSlotIndex,
+          TargetBoardSlotId: targetIndex
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log("Attaque réussie", result);
+        this.$emit('card-updated', { ...card, hasAttackedThisTurn: true });
+      } else {
+        console.log("Erreur d'attaque", result.message);
+        alert(result.message);
       }
     },
 
-    // Vérifie si la carte peut attaquer
     canAttack(card) {
       return card.isPlacedPreviousTurn && !card.hasAttackedThisTurn && card.ownerId === this.currentPlayerTurn;
     },
 
-    // Calcule l'index de la cible (carte en face ou joueur)
     getTargetIndex(attackerIndex) {
       if (this.currentPlayerTurn === this.player1Id) {
-        // Le joueur 1 attaque les cartes en face (index 4 à 7)
         return attackerIndex + 4 < this.cardsOnBoard.length ? attackerIndex + 4 : null;
       } else {
-        // Le joueur 2 attaque les cartes en face (index 0 à 3)
         return attackerIndex - 4 >= 0 ? attackerIndex - 4 : null;
       }
     },
 
-    // Envoie la requête d'attaque au serveur
-    async initiateAttack(card, attackerIndex, targetIndex) {
-      try {
-        const response = await fetch('https://localhost:7111/api/game/attack', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            GameId: this.gameId,
-            PlayerId: this.currentPlayerTurn,
-            AttackerIndex: attackerIndex,
-            TargetIndex: targetIndex,
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Attaque réussie :", data);
-          // Mettre à jour l'état de la carte pour marquer qu'elle a attaqué ce tour
-          card.hasAttackedThisTurn = true;
-        } else {
-          const errorData = await response.json();
-          console.error("Erreur d'attaque :", errorData.message);
-        }
-      } catch (error) {
-        console.error("Erreur lors de l'attaque :", error);
-      }
-    },
-  
     onDrop(event, i) {
-  // Récupération des données transférées
-  const cardData = event.dataTransfer.getData('card');
-  
-  if (!cardData) {
-    console.error("Aucune donnée de carte trouvée lors du drag-and-drop !");
-    alert("Erreur de transfert de carte.");
-    return;
-  }
+      const cardData = event.dataTransfer.getData('card');
+      if (!cardData) {
+        console.error("Aucune donnée de carte trouvée lors du drag-and-drop !");
+        alert("Erreur de transfert de carte.");
+        return;
+      }
 
-  // Conversion en objet JavaScript
-  const card = JSON.parse(cardData);
+      const card = JSON.parse(cardData);
+      const isPlayerOne = this.$parent.currentPlayerTurn === this.$parent.player1Id;
 
-  // Comparer avec player1Id et player2Id
-  const isPlayerOne = this.$parent.currentPlayerTurn === this.$parent.player1Id;
+      if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
+        alert("Vous ne pouvez pas placer une carte ici !");
+        return;
+      }
 
-  console.log("Joueur courant : ", this.$parent.currentPlayerTurn);
-  console.log("Player 1 ID : ", this.$parent.player1Id);
-  console.log("Player 2 ID : ", this.$parent.player2Id);
-
-  // Restriction d'accès aux emplacements en fonction du joueur
-  // Si c'est le joueur 1, il doit poser sur les emplacements 4 à 7
-  // Si c'est le joueur 2, il doit poser sur les emplacements 0 à 3
-  if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
-    console.log("Vous ne pouvez pas placer une carte ici !");
-    alert("Vous ne pouvez pas placer une carte ici !");
-    return;
-  }
-
-  // Émission de l'événement pour indiquer que la carte a été déposée
-  this.$emit('card-dropped', {
-    card,
-    index: i
-  });
-}
-
+      this.$emit('card-dropped', { card, index: i });
+    }
   }
 }
 </script>
-
 
 <style scoped>
 .cards-on-board {
@@ -177,5 +158,4 @@ export default {
   height: 9rem;
   padding: .5rem;
 }
-
 </style>
