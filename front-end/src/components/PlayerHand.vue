@@ -1,5 +1,5 @@
 <template>
-  <div class="hand">
+  <div class="hand" v-bind:style="[currentPlayerTurn === player1Id ? stylePlayer1 : stylePlayer2]">
     <CardComponent v-for="card in playerHand" :key="card.cardId" :card="card" />
   </div>
 </template>
@@ -9,10 +9,23 @@ import CardComponent from './CardComponent.vue';
 
 export default {
   props: {
-    playerHand: Array
+    playerHand: Array,
+    currentPlayerTurn: Number,
+    player1Id: Number,
+    player2Id: Number
   },
   components: {
     CardComponent
+  },
+  data() {
+    return {
+      stylePlayer1: {
+        border: '5px solid red'
+      },
+      stylePlayer2: {
+        border: '5px solid blue'
+      }
+    }
   }
 }
 </script>

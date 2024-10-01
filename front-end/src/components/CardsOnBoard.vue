@@ -7,6 +7,7 @@
       @click="handleCardClick(card, i)"
       @drop="onDrop($event, i)"
       @dragover.prevent
+      v-bind:style="[currentPlayerTurn === player1Id ? stylePlayer1 : stylePlayer2]"
     >
       <CardComponent 
         v-if="card" 
@@ -34,6 +35,16 @@ export default {
     currentPlayerTurn: Number,
     player1Id: Number,
     player2Id: Number,
+  },
+  data() {
+    return {
+      stylePlayer1: {
+        rotate: '0deg'
+      },
+      stylePlayer2: {
+        rotate: '180deg'
+      }
+    };
   },
   computed: {
     // Remplit les emplacements vides pour afficher 8 cases de jeu

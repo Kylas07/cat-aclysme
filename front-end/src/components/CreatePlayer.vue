@@ -3,12 +3,18 @@
     <h2>Créer un joueur</h2>
     <form @submit.prevent="createPlayer">
       <div>
-        <label for="name">Nom :</label>
-        <input type="text" v-model="player.name" required />
+        <v-text-field label="Pseudo Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player.name" required ></v-text-field>
       </div>
       <div>
-        <label for="password">Mot de passe :</label>
-        <input type="password" v-model="player.password" required />
+      <v-text-field
+      label="Password Joueur 1"
+      prepend-icon="mdi-cat"
+      :type="showPassword ? 'text' : 'password'"
+      variant="outlined"
+      v-model="player.password"
+      required
+    >
+      </v-text-field>
       </div>
       <button type="submit">Créer le joueur</button>
     </form>
