@@ -2,14 +2,10 @@
   <div class="conteneur-login">
     <h1>Bienvenue</h1>
 
-    <!-- Bouton pour basculer entre la connexion et la création de joueur -->
-    <button v-if="!showCreatePlayer" @click="showCreatePlayer = true">Créer un compte</button>
-    <button v-else @click="showCreatePlayer = false">Retour à la connexion</button>
-
     <!-- Formulaire de connexion -->
     <div class="login-player" v-if="!showCreatePlayer">
       <!-- Formulaire pour le premier joueur -->
-      <div v-if="!isPlayer1LoggedIn">
+      <div class="logplayer1" v-if="!isPlayer1LoggedIn">
         <h2>Connexion du Joueur 1</h2>
         <form @submit.prevent="handleSubmitPlayer1">
           <div>
@@ -26,12 +22,12 @@
               >
             </v-text-field>
           </div>
-          <button type="submit">Se connecter</button>
+          <v-btn type="submit">Se connecter</v-btn>
         </form>
       </div>
 
       <!-- Formulaire pour le deuxième joueur -->
-      <div v-else-if="!isPlayer2LoggedIn">
+      <div class="logplayer2"  v-else-if="!isPlayer2LoggedIn">
         <h2>Connexion du Joueur 2</h2>
         <form @submit.prevent="handleSubmitPlayer2">
           <div>
@@ -48,23 +44,30 @@
               >
             </v-text-field>
           </div>
-          <button type="submit">Se connecter</button>
+          <v-btn type="submit">Se connecter</v-btn>
         </form>
       </div>
 
       <!-- Lancer la partie si les deux joueurs sont connectés -->
-      <div v-else>
+      <!-- <div v-else>
         <h2>Joueurs connectés :</h2>
         <p>Joueur 1 : {{ player1.name }}</p>
         <p>Joueur 2 : {{ player2.name }}</p>
         <button @click="startGame">Lancer une partie</button>
-      </div>
+      </div> -->
     </div>
 
     <!-- Formulaire de création de joueur -->
     <div class="login-player" v-if="showCreatePlayer">
       <CreatePlayer />
     </div>
+    <!-- Bouton pour basculer entre la connexion et la création de joueur -->
+    <v-btn size="x-large" prepend-icon="mdi-cat" append-icon="mdi-cat" variant="outlined" v-if="!showCreatePlayer" @click="showCreatePlayer = true">
+      Créer un compte
+    </v-btn>
+    <v-btn size="x-large" prepend-icon="mdi-cat" append-icon="mdi-cat" variant="outlined" v-else @click="showCreatePlayer = false">
+      Retour à la connexion
+    </v-btn>
   </div>
 </template>
 
@@ -179,18 +182,49 @@ export default {
 </script>
 
 <style>
+.login-player .v-icon {
+  font-size:5rem;
+  color:var(--player);
+}
+.v-text-field input {
+  font-size: 3em;
+}
+.v-label.v-field-label {
+  font-size: 3rem;
+}
+.conteneur-login h1 {
+  font-size: 4rem;
+  text-transform: uppercase;
+}
 .login-player {
-  width: 50%;
-    border: 10px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 10px;
-    background-color: white;
+  width: 60%;
+  margin: 2rem;
+}
+
+.login-player > div {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.logplayer1 {
+  --player:blue;
+  border: 10px solid var(--player);
+}
+.logplayer2 {
+  --player:red;
+  border: 10px solid var(--player);
 }
 .conteneur-login {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.mdi-cat::before {
+  color:var(--player);
 }
 </style>
