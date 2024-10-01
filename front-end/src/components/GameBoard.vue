@@ -5,7 +5,8 @@
 
       <GameInfo 
         :gameId="gameId"
-        :currentTurn="currentTurn" 
+        :currentTurn="currentTurn"
+        :turnCount="turnCount" 
         :player1HP="player1HP" 
         :player2HP="player2HP"
         @end-turn="endTurn"
@@ -18,8 +19,13 @@
       <!-- Plateau avec transition spécifique aux cartes -->
       <div class="cards-on-board-container">
         <CardsOnBoard 
+          v-bind:style="[currentPlayerTurn === player1Id ? stylePlayer1 : stylePlayer2]"
           :cardsOnBoard="cardsOnBoard" 
           :gameId="gameId"
+          :player1Id="player1Id"
+          :player2Id="player2Id"
+          :currentTurn="currentTurn" 
+          :currentPlayerTurn="currentPlayerTurn"
           :isFlipped="currentPlayerTurn !== player1Id"
           @card-dropped="handleCardDrop"
         />
@@ -33,6 +39,9 @@
       :playerHand="playerHand" 
       :isPlayerTurn="currentPlayerTurn === player1Id || currentPlayerTurn === player2Id"
       @card-dropped="handleCardDrop"
+      :currentPlayerTurn="currentPlayerTurn"
+      :player1Id="player1Id"
+      :player2Id="player2Id"
     />
   </div>
 </template>
@@ -52,16 +61,24 @@ export default {
     player2HP: Number,
     player1Id: Number,
     player2Id: Number,
-    currentPlayerId: Number
+    currentPlayerId: Number,
+    
   },
   data() {
     return {
+      turnCount:1,
       currentPlayerTurn: this.currentPlayerId,  // Démarre avec le joueur courant
       playerHand: [],
       cardsOnBoard: [],
       opponentHandSize: 5, // Nombre de cartes dans la main de l'adversaire
       player1DeckSize: 25, // Cartes restantes dans le deck du joueur 1
-      player2DeckSize: 25  // Cartes restantes dans le deck du joueur 2
+      player2DeckSize: 25,  // Cartes restantes dans le deck du joueur 2
+      stylePlayer1: {
+        rotate: '0deg'
+      },
+      stylePlayer2: {
+        rotate: '180deg'
+      }
     };
   },
   components: {
@@ -101,6 +118,7 @@ export default {
 
           // Charger la main du joueur suivant
           await this.loadPlayerHand(this.currentPlayerTurn);
+          this.turnCount += 1;
         } else {
           alert(data.message);
         }
@@ -186,7 +204,12 @@ export default {
     }
   },
   
-  
+    async loadTurnCount() {
+      const response = await fetch('https://localhost:7111/api/game/${this.gameId}');
+      const data = await response.json();
+
+      this.turnCount = data.game.turnCount;
+    },
   nextTurn() {
       this.$emit('update-turn');
     },

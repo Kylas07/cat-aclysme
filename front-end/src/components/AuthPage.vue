@@ -62,7 +62,7 @@
     </div>
 
     <!-- Formulaire de création de joueur -->
-    <div v-if="showCreatePlayer">
+    <div class="login-player" v-if="showCreatePlayer">
       <CreatePlayer />
     </div>
   </div>
