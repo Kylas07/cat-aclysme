@@ -37,6 +37,7 @@
     <!-- Main du joueur actif seulement -->
     <PlayerHand 
       :playerHand="playerHand" 
+      :gameId="gameId"
       :isPlayerTurn="currentPlayerTurn === player1Id || currentPlayerTurn === player2Id"
       @card-dropped="handleCardDrop"
       :currentPlayerTurn="currentPlayerTurn"
@@ -55,7 +56,10 @@ import PlayerDeck from './PlayerDeck.vue';
 
 export default {
   props: {
-    gameId: Number,
+    gameId: {  
+      type: Number,
+      required: true
+    },
     currentTurn: Number,
     player1HP: Number,
     player2HP: Number,

@@ -1,5 +1,7 @@
 <template>
     <div class="CardComponent"
+    :gameId="gameId"
+    :isOnBoard="false"
     @click="attack" 
     @dragstart="onDragStart"
     :draggable="isDraggable">

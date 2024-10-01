@@ -1,6 +1,11 @@
 <template>
   <div class="hand" v-bind:style="[currentPlayerTurn === player1Id ? stylePlayer1 : stylePlayer2]">
-    <CardComponent v-for="card in playerHand" :key="card.cardId" :card="card" />
+    <CardComponent v-for="card in playerHand" 
+    :key="card.cardId" 
+    :card="card"
+    :gameId="gameId"
+    :isOnBoard="false"
+     />
   </div>
 </template>
 
@@ -12,7 +17,11 @@ export default {
     playerHand: Array,
     currentPlayerTurn: Number,
     player1Id: Number,
-    player2Id: Number
+    player2Id: Number,
+    gameId: { 
+      type: Number,
+      required: true
+    }
   },
   components: {
     CardComponent
