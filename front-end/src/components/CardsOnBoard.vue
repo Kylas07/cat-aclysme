@@ -91,17 +91,17 @@ export default {
         console.log("HP avant mise à jour - Défenseur:", this.cardsOnBoard[targetIndex]?.health);
 
         // Mettre à jour la carte attaquante
-        if (result.attackingCard && typeof result.attackingCard.Health !== 'undefined') {
+        if (result.attackingCard && typeof result.attackingCard.health !== 'undefined') {
           const updatedAttacker = this.cardsOnBoard[attackerSlotIndex];
-          updatedAttacker.health = result.attackingCard.Health;
+          updatedAttacker.health = result.attackingCard.health;  // Utiliser 'health' en minuscule
           console.log("HP après mise à jour - Attaquant:", updatedAttacker.health);
           this.$emit('card-updated', { card: updatedAttacker, slotIndex: attackerSlotIndex });
         }
 
         // Mettre à jour la carte défenseur
-        if (result.defendingCard && typeof result.defendingCard.Health !== 'undefined') {
+        if (result.defendingCard && typeof result.defendingCard.health !== 'undefined') {
           const updatedDefender = this.cardsOnBoard[targetIndex];
-          updatedDefender.health = result.defendingCard.Health;
+          updatedDefender.health = result.defendingCard.health;  // Utiliser 'health' en minuscule
           console.log("HP après mise à jour - Défenseur:", updatedDefender.health);
           this.$emit('card-updated', { card: updatedDefender, slotIndex: targetIndex });
         }
