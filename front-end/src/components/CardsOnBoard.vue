@@ -102,18 +102,54 @@ export default {
 },
 
     canAttack(card) {
-      return card.isPlacedPreviousTurn && !card.hasAttackedThisTurn && card.ownerId === this.currentPlayerTurn;
+        console.log("Conditions for attacking:");
+        console.log("isPlacedPreviousTurn:", card.isPlacedPreviousTurn);
+        console.log("hasAttackedThisTurn:", card.hasAttackedThisTurn);
+        console.log("ownerId:", card.ownerId);
+        console.log("currentPlayerTurn:", this.currentPlayerTurn);
+        console.log("ownerId matches currentPlayerTurn:", card.ownerId === this.currentPlayerTurn);
+
+        return card.isPlacedPreviousTurn && !card.hasAttackedThisTurn && card.ownerId === this.currentPlayerTurn;
     },
 
     getTargetIndex(attackerIndex) {
+      const totalSlots = 8; // Nombre total d'emplacements sur le plateau
+      const boardHalf = totalSlots / 2; // La moitié du plateau
+
+      console.log(`Attacker Index: ${attackerIndex}`);
+      console.log(`Current Player Turn: ${this.currentPlayerTurn}`);
+      console.log(`Player 1 ID: ${this.player1Id}, Player 2 ID: ${this.player2Id}`);
+
       if (this.currentPlayerTurn === this.player1Id) {
-        return attackerIndex + 4 < this.cardsOnBoard.length ? attackerIndex + 4 : null;
+        // Pour le joueur 1, la cible est 4 cases plus tôt (en face)
+        const targetIndex = attackerIndex - boardHalf;
+        console.log(`Calculated target index for Player 1: ${targetIndex}`);
+        if (targetIndex >= 0 && this.boardSlots[targetIndex]) {
+          console.log(`Target found at index ${targetIndex}:`, this.boardSlots[targetIndex]);
+          return targetIndex;
+        } else {
+          console.log(`No valid target at index ${targetIndex}`);
+        }
       } else {
-        return attackerIndex - 4 >= 0 ? attackerIndex - 4 : null;
+        // Pour le joueur 2, la cible est 4 cases plus loin (en face)
+        const targetIndex = attackerIndex + boardHalf;
+        console.log(`Calculated target index for Player 2: ${targetIndex}`);
+        if (targetIndex < totalSlots && this.boardSlots[targetIndex]) {
+          console.log(`Target found at index ${targetIndex}:`, this.boardSlots[targetIndex]);
+          return targetIndex;
+        } else {
+          console.log(`No valid target at index ${targetIndex}`);
+        }
       }
+
+      // Aucun indice valide trouvé
+      console.log("No target found, returning null.");
+      return null;
     },
 
     onDrop(event, i) {
+      console.log(`Carte déposée sur la case avec l'index : ${i}`); // Log pour afficher l'index de la case
+
       const cardData = event.dataTransfer.getData('card');
       if (!cardData) {
         console.error("Aucune donnée de carte trouvée lors du drag-and-drop !");
@@ -122,6 +158,10 @@ export default {
       }
 
       const card = JSON.parse(cardData);
+
+      // Assigner le joueur actuel comme propriétaire de la carte
+      card.ownerId = this.currentPlayerTurn;
+
       const isPlayerOne = this.$parent.currentPlayerTurn === this.$parent.player1Id;
 
       if ((isPlayerOne && i < 4) || (!isPlayerOne && i >= 4)) {
@@ -130,7 +170,7 @@ export default {
       }
 
       this.$emit('card-dropped', { card, index: i });
-    }
+    },
   }
 }
 </script>
