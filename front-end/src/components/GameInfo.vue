@@ -2,8 +2,8 @@
   <div class="game-info">
     <p>Game ID: {{ gameId }}</p>
     <p>Turn: {{ turnCount }}</p>
-    <p>Player 1 : {{ player1HP }} ❤️</p>
-    <p>Player 2 : {{ player2HP }} ❤️</p>
+    <p> {{ player1Name }} : {{ player1HP }} ❤️</p>
+    <p>{{ player2Name }}: {{ player2HP }} ❤️</p>
     <button @click="$emit('end-turn')">Fin de tour</button>  <!-- Lever un événement -->
   </div>
 </template>
@@ -15,7 +15,10 @@ export default {
     currentTurn: Number,
     player1HP: Number,
     player2HP: Number,
-    turnCount: Number
+    turnCount: Number,
+    player1Name: String,
+    player2Name: String
+    
   }
 }
 </script>

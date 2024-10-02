@@ -8,6 +8,8 @@
       :player2HP="player2HP"
       :player1Id="player1Id"
       :player2Id="player2Id"
+      :player1Name="player1Name"
+      :player2Name="player2Name"
       :currentPlayerId="currentPlayerId"
       @update-turn="updateTurn"
     />
@@ -24,6 +26,8 @@ export default {
       isGameStarted: false,
       gameId: null,
       currentTurn: null,  // Tour actuel (ID du joueur qui joue)
+      player1Name:null,
+      player2Name:null,
       player1HP: null,
       player2HP: null,
       player1Id: null,    // ID du joueur 1
@@ -32,8 +36,8 @@ export default {
     };
   },
   methods: {
-    async launchGame(gameId, currentTurn, player1HP, player2HP, player1Id, player2Id, turnCount) {
-    console.log("Démarrage du jeu avec les paramètres :", { gameId, currentTurn, player1HP, player2HP, player1Id, player2Id });
+    async launchGame(gameId, currentTurn, player1HP, player2HP, player1Id, player2Id, turnCount, player1Name, player2Name) {
+    console.log("Démarrage du jeu avec les paramètres :", { gameId, currentTurn, player1HP, player2HP, player1Id, player2Id, player1Name, player2Name });
     this.isGameStarted = true;
     this.gameId = gameId;
     this.currentTurn = currentTurn;
@@ -41,6 +45,8 @@ export default {
     this.player2HP = player2HP;
     this.player1Id = player1Id;
     this.player2Id = player2Id;
+    this.player1Name = player1Name;
+    this.player2Name = player2Name;
     this.turnCount = turnCount;
     this.currentPlayerId = currentTurn;
   },

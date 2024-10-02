@@ -9,13 +9,15 @@
         :turnCount="turnCount" 
         :player1HP="player1HP" 
         :player2HP="player2HP"
+        :player1Name="player1Name" 
+        :player2Name="player2Name"
         @end-turn="endTurn"
       />
     </div>
 
     <div class="game-decks">
       <PlayerDeck :cardsLeft="player2DeckSize" 
-      :playerId="1" />
+      :playerId="2" />
       
       <!-- Plateau avec transition spécifique aux cartes -->
       <div class="cards-on-board-container">
@@ -32,7 +34,7 @@
         />
       </div>
 
-      <PlayerDeck :cardsLeft="player2DeckSize" :playerId="2" />
+      <PlayerDeck :cardsLeft="player2DeckSize" :playerId="1" />
     </div>
 
     <!-- Main du joueur actif seulement -->
@@ -63,7 +65,8 @@ export default {
     player1Id: Number,
     player2Id: Number,
     currentPlayerId: Number,
-    
+    player1Name: String,
+    player2Name: String
   },
   data() {
     return {
@@ -241,17 +244,16 @@ export default {
       alert(data.message);
     }
   },
-  
-  async loadTurnCount() {
-    const response = await fetch('https://localhost:7111/api/game/${this.gameId}');
-    const data = await response.json();
+    
+    async loadTurnCount() {
+      const response = await fetch(`https://localhost:7111/api/game/${this.gameId}`);
+      const data = await response.json();
 
-    this.turnCount = data.game.turnCount;
-  },
-nextTurn() {
-    this.$emit('update-turn');
-  },
-
+      this.turnCount = data.game.turnCount;
+    },
+  nextTurn() {
+      this.$emit('update-turn');
+    },
   },
   async mounted() {
     console.log("Méthode mounted appelée");
