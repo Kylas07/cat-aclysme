@@ -164,9 +164,19 @@ export default {
         if (response.ok) {
             const data = await response.json();
             const game = data.game; // Récupère l'objet game
-
-            this.$emit('start-game', game.gameId, game.playerTurn, game.player1HP, game.player2HP, game.player.playerId, game.player_1.playerId, game.turnCount); 
-            alert(`Partie lancée avec succès. ID de la partie : ${game.gameId}`);
+            this.$emit(
+              'start-game', 
+              game.gameId, 
+              game.playerTurn, 
+              game.player1HP, 
+              game.player2HP, 
+              game.player.playerId, 
+              game.player_1.playerId, 
+              game.turnCount,
+              game.player.name,
+              game.player_1.name
+          ); 
+            alert(`Partie lancée avec succès. ID de la partie : ${game.gameId}, ${game.player_1.name}`);
         } else {
           const errorData = await response.json();
           console.error('Error Response:', errorData);
@@ -210,6 +220,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 3rem;
+}
+.createplayer {
+  --player:gray;
+  border: 10px solid var(--player);
 }
 .logplayer1 {
   --player:blue;

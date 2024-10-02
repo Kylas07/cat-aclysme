@@ -117,7 +117,7 @@ namespace back_end.Services
                 Card = card,
                 CardId = card.CardId,
                 CardOrder = index,
-                CardState = index < 5 ? CardState.InHand : CardState.InDeck
+                CardState = index < 4 ? CardState.InHand : CardState.InDeck
             }).ToList();
         }
 
@@ -143,5 +143,34 @@ namespace back_end.Services
                 .Where(g => g.PlayerId == playerId)
                 .ToListAsync();
         }
+
+        public async Task<GameDeck> DrawCard(DrawCardRequest request)
+        {
+            Console.WriteLine("Appel à DrawCard dans le service avec PlayerId: " + request.PlayerId + ", GameId: " + request.GameId);
+
+            var cardToDraw = await _context.GameDecks
+                .Where(deck => deck.PlayerId == request.PlayerId && deck.GameId == request.GameId && deck.CardState == CardState.InDeck)
+                .OrderBy(deck => deck.CardOrder)
+                .FirstOrDefaultAsync();
+
+            if (cardToDraw == null)
+            {
+                Console.WriteLine("Aucune carte trouvée pour PlayerId: " + request.PlayerId);
+                throw new InvalidOperationException("Il n'y a plus de cartes à piocher.");
+            }
+
+            cardToDraw.CardState = CardState.InHand;
+            _context.GameDecks.Update(cardToDraw);
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine("Carte piochée : " + cardToDraw.CardId);
+            return cardToDraw;
+        }
+        public async Task<int> GetRemainingCardsInDeck(int gameId, int playerId)
+        {
+            return await _context.GameDecks
+                .CountAsync(deck => deck.GameId == gameId && deck.PlayerId == playerId && deck.CardState == CardState.InDeck);
+        }
+
     }
 }

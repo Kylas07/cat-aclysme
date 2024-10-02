@@ -1,11 +1,11 @@
 <template>
-    <div class="playerdeck">
+     <div :class="['player-deck', playerId === 1 ? 'player-1-deck' : 'player-2-deck']">
       <div class="stack-deck">
         <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
         <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
         <img src="/image/catnado.png" alt="Deck image" class="deck-image"/>
       </div>
-      <p>{{ cardsLeft }} cards left</p>
+      <p>{{ cardsLeft }} cartes restantes</p>
     </div>
   </template>
   
@@ -13,10 +13,10 @@
   export default {
     props: {
       cardsLeft: Number,
-      // deckImage: {
-      //   type: String,
-      //   default: defaultDeckImage 
-      // }
+      playerId: {
+      type: Number,
+      required: true
+      }
     }
   }
   </script>
@@ -24,6 +24,17 @@
   <style scoped>
   .playerdeck {
     text-align: center;
+  }
+    .player-1-deck {
+    background-color: blue; /* Couleur pour le joueur 1 */
+    padding: 1rem;
+    color:white;
+  }
+
+  .player-2-deck {
+    background-color: red; /* Couleur pour le joueur 2 */
+    padding: 1rem;
+    color:white;
   }
   .stack-deck {
     display: grid;
