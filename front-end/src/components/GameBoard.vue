@@ -9,12 +9,15 @@
         :turnCount="turnCount" 
         :player1HP="player1HP" 
         :player2HP="player2HP"
+        :player1Name="player1Name" 
+        :player2Name="player2Name"
         @end-turn="endTurn"
       />
     </div>
 
     <div class="game-decks">
-      <PlayerDeck :cardsLeft="player2DeckSize" />
+      <PlayerDeck :cardsLeft="player2DeckSize" 
+      :playerId="2" />
       
       <!-- Plateau avec transition spécifique aux cartes -->
       <div class="cards-on-board-container">
@@ -31,7 +34,7 @@
         />
       </div>
 
-      <PlayerDeck :cardsLeft="player1DeckSize" />
+      <PlayerDeck :cardsLeft="player2DeckSize" :playerId="1" />
     </div>
 
     <!-- Main du joueur actif seulement -->
@@ -62,7 +65,8 @@ export default {
     player1Id: Number,
     player2Id: Number,
     currentPlayerId: Number,
-    
+    player1Name: String,
+    player2Name: String
   },
   data() {
     return {
@@ -71,7 +75,7 @@ export default {
       playerHand: [],
       cardsOnBoard: [],
       opponentHandSize: 5, // Nombre de cartes dans la main de l'adversaire
-      player1DeckSize: 25, // Cartes restantes dans le deck du joueur 1
+      player1DeckSize: 26, // Cartes restantes dans le deck du joueur 1
       player2DeckSize: 25,  // Cartes restantes dans le deck du joueur 2
       stylePlayer1: {
         rotate: '0deg'
@@ -151,6 +155,11 @@ export default {
         if (response.ok) {
           console.log("Carte piochée :", data.card);
           this.playerHand.push(data.card);
+          if (playerId === this.player1Id) {
+            this.player1DeckSize = data.remainingCards;
+          } else {
+            this.player2DeckSize = data.remainingCards;
+          }
         } else {
           alert(data.message);
         }
@@ -235,9 +244,9 @@ export default {
       alert(data.message);
     }
   },
-  
+    
     async loadTurnCount() {
-      const response = await fetch('https://localhost:7111/api/game/${this.gameId}');
+      const response = await fetch(`https://localhost:7111/api/game/${this.gameId}`);
       const data = await response.json();
 
       this.turnCount = data.game.turnCount;
@@ -245,7 +254,6 @@ export default {
   nextTurn() {
       this.$emit('update-turn');
     },
-
   },
   async mounted() {
     console.log("Méthode mounted appelée");
