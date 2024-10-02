@@ -29,10 +29,10 @@ export default {
   data() {
     return {
       stylePlayer1: {
-        border: '5px solid red'
+        border: '5px solid blue'
       },
       stylePlayer2: {
-        border: '5px solid blue'
+        border: '5px solid red'
       }
     }
   }

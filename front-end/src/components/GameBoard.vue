@@ -121,6 +121,9 @@ export default {
         }
       });
 
+          // Piocher une carte pour le nouveau joueur
+          await this.drawCard(this.currentPlayerTurn);
+
           // Charger la main du joueur suivant
           await this.loadPlayerHand(this.currentPlayerTurn);
           this.turnCount += 1;
@@ -129,6 +132,35 @@ export default {
         }
       } catch (error) {
         console.error("Erreur lors du passage de tour :", error);
+      }
+    },
+
+    async drawCard(playerId) {
+      try {
+        const response = await fetch('https://localhost:7111/api/game/draw-card', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            GameId: this.gameId,
+            PlayerId: playerId
+          })
+        });
+
+        const text = await response.text();
+        console.log("Texte brut de la réponse :", text);
+
+        const data = JSON.parse(text);  // Convertir le texte en JSON
+
+        if (response.ok) {
+          console.log("Carte piochée :", data.card);
+          this.playerHand.push(data.card);
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la pioche de la carte :", error);
       }
     },
 
