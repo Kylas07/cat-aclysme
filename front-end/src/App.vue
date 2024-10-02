@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="soundPlayer">
+      <SoundControl />
+    </div>
     <AuthPage v-if="!isGameStarted" @start-game="launchGame" />
     <GameBoard v-if="isGameStarted" 
       :gameId="gameId" 
@@ -14,11 +17,14 @@
       @update-turn="updateTurn"
     />
   </div>
+  <BackgroundApp/>
 </template>
 
 <script>
 import AuthPage from './components/AuthPage.vue';
 import GameBoard from './components/GameBoard.vue';
+import SoundControl from './components/SoundControl.vue';
+import BackgroundApp from './components/BackgroundApp.vue';
 
 export default {
   data() {
@@ -58,8 +64,10 @@ export default {
     }
   },
   components: {
+    SoundControl,
     AuthPage,
-    GameBoard
+    GameBoard,
+    BackgroundApp
   }
 };
 </script>
@@ -72,5 +80,11 @@ export default {
   align-content: center;
   text-align: center;
   color: #2c3e50;
+  overflow: hidden;
+}
+.soundPlayer {
+  position: absolute;
+    top: 4rem;
+    left: 4rem;
 }
 </style>
