@@ -102,31 +102,53 @@ namespace CatAclysmeApp.Controllers
         }
         // 2. Gestion des tours
         // POST : api/game/draw-card
-        [HttpPost("draw-card")]
-        public async Task<IActionResult> DrawCard([FromBody] DrawCardRequest request)
-        {
-            try
-                {
-                    var drawnCard = await _gameService.DrawCard(request);
+        // [HttpPost("draw-card")]
+        // public async Task<IActionResult> DrawCard([FromBody] DrawCardRequest request)
+        // {
+        //     // Récupérer la partie
+        //     var game = await _context.Games
+        //         .Include(g => g.Player)
+        //         .Include(g => g.Player_1)
+        //         .FirstOrDefaultAsync(g => g.GameId == request.GameId);
 
-                    if (drawnCard == null)
-                    {
-                        return BadRequest(new { success = false, message = "Aucune carte disponible à piocher." });
-                    }
+        //     if (game == null)
+        //         return NotFound(new { message = "Partie non trouvée." });
 
-                var remainingCards = await _gameService.GetRemainingCardsInDeck(request.GameId, request.PlayerId);
+        //     // Vérifier que c'est bien le tour du joueur
+        //     if (game.PlayerTurn != request.PlayerId)
+        //         return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
 
-                return Ok(new { success = true, card = drawnCard, remainingCards });
-                }
-                catch (InvalidOperationException ex)
-                {
-                    return BadRequest(new { success = false, message = ex.Message });
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, new { success = false, message = "Une erreur est survenue.", error = ex.Message });
-                }
-            }
+        //     // Récupérer le joueur
+        //     var player = await _context.Players
+        //         .Include(p => p.Deck)
+        //         .ThenInclude(d => d.Cards)
+        //         .Include(p => p.Hand)  // Inclure la main du joueur
+        //         .FirstOrDefaultAsync(p => p.PlayerId == request.PlayerId);
+
+        //     if (player == null || player.Deck.Cards.Count == 0)
+        //         return BadRequest(new { message = "Le joueur n'a plus de cartes à piocher." });
+
+        //     // Tirer une carte du deck
+        //     var card = player.Deck.Cards.First();  // Choisit la première carte pour simplifier
+        //     player.Deck.Cards.Remove(card);  // Retirer la carte du deck
+
+        //     // Ajouter la carte à la main du joueur sous forme de PlayerHand
+        //     var playerHand = new PlayerHand
+        //     {
+        //         PlayerId = player.PlayerId,
+        //         Player = player,
+        //         CardId = card.CardId,
+        //         Card = card,
+        //         Game = game  // Initialiser la propriété Game
+        //     };
+
+        //     player.Hand.Add(playerHand);  // Ajouter l'objet PlayerHand à la main du joueur
+
+        //     await _context.SaveChangesAsync();
+
+        //     return Ok(new { cardId = card.CardId, cardName = card.Name });
+        // }
+
 
         // POST : api/game/end-turn
         [HttpPost("end-turn")]
@@ -233,10 +255,11 @@ namespace CatAclysmeApp.Controllers
             // Log details for debugging
             Console.WriteLine($"Request received for attack: GameId={request.GameId}, PlayerId={request.PlayerId}, AttackerSlotIndex={request.BoardSlotId}, TargetSlotIndex={request.TargetBoardSlotId}");
 
-            // Retrieve the game and the board
+            // Retrieve the game and the board (but do not update the database)
             var game = await _context.Games
-                .Include(g => g.Board) // Include the board
-                .ThenInclude(b => b.Card) 
+                .Include(g => g.Board)
+                .ThenInclude(b => b.Card)
+                .AsNoTracking() // Prevents EF Core from tracking changes, so no updates are persisted
                 .FirstOrDefaultAsync(g => g.GameId == request.GameId);
 
             if (game == null)
@@ -251,58 +274,61 @@ namespace CatAclysmeApp.Controllers
                 return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
             }
 
-            // Log board state
-            foreach (var slot in game.Board)
-            {
-                Console.WriteLine($"Slot {slot.Index}: {(slot.Card != null ? slot.Card.Name : "Empty")}");
-            }
-
             // Get the attacking card slot by index
-            var attackingSlot = game.Board.FirstOrDefault(slot => slot.Index == request.BoardSlotId); // Utiliser l'index ici
+            var attackingSlot = game.Board.FirstOrDefault(slot => slot.Index == request.BoardSlotId);
             if (attackingSlot == null || attackingSlot.Card == null)
             {
-                Console.WriteLine("Attacking card not found");
                 return BadRequest(new { message = "Carte attaquante introuvable." });
             }
 
             var attackingCard = attackingSlot.Card;
+            var attackingCardHealthBefore = attackingCard.Health;
 
             // Get the target card slot by index
-            var targetSlot = game.Board.FirstOrDefault(slot => slot.Index == request.TargetBoardSlotId); // Utiliser l'index ici
+            var targetSlot = game.Board.FirstOrDefault(slot => slot.Index == request.TargetBoardSlotId);
             if (targetSlot != null && targetSlot.Card != null)
             {
                 var defendingCard = targetSlot.Card;
+                var defendingCardHealthBefore = defendingCard.Health;
 
-                // Battle logic
+                // Simulate the battle without persisting changes
                 defendingCard.Health -= attackingCard.Attack;
-
-                if (defendingCard.Health <= 0)
-                {
-                    targetSlot.Card = null; // Remove defending card if destroyed
-                }
-
                 attackingCard.Health -= defendingCard.Attack;
-                if (attackingCard.Health <= 0)
+
+                // Log battle outcome
+                Console.WriteLine($"{attackingCard.Name} attacked {defendingCard.Name}. Defender health before: {defendingCardHealthBefore}, after: {defendingCard.Health}");
+                Console.WriteLine($"{defendingCard.Name} counter-attacked. Attacker health before: {attackingCardHealthBefore}, after: {attackingCard.Health}");
+
+                // Return updated health values in a consistent format
+                return Ok(new 
                 {
-                    attackingSlot.Card = null; // Remove attacking card if destroyed
-                }
+                    attackingCard = new { Health = attackingCard.Health },
+                    defendingCard = defendingCard.Health > 0 ? new { Health = defendingCard.Health } : null,
+                    message = "Attaque effectuée sans persistance."
+                });
             }
             else
             {
                 // No card in front, deal damage to the opponent
                 if (request.PlayerId == game.PlayerId)
                 {
-                    game.Player2HP -= attackingCard.Attack;
+                    Console.WriteLine($"{attackingCard.Name} dealt {attackingCard.Attack} damage to Player 2.");
+                    return Ok(new 
+                    {
+                        attackingCard = new { Health = attackingCard.Health },
+                        message = $"Player 2 a reçu {attackingCard.Attack} points de dégâts."
+                    });
                 }
                 else
                 {
-                    game.Player1HP -= attackingCard.Attack;
+                    Console.WriteLine($"{attackingCard.Name} dealt {attackingCard.Attack} damage to Player 1.");
+                    return Ok(new 
+                    {
+                        attackingCard = new { Health = attackingCard.Health },
+                        message = $"Player 1 a reçu {attackingCard.Attack} points de dégâts."
+                    });
                 }
             }
-
-            // Save changes
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Attaque effectuée." });
         }
 
         // 4. Fin de la partie
@@ -322,20 +348,5 @@ namespace CatAclysmeApp.Controllers
 
             return Ok(new { message = "Partie terminée." });
         }
-
-        [HttpGet("deck-size/{gameId}/{playerId}")]
-        public async Task<IActionResult> GetDeckSize(int gameId, int playerId)
-        {
-            var cardsLeft = await _context.GameDecks
-                .Where(d => d.GameId == gameId && d.PlayerId == playerId && d.CardState == CardState.InDeck)
-                .CountAsync();
-
-            if (cardsLeft == 0)
-            {
-                return NotFound(new { message = "Deck vide ou inexistant" });
-            }
-
-            return Ok(new { deckSize = cardsLeft });
-        }    
     }
 }
