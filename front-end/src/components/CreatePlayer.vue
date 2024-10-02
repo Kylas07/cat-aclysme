@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="createplayer">
     <h2>Créer un joueur</h2>
     <form @submit.prevent="createPlayer">
       <div>
-        <v-text-field label="Pseudo Joueur 1" prepend-icon="mdi-cat" variant="outlined"  v-model="player.name" required ></v-text-field>
+        <v-text-field label="Pseudo Joueur" prepend-icon="mdi-cat" variant="outlined"  v-model="player.name" required ></v-text-field>
       </div>
       <div>
       <v-text-field
-      label="Password Joueur 1"
+      label="Password Joueur"
       prepend-icon="mdi-cat"
       :type="showPassword ? 'text' : 'password'"
       variant="outlined"

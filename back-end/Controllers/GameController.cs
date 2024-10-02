@@ -114,7 +114,9 @@ namespace CatAclysmeApp.Controllers
                         return BadRequest(new { success = false, message = "Aucune carte disponible à piocher." });
                     }
 
-                    return Ok(new { success = true, card = drawnCard });
+                var remainingCards = await _gameService.GetRemainingCardsInDeck(request.GameId, request.PlayerId);
+
+                return Ok(new { success = true, card = drawnCard, remainingCards });
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -324,5 +326,20 @@ namespace CatAclysmeApp.Controllers
 
             return Ok(new { message = "Partie terminée." });
         }
+
+        [HttpGet("deck-size/{gameId}/{playerId}")]
+        public async Task<IActionResult> GetDeckSize(int gameId, int playerId)
+        {
+            var cardsLeft = await _context.GameDecks
+                .Where(d => d.GameId == gameId && d.PlayerId == playerId && d.CardState == CardState.InDeck)
+                .CountAsync();
+
+            if (cardsLeft == 0)
+            {
+                return NotFound(new { message = "Deck vide ou inexistant" });
+            }
+
+            return Ok(new { deckSize = cardsLeft });
+        }    
     }
 }

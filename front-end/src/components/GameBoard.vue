@@ -14,7 +14,8 @@
     </div>
 
     <div class="game-decks">
-      <PlayerDeck :cardsLeft="player2DeckSize" />
+      <PlayerDeck :cardsLeft="player2DeckSize" 
+      :playerId="1" />
       
       <!-- Plateau avec transition spécifique aux cartes -->
       <div class="cards-on-board-container">
@@ -31,7 +32,7 @@
         />
       </div>
 
-      <PlayerDeck :cardsLeft="player1DeckSize" />
+      <PlayerDeck :cardsLeft="player2DeckSize" :playerId="2" />
     </div>
 
     <!-- Main du joueur actif seulement -->
@@ -71,7 +72,7 @@ export default {
       playerHand: [],
       cardsOnBoard: [],
       opponentHandSize: 5, // Nombre de cartes dans la main de l'adversaire
-      player1DeckSize: 25, // Cartes restantes dans le deck du joueur 1
+      player1DeckSize: 26, // Cartes restantes dans le deck du joueur 1
       player2DeckSize: 25,  // Cartes restantes dans le deck du joueur 2
       stylePlayer1: {
         rotate: '0deg'
@@ -151,6 +152,11 @@ export default {
         if (response.ok) {
           console.log("Carte piochée :", data.card);
           this.playerHand.push(data.card);
+          if (playerId === this.player1Id) {
+            this.player1DeckSize = data.remainingCards;
+          } else {
+            this.player2DeckSize = data.remainingCards;
+          }
         } else {
           alert(data.message);
         }
@@ -236,15 +242,15 @@ export default {
     }
   },
   
-    async loadTurnCount() {
-      const response = await fetch('https://localhost:7111/api/game/${this.gameId}');
-      const data = await response.json();
+  async loadTurnCount() {
+    const response = await fetch('https://localhost:7111/api/game/${this.gameId}');
+    const data = await response.json();
 
-      this.turnCount = data.game.turnCount;
-    },
-  nextTurn() {
-      this.$emit('update-turn');
-    },
+    this.turnCount = data.game.turnCount;
+  },
+nextTurn() {
+    this.$emit('update-turn');
+  },
 
   },
   async mounted() {

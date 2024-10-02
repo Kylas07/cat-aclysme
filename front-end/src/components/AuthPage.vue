@@ -211,6 +211,10 @@ export default {
   flex-direction: column;
   gap: 3rem;
 }
+.createplayer {
+  --player:gray;
+  border: 10px solid var(--player);
+}
 .logplayer1 {
   --player:blue;
   border: 10px solid var(--player);

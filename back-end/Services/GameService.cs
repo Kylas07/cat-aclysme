@@ -117,7 +117,7 @@ namespace back_end.Services
                 Card = card,
                 CardId = card.CardId,
                 CardOrder = index,
-                CardState = index < 5 ? CardState.InHand : CardState.InDeck
+                CardState = index < 4 ? CardState.InHand : CardState.InDeck
             }).ToList();
         }
 
@@ -165,6 +165,11 @@ namespace back_end.Services
 
             Console.WriteLine("Carte piochée : " + cardToDraw.CardId);
             return cardToDraw;
+        }
+        public async Task<int> GetRemainingCardsInDeck(int gameId, int playerId)
+        {
+            return await _context.GameDecks
+                .CountAsync(deck => deck.GameId == gameId && deck.PlayerId == playerId && deck.CardState == CardState.InDeck);
         }
 
     }
