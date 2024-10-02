@@ -85,6 +85,6 @@ export default {
 .soundPlayer {
   position: absolute;
     top: 4rem;
-    left: 4rem;
+    right: 1rem;
 }
 </style>
