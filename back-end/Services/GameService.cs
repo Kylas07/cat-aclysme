@@ -143,5 +143,29 @@ namespace back_end.Services
                 .Where(g => g.PlayerId == playerId)
                 .ToListAsync();
         }
+
+        public async Task<GameDeck> DrawCard(DrawCardRequest request)
+        {
+            Console.WriteLine("Appel à DrawCard dans le service avec PlayerId: " + request.PlayerId + ", GameId: " + request.GameId);
+
+            var cardToDraw = await _context.GameDecks
+                .Where(deck => deck.PlayerId == request.PlayerId && deck.GameId == request.GameId && deck.CardState == CardState.InDeck)
+                .OrderBy(deck => deck.CardOrder)
+                .FirstOrDefaultAsync();
+
+            if (cardToDraw == null)
+            {
+                Console.WriteLine("Aucune carte trouvée pour PlayerId: " + request.PlayerId);
+                throw new InvalidOperationException("Il n'y a plus de cartes à piocher.");
+            }
+
+            cardToDraw.CardState = CardState.InHand;
+            _context.GameDecks.Update(cardToDraw);
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine("Carte piochée : " + cardToDraw.CardId);
+            return cardToDraw;
+        }
+
     }
 }
