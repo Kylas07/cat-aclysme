@@ -35,7 +35,7 @@
           </div>
           <div>
             <v-text-field                 
-                label="Password Joueur 1"
+                label="Password Joueur 2"
                 prepend-icon="mdi-cat"
                 :type="showPassword ? 'text' : 'password'"
                 variant="outlined"

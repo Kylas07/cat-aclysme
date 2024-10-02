@@ -34,7 +34,7 @@
         />
       </div>
 
-      <PlayerDeck :cardsLeft="player2DeckSize" :playerId="1" />
+      <PlayerDeck :cardsLeft="player1DeckSize" :playerId="1" />
     </div>
 
     <!-- Main du joueur actif seulement -->
@@ -150,15 +150,19 @@ export default {
         const text = await response.text();
         console.log("Texte brut de la réponse :", text);
 
-        const data = JSON.parse(text);  // Convertir le texte en JSON
+        const data = JSON.parse(text);
 
         if (response.ok) {
           console.log("Carte piochée :", data.card);
           this.playerHand.push(data.card);
           if (playerId === this.player1Id) {
+            
             this.player1DeckSize = data.remainingCards;
+            console.log("le joueur 1 piocche", data.remainingCards);
           } else {
+            console.log("le joueur 2 piocche");
             this.player2DeckSize = data.remainingCards;
+            console.log("le joueur 2 piocche", data.remainingCards);
           }
         } else {
           alert(data.message);
