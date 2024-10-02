@@ -68,43 +68,25 @@ namespace back_end.Services
 
         public async Task<(List<GameDeck>, List<GameDeck>)> InitializeDeck(Player player1, Player player2, Game game)
         {
-            Console.WriteLine($"Deck player 1: {player1.Name}, player 2: {player2.Name}, game ID: {game.GameId}");
 
+            Console.WriteLine($"Deck player 1: {player1.Name}, player 2: {player2.Name}, game ID: {game.GameId}");
+            if (player1.Deck == null)
+            {
+                Console.WriteLine($"Le joueur {player1.Name} n'a pas de deck attribué.");
+            }
+            Console.WriteLine($"Deck du joueur 1 a pour id: {player1.Deck.DeckId}");
             var player1Deck = ShuffleDeck(await GetBuildCardsAsync(player1.Deck.DeckId));
             var player2Deck = ShuffleDeck(await GetBuildCardsAsync(player2.Deck.DeckId));
 
             var gameDeckPlayer1 = CreateGameDecks(player1Deck, player1, game);
             var gameDeckPlayer2 = CreateGameDecks(player2Deck, player2, game);
 
-            // Initialize game cards with basic information
-            var player1GameCards = InitializeGameCards(player1Deck, player1, game);
-            var player2GameCards = InitializeGameCards(player2Deck, player2, game);
-
-            // Save game decks and cards to the database
             _context.GameDecks.AddRange(gameDeckPlayer1);
             _context.GameDecks.AddRange(gameDeckPlayer2);
-            _context.GameCards.AddRange(player1GameCards);
-            _context.GameCards.AddRange(player2GameCards);
             await _context.SaveChangesAsync();
 
             return (gameDeckPlayer1, gameDeckPlayer2);
-        }
-
-        private List<GameCard> InitializeGameCards(List<Card> deck, Player player, Game game)
-        {
-            return deck.Select(card => new GameCard
-            {
-                PlayerId = player.PlayerId,
-                CardId = card.CardId,
-                GameId = game.GameId,
-                CardPosition = -1, // -1 to indicate it's in the deck, not on the board
-                CurrentHealth = card.Health, // Initialize with card's base health
-                IsActive = false, // Initially inactive
-                Player = player,
-                Card = card,
-                Game = game
-            }).ToList();
-        }
+        } 
 
         public async Task<(Player, Player)> GetPlayersAsync(string player1Pseudo, string player2Pseudo)
         {
@@ -120,7 +102,7 @@ namespace back_end.Services
             if (player1 == null || player2 == null) {
                 throw new ArgumentException("Les joueurs doivent être valides.");
             }
-
+            
             return (player1, player2);
         }
 
@@ -135,7 +117,7 @@ namespace back_end.Services
                 Card = card,
                 CardId = card.CardId,
                 CardOrder = index,
-                CardState = index < 5 ? CardState.InHand : CardState.InDeck
+                CardState = index < 4 ? CardState.InHand : CardState.InDeck
             }).ToList();
         }
 
@@ -153,6 +135,7 @@ namespace back_end.Services
             return cards.OrderBy(_ => random.Next()).ToList();
         }
 
+        //récupérer les decks dans la partie de chaque joueur
         public async Task<List<GameDeck>> GetGameDecksByPlayerIdAsync(int playerId)
         {
             return await _context.GameDecks
@@ -160,6 +143,34 @@ namespace back_end.Services
                 .Where(g => g.PlayerId == playerId)
                 .ToListAsync();
         }
+
+        public async Task<GameDeck> DrawCard(DrawCardRequest request)
+        {
+            Console.WriteLine("Appel à DrawCard dans le service avec PlayerId: " + request.PlayerId + ", GameId: " + request.GameId);
+
+            var cardToDraw = await _context.GameDecks
+                .Where(deck => deck.PlayerId == request.PlayerId && deck.GameId == request.GameId && deck.CardState == CardState.InDeck)
+                .OrderBy(deck => deck.CardOrder)
+                .FirstOrDefaultAsync();
+
+            if (cardToDraw == null)
+            {
+                Console.WriteLine("Aucune carte trouvée pour PlayerId: " + request.PlayerId);
+                throw new InvalidOperationException("Il n'y a plus de cartes à piocher.");
+            }
+
+            cardToDraw.CardState = CardState.InHand;
+            _context.GameDecks.Update(cardToDraw);
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine("Carte piochée : " + cardToDraw.CardId);
+            return cardToDraw;
+        }
+        public async Task<int> GetRemainingCardsInDeck(int gameId, int playerId)
+        {
+            return await _context.GameDecks
+                .CountAsync(deck => deck.GameId == gameId && deck.PlayerId == playerId && deck.CardState == CardState.InDeck);
+        }
+
     }
 }
-
