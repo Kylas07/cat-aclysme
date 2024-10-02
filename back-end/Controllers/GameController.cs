@@ -253,7 +253,7 @@ namespace CatAclysmeApp.Controllers
         public async Task<IActionResult> AttackCard([FromBody] AttackRequest request)
         {
             // Log details for debugging
-            Console.WriteLine($"Request received for attack: GameId={request.GameId}, PlayerId={request.PlayerId}, BoardSlotId={request.BoardSlotId}, TargetBoardSlotId={request.TargetBoardSlotId}");
+            Console.WriteLine($"Request received for attack: GameId={request.GameId}, PlayerId={request.PlayerId}, AttackerSlotIndex={request.BoardSlotId}, TargetSlotIndex={request.TargetBoardSlotId}");
 
             // Retrieve the game and the board
             var game = await _context.Games
@@ -266,20 +266,20 @@ namespace CatAclysmeApp.Controllers
                 return NotFound(new { message = "Partie non trouvée." });
             }
 
-            // Log board state
-            foreach (var slot in game.Board)
-            {
-                Console.WriteLine($"Slot {slot.BoardSlotId}: {(slot.Card != null ? slot.Card.Name : "Empty")}");
-            }
-
             // Ensure it's the player's turn
             if (game.PlayerTurn != request.PlayerId)
             {
                 return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
             }
 
-            // Get the attacking card slot
-            var attackingSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.BoardSlotId);
+            // Log board state
+            foreach (var slot in game.Board)
+            {
+                Console.WriteLine($"Slot {slot.Index}: {(slot.Card != null ? slot.Card.Name : "Empty")}");
+            }
+
+            // Get the attacking card slot by index
+            var attackingSlot = game.Board.FirstOrDefault(slot => slot.Index == request.BoardSlotId); // Utiliser l'index ici
             if (attackingSlot == null || attackingSlot.Card == null)
             {
                 Console.WriteLine("Attacking card not found");
@@ -288,8 +288,8 @@ namespace CatAclysmeApp.Controllers
 
             var attackingCard = attackingSlot.Card;
 
-            // Get the target card slot
-            var targetSlot = game.Board.FirstOrDefault(slot => slot.BoardSlotId == request.TargetBoardSlotId);
+            // Get the target card slot by index
+            var targetSlot = game.Board.FirstOrDefault(slot => slot.Index == request.TargetBoardSlotId); // Utiliser l'index ici
             if (targetSlot != null && targetSlot.Card != null)
             {
                 var defendingCard = targetSlot.Card;
@@ -325,8 +325,6 @@ namespace CatAclysmeApp.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Attaque effectuée." });
         }
-
-
 
         // 4. Fin de la partie
         // POST : api/game/end
