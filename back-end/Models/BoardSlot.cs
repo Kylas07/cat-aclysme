@@ -3,6 +3,8 @@ namespace CatAclysmeApp.Models
     public class BoardSlot
     {
     public int BoardSlotId { get; set; }
+    public int BoardSlotIndex { get; set; } // Ajout de cet index pour synchroniser avec le front-end
+
     public int Index { get; set; }  // L'emplacement du slot sur le plateau
     public int? CardId { get; set; }  // ID de la carte dans ce slot, null si le slot est vide
     public Card? Card { get; set; }  // La carte dans ce slot

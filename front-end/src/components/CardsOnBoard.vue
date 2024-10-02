@@ -55,51 +55,45 @@ export default {
   },
   methods: {
     async attack(card, attackerSlotIndex) {
-  if (!card || !this.canAttack(card)) {
-    alert("Cette carte ne peut pas attaquer.");
-    return;
-  }
+      if (!card || !this.canAttack(card)) {
+          alert("Cette carte ne peut pas attaquer.");
+          return;
+      }
 
-  // Récupérer la cible en face selon la position de l'attaquant
-  const targetIndex = this.getTargetIndex(attackerSlotIndex);
-  if (targetIndex === null || !this.boardSlots[targetIndex]) {
-    alert("Aucune cible en face !");
-    return;
-  }
+      const attackerBoardSlotId = attackerSlotIndex; // Utilisez directement l'index
 
-  // Émettre un événement au parent pour notifier que la carte a attaqué
-  this.$emit('card-attacked', card);
+      const targetIndex = this.getTargetIndex(attackerSlotIndex);
+      if (targetIndex === null || !this.boardSlots[targetIndex]) {
+          alert("Aucune cible en face !");
+          return;
+      }
 
-  console.log({
-    GameId: this.gameId,
-    PlayerId: this.currentPlayerTurn,
-    BoardSlotId: attackerSlotIndex,
-    TargetBoardSlotId: targetIndex
-  });
+      const targetBoardSlotId = targetIndex; // Utilisez l'index de la cible
 
-  // Envoyer la requête d'attaque au serveur
-  const response = await fetch('https://localhost:7111/api/game/attack', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      GameId: this.gameId,
-      PlayerId: this.currentPlayerTurn,
-      BoardSlotId: attackerSlotIndex,
-      TargetBoardSlotId: targetIndex
-    })
-  });
+      const response = await fetch('https://localhost:7111/api/game/attack', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              GameId: this.gameId,
+              PlayerId: this.currentPlayerTurn,
+              BoardSlotId: attackerBoardSlotId, 
+              TargetBoardSlotId: targetBoardSlotId 
+          })
+      });
 
-  const result = await response.json();
-  if (response.ok) {
-    console.log("Attaque réussie", result);
-    this.$emit('card-updated', { ...card, hasAttackedThisTurn: true });
-  } else {
-    console.log("Erreur d'attaque", result.message);
-    alert(result.message);
-  }
-},
+      const result = await response.json();
+      if (response.ok) {
+          console.log("Attaque réussie", result);
+          this.$emit('card-updated', { ...card, hasAttackedThisTurn: true });
+      } else {
+          console.log("Erreur d'attaque", result.message);
+          alert(result.message);
+      }
+  },
+
+
 
     canAttack(card) {
         console.log("Conditions for attacking:");
