@@ -258,6 +258,7 @@ namespace CatAclysmeApp.Controllers
             // Retrieve the game and the board
             var game = await _context.Games
                 .Include(g => g.Board) // Include the board
+                .ThenInclude(b => b.Card) 
                 .FirstOrDefaultAsync(g => g.GameId == request.GameId);
 
             if (game == null)
