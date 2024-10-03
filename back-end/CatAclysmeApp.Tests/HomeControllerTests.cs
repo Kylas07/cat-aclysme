@@ -1,67 +1,60 @@
 using Xunit;
-using Moq; // Utilisé pour créer des mocks pour simuler des dépendances
-using Microsoft.Extensions.Logging; // Permet de simuler le logger injecté
+using Moq;
+using Microsoft.Extensions.Logging;
 using CatAclysmeApp.Controllers;
 using CatAclysmeApp.Data;
 using CatAclysmeApp.Models;
-using Microsoft.AspNetCore.Mvc; // Nécessaire pour tester les réponses d'API
-using Microsoft.EntityFrameworkCore; // Utilisé pour la base de données en mémoire
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using back_end.Request; // Ajout de l'import correct pour RegisterRequest et LoginRequest
+using Microsoft.Extensions.Caching.Memory; // For IMemoryCache
 
 namespace CatAclysmeApp.Tests
 {
-    // Classe de test pour HomeController
     public class HomeControllerTests
     {
-        // Options pour utiliser une base de données InMemory pour les tests
         private readonly DbContextOptions<CatAclysmeContext> _options;
-        // Mock pour logger
         private readonly ILogger<HomeController> _logger;
+        private readonly Mock<IMemoryCache> _memoryCacheMock;
 
-        // Constructeur du test pour initialiser les dépendances
         public HomeControllerTests()
         {
-            // Initialisation d'une base de données InMemory avec le nom 'TestDatabase'
             _options = new DbContextOptionsBuilder<CatAclysmeContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
-            
-            // Création d'un Mock pour le logger, utilisé dans HomeController
+
             var loggerMock = new Mock<ILogger<HomeController>>();
-            _logger = loggerMock.Object; // Injection du mock dans les tests
+            _logger = loggerMock.Object;
+
+            // Mock for IMemoryCache
+            _memoryCacheMock = new Mock<IMemoryCache>();
         }
 
-        // Test pour vérifier que l'inscription échoue si les données sont manquantes
         [Fact]
         public async Task Register_WithMissingData_ReturnsBadRequest()
         {
-            using var context = new CatAclysmeContext(_options); // Création du contexte InMemory
-            var controller = new HomeController(context, _logger); // Création du contrôleur avec dépendances injectées
+            using var context = new CatAclysmeContext(_options);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
 
-            // Arrange : Préparation des données de requête avec un nom vide
-            var request = new HomeController.RegisterRequest
+            // Utilisation de RegisterRequest depuis le namespace back_end.Request
+            var request = new RegisterRequest
             {
-                PlayerName = "",  // Nom manquant
-                Password = "password123" // Mot de passe fourni
+                PlayerName = "",  
+                Password = "password123"
             };
 
-            // Act : Appel de la méthode Register du contrôleur
             var result = await controller.Register(request);
 
-            // Assert : Vérification que la réponse est un BadRequest avec le message correct
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Le nom et le mot de passe sont requis.", badRequestResult.Value);
         }
 
-        // Test pour vérifier que l'inscription échoue si le joueur existe déjà
         [Fact]
         public async Task Register_WithExistingPlayer_ReturnsBadRequest()
         {
-            // Arrange
             using var context = new CatAclysmeContext(_options);
 
-            // Ajouter un joueur existant dans la base de données
             var existingPlayer = new Player
             {
                 Name = "ExistingPlayer",
@@ -70,58 +63,48 @@ namespace CatAclysmeApp.Tests
             };
             
             context.Players.Add(existingPlayer);
-            await context.SaveChangesAsync();  // Entity Framework génère automatiquement les PlayerId
+            await context.SaveChangesAsync();
 
-            var controller = new HomeController(context, _logger);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
 
-            var request = new HomeController.RegisterRequest
+            var request = new RegisterRequest
             {
-                PlayerName = "ExistingPlayer",  // Même nom que le joueur existant
+                PlayerName = "ExistingPlayer", 
                 Password = "password123"
             };
 
-            // Act
             var result = await controller.Register(request);
 
-            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Le nom d'utilisateur est déjà pris.", badRequestResult.Value);
         }
 
-
-        // Test pour vérifier que l'inscription réussit avec des données valides
         [Fact]
         public async Task Register_WithValidData_ReturnsOk()
         {
             using var context = new CatAclysmeContext(_options);
-            var controller = new HomeController(context, _logger);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
 
-            // Arrange : Préparation d'une requête avec des données valides
-            var request = new HomeController.RegisterRequest
+            var request = new RegisterRequest
             {
-                PlayerName = "NewPlayer", // Un nom qui n'existe pas encore
+                PlayerName = "NewPlayer",
                 Password = "password123"
             };
 
-            // Act : Appel de la méthode Register
             var result = await controller.Register(request);
 
-            // Assert : Vérification que la réponse est Ok avec le message correct
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal("Compte créé avec succès.", okResult.Value);
         }
 
-        // Test pour vérifier que le ping fonctionne correctement
         [Fact]
         public void Ping_ReturnsOk()
         {
             using var context = new CatAclysmeContext(_options);
-            var controller = new HomeController(context, _logger);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
 
-            // Act : Appel de la méthode Ping
             var result = controller.Ping();
 
-            // Assert : Vérification que la réponse est Ok et que le message est correct
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = okResult.Value as dynamic;
             Assert.Equal("API is running", value.message);

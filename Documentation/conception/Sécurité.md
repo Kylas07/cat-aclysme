@@ -152,18 +152,59 @@
   var app = builder.Build();
   ```
 
-## 9. **Mesures supplémentaires à envisager**
+## 9. **Limitation des tentatives de connexion**
+
+- Limiter les tentatives de connexion pour empêcher les attaques par **force brute**.
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using CatAclysmeApp.Data;
+using CatAclysmeApp.Helpers;
+using Microsoft.EntityFrameworkCore;
+using CatAclysmeApp.Models;
+using System.Threading.Tasks;
+using System.Linq;
+using back_end.Request;
+using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.Caching.Memory; // Pour l'utilisation de IMemoryCache
+using System;
+
+namespace CatAclysmeApp.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class HomeController : ControllerBase
+    {
+        private readonly CatAclysmeContext _context;
+        private readonly ILogger<HomeController> _logger;
+        private readonly IMemoryCache _memoryCache; // Utilisation de IMemoryCache pour stocker temporairement les tentatives échouées
+        private readonly int _maxAttempts = 5; // Nombre maximum de tentatives avant blocage
+        private readonly TimeSpan _lockoutDuration = TimeSpan.FromMinutes(15); // Durée du blocage après trop de tentatives échouées
+    }
+
+    ...
+
+          // Vérifier si l'utilisateur a dépassé le nombre de tentatives autorisées
+          if (_memoryCache.TryGetValue(cacheKey, out int attempts) && attempts >= _maxAttempts)
+          {
+          // Si l'utilisateur a dépassé le nombre de tentatives, il est temporairement bloqué
+          _logger.LogWarning($"Trop de tentatives de connexion pour l'IP : {ipAddress}");
+          return BadRequest($"Trop de tentatives de connexion. Veuillez réessayer après {_lockoutDuration.TotalMinutes} minutes.");
+          }
+
+    ...
+}
+```
+
+
+
+## 10. **Mesures supplémentaires à envisager**
 
 ### a. Protection contre les attaques CSRF
 - Implémenter des jetons **CSRF** pour protéger les actions sensibles.
 
-### b. Limitation des tentatives de connexion
-- Limiter les tentatives de connexion pour empêcher les attaques par **force brute**.
-
-### c. Authentification à deux facteurs (2FA)
-- Ajouter l'authentification à deux facteurs pour une sécurité renforcée.
-
-### d. Tests de pénétration
+### b. Tests de pénétration
 - Effectuer des **tests de pénétration** pour identifier et corriger les vulnérabilités.
 
 ---

@@ -20,7 +20,7 @@ namespace CatAclysmeApp.Models
         // Le deck du joueur (30 cartes)
         public required Deck Deck { get; set; }
 
-        public List<GameDeck> GameDecks { get; set; }
+        public List<GameDeck> GameDecks { get; set; } = new List<GameDeck>();
 
     }
 }

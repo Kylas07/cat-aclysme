@@ -6,12 +6,13 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//ajouter la sérialisation
+// Ajouter la sérialisation JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     });
+
 // Ajouter la connexion à la base de données pour CatAclysmeContext
 builder.Services.AddDbContext<CatAclysmeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -38,10 +39,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configurer le service de cache en mémoire (Ajouté ici)
+builder.Services.AddMemoryCache(); // <--- Ajout du service de cache en mémoire
+
 // Ajouter la configuration de la journalisation
 builder.Logging.ClearProviders(); // Facultatif, pour retirer les autres providers
 builder.Logging.AddConsole();     // Ajouter la sortie dans la console
 builder.Logging.AddDebug(); 
+
 // Configurer Serilog pour la journalisation dans la console et dans un fichier
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()  // Affichage des logs dans la console
@@ -51,12 +56,6 @@ Log.Logger = new LoggerConfiguration()
 // Utiliser Serilog comme logger principal
 builder.Host.UseSerilog();
 
-builder.Services.AddControllers()
-.AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-});
-
 // Ajouter les services de session (si nécessaire)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -65,7 +64,6 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
 
 var app = builder.Build();
 
