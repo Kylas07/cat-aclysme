@@ -130,12 +130,14 @@ export default {
 
         // Retirer la classe isAttacking après la fin de l'animation
         attackingCardElement.classList.remove('isAttacking');
+        defendingCardElement.classList.remove('isDefending');
       } else {
         console.log("Erreur d'attaque", result.message);
         alert(result.message);
 
         // Retirer la classe isAttacking en cas d'erreur
         attackingCardElement.classList.remove('isAttacking');
+        defendingCardElement.classList.remove('isDefending');
       }
     },
 
