@@ -23,6 +23,11 @@ builder.Services.AddScoped<GameService>();
 // Ajouter les services pour les API controllers (sans vues)
 builder.Services.AddControllers();
 
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN"; // Utilisation d'un en-tête personnalisé pour transmettre le jeton CSRF
+});
+
 // Ajouter CORS pour permettre les appels depuis le frontend Vue.js
 builder.Services.AddCors(options =>
 {

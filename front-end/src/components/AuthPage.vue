@@ -95,49 +95,62 @@ export default {
   },
   methods: {
     async handleSubmitPlayer1() {
-      try {
-        const response = await this.loginPlayer(this.player1);
-        const data = await response.json();
-        if (response.ok) {
-          this.isPlayer1LoggedIn = true;
-          this.player1.id = data.playerId;
-          alert(data.message || "Joueur 1 connecté avec succès !");
-          this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
-        } else {
-          alert(data.message || "Connexion Joueur 1 échouée. Veuillez vérifier vos identifiants.");
-        }
-      } catch (error) {
-        console.error("Erreur lors de la connexion du Joueur 1:", error);
+    try {
+      // Récupérer le jeton CSRF du cookie
+      const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1];
+
+      const response = await this.loginPlayer(this.player1, csrfToken);
+      const data = await response.json();
+      if (response.ok) {
+        this.isPlayer1LoggedIn = true;
+        this.player1.id = data.playerId;
+        alert(data.message || "Joueur 1 connecté avec succès !");
+        this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
+      } else {
+        alert(data.message || "Connexion Joueur 1 échouée. Veuillez vérifier vos identifiants.");
       }
-    },
-    async handleSubmitPlayer2() {
-      try {
-        const response = await this.loginPlayer(this.player2);
-        const data = await response.json();
-        if (response.ok) {
-          this.isPlayer2LoggedIn = true;
-          this.player2.id = data.playerId;
-          alert(data.message || "Joueur 2 connecté avec succès !");
-          this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
-        } else {
-          alert(data.message || "Connexion Joueur 2 échouée. Veuillez vérifier vos identifiants.");
-        }
-      } catch (error) {
-        console.error("Erreur lors de la connexion du Joueur 2:", error);
+    } catch (error) {
+      console.error("Erreur lors de la connexion du Joueur 1:", error);
+    }
+  },
+  async handleSubmitPlayer2() {
+    try {
+      // Récupérer le jeton CSRF du cookie
+      const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1];
+
+      const response = await this.loginPlayer(this.player2, csrfToken);
+      const data = await response.json();
+      if (response.ok) {
+        this.isPlayer2LoggedIn = true;
+        this.player2.id = data.playerId;
+        alert(data.message || "Joueur 2 connecté avec succès !");
+        this.checkPlayers(); // Vérifiez si les deux joueurs sont connectés
+      } else {
+        alert(data.message || "Connexion Joueur 2 échouée. Veuillez vérifier vos identifiants.");
       }
-    },
-    async loginPlayer(player) {
-      const response = await fetch('https://localhost:7111/api/home/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          PlayerName: player.name,
-          Password: player.password
-        })
-      });
-      return response;
+    } catch (error) {
+      console.error("Erreur lors de la connexion du Joueur 2:", error);
+    }
+  },
+  async loginPlayer(player, csrfToken) {
+    const response = await fetch('https://localhost:7111/api/home/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken // Envoi du jeton CSRF dans l'en-tête
+      },
+      body: JSON.stringify({
+        PlayerName: player.name,
+        Password: player.password
+      })
+    });
+    return response;
     },
     checkPlayers() {
       // Vérifiez si les deux joueurs sont connectés

@@ -10,6 +10,7 @@ using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Caching.Memory; // Pour l'utilisation de IMemoryCache
 using System;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace CatAclysmeApp.Controllers
 {
@@ -22,17 +23,20 @@ namespace CatAclysmeApp.Controllers
         private readonly IMemoryCache _memoryCache;
         private readonly int _maxAttempts = 5;
         private readonly TimeSpan _lockoutDuration = TimeSpan.FromMinutes(15);
+        private readonly IAntiforgery _antiforgery;
 
         // Injection de CatAclysmeContext, ILogger et IMemoryCache dans le contrôleur
-        public HomeController(CatAclysmeContext context, ILogger<HomeController> logger, IMemoryCache memoryCache)
+        public HomeController(CatAclysmeContext context, ILogger<HomeController> logger, IMemoryCache memoryCache, IAntiforgery antiforgery)
         {
             _context = context;
             _logger = logger;
             _memoryCache = memoryCache;
+            _antiforgery = antiforgery;
         }
 
         // Inscription d'un utilisateur
         [HttpPost("register")]
+        [ValidateAntiForgeryToken] // Protection CSRF
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             // Validation des champs vides
@@ -149,6 +153,16 @@ namespace CatAclysmeApp.Controllers
             {
                 _memoryCache.Set(cacheKey, 1, _lockoutDuration);
             }
+        }
+
+        [HttpGet("csrf-token")]
+        public IActionResult GetCsrfToken()
+        {
+            // Generate CSRF tokens and store them in cookies or headers
+            var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+            Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions { HttpOnly = false });
+
+            return Ok(new { message = "CSRF token generated" });
         }
 
         // Expose un endpoint de test pour vérifier si l'API fonctionne

@@ -7,8 +7,9 @@ using CatAclysmeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using back_end.Request; // Ajout de l'import correct pour RegisterRequest et LoginRequest
-using Microsoft.Extensions.Caching.Memory; // For IMemoryCache
+using back_end.Request;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace CatAclysmeApp.Tests
 {
@@ -17,6 +18,7 @@ namespace CatAclysmeApp.Tests
         private readonly DbContextOptions<CatAclysmeContext> _options;
         private readonly ILogger<HomeController> _logger;
         private readonly Mock<IMemoryCache> _memoryCacheMock;
+        private readonly Mock<IAntiforgery> _antiforgeryMock; // Mock pour IAntiforgery
 
         public HomeControllerTests()
         {
@@ -27,20 +29,22 @@ namespace CatAclysmeApp.Tests
             var loggerMock = new Mock<ILogger<HomeController>>();
             _logger = loggerMock.Object;
 
-            // Mock for IMemoryCache
+            // Mock pour IMemoryCache
             _memoryCacheMock = new Mock<IMemoryCache>();
+
+            // Mock pour IAntiforgery
+            _antiforgeryMock = new Mock<IAntiforgery>();
         }
 
         [Fact]
         public async Task Register_WithMissingData_ReturnsBadRequest()
         {
             using var context = new CatAclysmeContext(_options);
-            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object, _antiforgeryMock.Object);
 
-            // Utilisation de RegisterRequest depuis le namespace back_end.Request
             var request = new RegisterRequest
             {
-                PlayerName = "",  
+                PlayerName = "",
                 Password = "password123"
             };
 
@@ -61,15 +65,15 @@ namespace CatAclysmeApp.Tests
                 Password = "hashedpassword",
                 Deck = new Deck { Name = "ExistingDeck" }
             };
-            
+
             context.Players.Add(existingPlayer);
             await context.SaveChangesAsync();
 
-            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object, _antiforgeryMock.Object);
 
             var request = new RegisterRequest
             {
-                PlayerName = "ExistingPlayer", 
+                PlayerName = "ExistingPlayer",
                 Password = "password123"
             };
 
@@ -83,7 +87,7 @@ namespace CatAclysmeApp.Tests
         public async Task Register_WithValidData_ReturnsOk()
         {
             using var context = new CatAclysmeContext(_options);
-            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object, _antiforgeryMock.Object);
 
             var request = new RegisterRequest
             {
@@ -101,7 +105,7 @@ namespace CatAclysmeApp.Tests
         public void Ping_ReturnsOk()
         {
             using var context = new CatAclysmeContext(_options);
-            var controller = new HomeController(context, _logger, _memoryCacheMock.Object);
+            var controller = new HomeController(context, _logger, _memoryCacheMock.Object, _antiforgeryMock.Object);
 
             var result = controller.Ping();
 
