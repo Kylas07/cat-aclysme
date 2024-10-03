@@ -5,5 +5,6 @@ namespace back_end.Enums
         InDeck,
         InHand,
         OnBoard,
+        Destroyed,
     }
 }

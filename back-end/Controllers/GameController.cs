@@ -84,7 +84,7 @@ namespace CatAclysmeApp.Controllers
 
             return player;
         }
-        
+
         [HttpGet("deck/{gameId}/{playerId}")]
         public async Task<IActionResult> GetGameDeck(int gameId, int playerId)
         {
@@ -118,7 +118,7 @@ namespace CatAclysmeApp.Controllers
 
                 return Ok(new { success = true, card = drawnCard, remainingCards });
             }
-                catch (InvalidOperationException ex)
+            catch (InvalidOperationException ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
             }
@@ -210,6 +210,23 @@ namespace CatAclysmeApp.Controllers
             boardSlot.Card = cardToPlay.Card;
             cardToPlay.CardState = CardState.OnBoard; // Mettre à jour l'état de la carte
 
+
+            // **Ajout dans GameCard pour suivre la carte jouée dans la partie**
+            var gameCard = new GameCard
+            {
+                PlayerId = request.PlayerId,
+                CardId = cardToPlay.CardId,
+                GameId = request.GameId,
+                CardPosition = request.BoardSlotIndex, // Position sur le plateau
+                CurrentHealth = cardToPlay.Card.Health, // Initialiser avec la santé de la carte
+                IsActive = true, // Indiquer que la carte est active
+                Player = await _context.Players.FindAsync(request.PlayerId), // Récupérer le joueur depuis la BD
+                Card = cardToPlay.Card, // Assigner la carte qui est jouée
+                Game = game // Assigner la partie en cours
+            };
+            _context.GameCards.Add(gameCard);
+
+
             // Marquer que le joueur a joué une carte ce tour
             game.HasPlayedCardThisTurn = true;
 
@@ -223,22 +240,20 @@ namespace CatAclysmeApp.Controllers
                 Console.WriteLine($"Emplacement {slot.Index}: {(slot.Card != null ? slot.Card.Name : "Vide")}");
             }
 
-            return Ok(new { message = "Carte posée avec succès." });
+            return Ok(new { message = "Carte posée avec succès.", gameCard });
         }
 
         // POST : api/game/attack
         [HttpPost("attack")]
         public async Task<IActionResult> AttackCard([FromBody] AttackRequest request)
         {
-            // Log details for debugging
             Console.WriteLine($"Request received for attack: GameId={request.GameId}, PlayerId={request.PlayerId}, AttackerSlotIndex={request.BoardSlotId}, TargetSlotIndex={request.TargetBoardSlotId}");
 
-            // Retrieve the game and the board (but do not update the database)
+            // Récupérer la partie et les cartes spécifiques à cette partie
             var game = await _context.Games
                 .Include(g => g.Board)
                 .ThenInclude(b => b.Card)
-                .AsNoTracking() // Prevents EF Core from tracking changes, so no updates are persisted
-                .FirstOrDefaultAsync(g => g.GameId == request.GameId);
+                .FirstOrDefaultAsync(d => d.GameId == request.GameId && d.PlayerId == request.PlayerId);
 
             if (game == null)
             {
@@ -246,64 +261,96 @@ namespace CatAclysmeApp.Controllers
                 return NotFound(new { message = "Partie non trouvée." });
             }
 
-            // Ensure it's the player's turn
+            // Vérifier que c'est le tour du joueur
             if (game.PlayerTurn != request.PlayerId)
             {
                 return BadRequest(new { message = "Ce n'est pas le tour de ce joueur." });
             }
 
-            // Get the attacking card slot by index
-            var attackingSlot = game.Board.FirstOrDefault(slot => slot.Index == request.BoardSlotId);
-            if (attackingSlot == null || attackingSlot.Card == null)
+            // Récupérer les cartes de la partie en cours (GameCard)
+            var attackingGameCard = await _context.GameCards
+                .FirstOrDefaultAsync(gc => gc.GameId == request.GameId
+                    && gc.PlayerId == request.PlayerId
+                    && gc.CardPosition == request.BoardSlotId);
+
+            // Vérifier que la carte attaquante est toujours en jeu dans le GameDeck
+            var attackingDeckCard = await _context.GameDecks
+                .FirstOrDefaultAsync(gd => gd.GameId == request.GameId
+                    && gd.CardId == attackingGameCard.CardId
+                    && gd.CardState == CardState.OnBoard);
+
+            // Récupérer la carte cible dans la partie (GameCard)
+            var targetGameCard = await _context.GameCards
+                .FirstOrDefaultAsync(gc => gc.GameId == request.GameId
+                    && gc.PlayerId != request.PlayerId  // Opposant
+                    && gc.CardPosition == request.TargetBoardSlotId);
+
+            // Vérifier que la carte cible est toujours en jeu dans le GameDeck
+            var targetDeckCard = await _context.GameDecks
+                .FirstOrDefaultAsync(gd => gd.GameId == request.GameId
+                    && gd.CardId == targetGameCard.CardId
+                    && gd.CardState == CardState.OnBoard);
+            if (targetGameCard != null)
             {
-                return BadRequest(new { message = "Carte attaquante introuvable." });
-            }
+                // Simuler l'attaque
+                targetGameCard.CurrentHealth -= attackingGameCard.Card.Attack;
+                attackingGameCard.CurrentHealth -= targetGameCard.Card.Attack;
 
-            var attackingCard = attackingSlot.Card;
-            var attackingCardHealthBefore = attackingCard.Health;
+                Console.WriteLine($"{attackingGameCard.Card.Name} a attaqué {targetGameCard.Card.Name}. Santé du défenseur: {targetGameCard.CurrentHealth}, Santé de l'attaquant: {attackingGameCard.CurrentHealth}");
 
-            // Get the target card slot by index
-            var targetSlot = game.Board.FirstOrDefault(slot => slot.Index == request.TargetBoardSlotId);
-            if (targetSlot != null && targetSlot.Card != null)
-            {
-                var defendingCard = targetSlot.Card;
-                var defendingCardHealthBefore = defendingCard.Health;
-
-                // Simulate the battle without persisting changes
-                defendingCard.Health -= attackingCard.Attack;
-                attackingCard.Health -= defendingCard.Attack;
-
-                // Log battle outcome
-                Console.WriteLine($"{attackingCard.Name} attacked {defendingCard.Name}. Defender health before: {defendingCardHealthBefore}, after: {defendingCard.Health}");
-                Console.WriteLine($"{defendingCard.Name} counter-attacked. Attacker health before: {attackingCardHealthBefore}, after: {attackingCard.Health}");
-
-                // Return updated health values in a consistent format
-                return Ok(new 
+                // Si la carte est détruite, on met à jour son statut
+                if (targetGameCard.CurrentHealth <= 0)
                 {
-                    attackingCard = new { Health = attackingCard.Health },
-                    defendingCard = defendingCard.Health > 0 ? new { Health = defendingCard.Health } : null,
-                    message = "Attaque effectuée sans persistance."
+                    targetDeckCard.CardState = CardState.Destroyed;
+                    _context.GameCards.Remove(targetGameCard);
+                }
+
+                if (attackingGameCard.CurrentHealth <= 0)
+                {
+                    attackingDeckCard.CardState = CardState.Destroyed;
+                    _context.GameCards.Remove(attackingGameCard);
+                }
+
+                // Sauvegarder les changements spécifiques à la partie
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    attackingCard = new 
+                    {
+                        Health = attackingGameCard.CurrentHealth,
+                        State = attackingDeckCard.CardState
+                    },
+
+                    defendingCard = new
+                    {
+                        Health = targetGameCard.CurrentHealth,
+                        State = targetDeckCard.CardState
+                    },
+                    message = targetGameCard.CurrentHealth <= 0
+                        ? $"{attackingGameCard.Card.Name} a détruit {targetGameCard.Card.Name}."
+                        : "Attaque effectuée."
                 });
             }
             else
             {
-                // No card in front, deal damage to the opponent
+                // Gérer les cas où la cible est directement le joueur (pas une carte)
                 if (request.PlayerId == game.PlayerId)
                 {
-                    Console.WriteLine($"{attackingCard.Name} dealt {attackingCard.Attack} damage to Player 2.");
-                    return Ok(new 
+                    Console.WriteLine($"{attackingGameCard.Card.Name} inflige {attackingGameCard.Card.Attack} points de dégâts au joueur 2.");
+                    return Ok(new
                     {
-                        attackingCard = new { Health = attackingCard.Health },
-                        message = $"Player 2 a reçu {attackingCard.Attack} points de dégâts."
+                        attackingCard = new { Health = attackingGameCard.CurrentHealth },
+                        message = $"Le joueur 2 a reçu {attackingGameCard.Card.Attack} points de dégâts."
                     });
                 }
                 else
                 {
-                    Console.WriteLine($"{attackingCard.Name} dealt {attackingCard.Attack} damage to Player 1.");
-                    return Ok(new 
+                    Console.WriteLine($"{attackingGameCard.Card.Name} inflige {attackingGameCard.Card.Attack} points de dégâts au joueur 1.");
+                    return Ok(new
                     {
-                        attackingCard = new { Health = attackingCard.Health },
-                        message = $"Player 1 a reçu {attackingCard.Attack} points de dégâts."
+                        attackingCard = new { Health = attackingGameCard.CurrentHealth },
+                        message = $"Le joueur 1 a reçu {attackingGameCard.Card.Attack} points de dégâts."
                     });
                 }
             }

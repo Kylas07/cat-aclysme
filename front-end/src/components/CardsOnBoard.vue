@@ -44,8 +44,17 @@ export default {
       },
       stylePlayer2: {
         rotate: '180deg'
-      }
+      },
+      localCardsOnBoard: [...this.cardsOnBoard]
     };
+  },
+  watch: {
+    cardsOnBoard: {
+      handler(newVal) {
+        this.localCardsOnBoard = [...newVal];  // Mettre à jour la copie locale si la prop change
+      },
+      deep: true
+    }
   },
   computed: {
     boardSlots() {
@@ -82,7 +91,7 @@ export default {
       // Ajouter la classe isAttacking
       attackingCardElement.classList.add('isAttacking');
       // Attendre un court instant avant d'envoyer la requête pour laisser l'animation se dérouler
-      await new Promise(resolve => setTimeout(resolve, 800)); // 800ms pour correspondre à la durée de l'animation
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       // Ajouter la classe isDefending pour l'animation de défense
       const defendingCardElements = this.$refs['card-' + targetIndex];
@@ -90,7 +99,7 @@ export default {
 
       defendingCardElement.classList.add('isDefending');
       // Attendre un court instant avant d'envoyer la requête pour laisser l'animation se dérouler
-      await new Promise(resolve => setTimeout(resolve, 800)); // 800ms pour correspondre à la durée de l'animation
+      await new Promise(resolve => setTimeout(resolve, 800)); 
 
 
       const response = await fetch('https://localhost:7111/api/game/attack', {
@@ -105,24 +114,28 @@ export default {
       if (response.ok) {
         console.log("Réponse du backend pour l'attaque:", result);
 
-        // Logs avant la mise à jour des HP
-        console.log("HP avant mise à jour - Attaquant:", this.cardsOnBoard[attackerSlotIndex]?.health);
-        console.log("HP avant mise à jour - Défenseur:", this.cardsOnBoard[targetIndex]?.health);
-
         // Mettre à jour la carte attaquante
         if (result.attackingCard && typeof result.attackingCard.health !== 'undefined') {
-          const updatedAttacker = this.cardsOnBoard[attackerSlotIndex];
-          updatedAttacker.health = result.attackingCard.health;  // Utiliser 'health' en minuscule
-          console.log("HP après mise à jour - Attaquant:", updatedAttacker.health);
+          const updatedAttacker = this.localCardsOnBoard[attackerSlotIndex];
+          updatedAttacker.health = result.attackingCard.health;
           this.$emit('card-updated', { card: updatedAttacker, slotIndex: attackerSlotIndex });
+
+          if (result.attackingCard.state === 3) {
+            this.localCardsOnBoard.splice(attackerSlotIndex, 1); 
+            this.$emit('card-destroyed', attackerSlotIndex);
+          }
         }
 
         // Mettre à jour la carte défenseur
         if (result.defendingCard && typeof result.defendingCard.health !== 'undefined') {
-          const updatedDefender = this.cardsOnBoard[targetIndex];
-          updatedDefender.health = result.defendingCard.health;  // Utiliser 'health' en minuscule
-          console.log("HP après mise à jour - Défenseur:", updatedDefender.health);
+          const updatedDefender = this.localCardsOnBoard[targetIndex];
+          updatedDefender.health = result.defendingCard.health;
           this.$emit('card-updated', { card: updatedDefender, slotIndex: targetIndex });
+
+          if (result.defendingCard.state === 3) {
+            this.localCardsOnBoard.splice(targetIndex, 1);  // Supprimer la carte détruite
+            this.$emit('card-destroyed', targetIndex);  // Informer le parent
+          }
         }
 
         // Indiquer que la carte attaquante a attaqué ce tour
