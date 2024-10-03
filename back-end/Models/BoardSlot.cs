@@ -9,7 +9,7 @@ namespace CatAclysmeApp.Models
     public int? CardId { get; set; }  // ID de la carte dans ce slot, null si le slot est vide
     public Card? Card { get; set; }  // La carte dans ce slot
     public int GameId { get; set; }  // Référence à la partie
-    public Game Game { get; set; }  // La partie à laquelle ce slot appartient
+    public Game? Game { get; set; }  // La partie à laquelle ce slot appartient
 
     public bool IsPlacedPreviousTurn { get; set; } = false; // Si la carte a été posée lors du tour précédent
     public bool HasAttackedThisTurn { get; set; } = false;  // Si la carte a attaqué ce tour

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using CatAclysmeApp.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using back_end.Request;
 
 namespace CatAclysmeApp.Controllers
 {
