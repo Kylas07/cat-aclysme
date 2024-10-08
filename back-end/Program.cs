@@ -1,44 +1,97 @@
+using back_end.Services;
+using CatAclysmeApp.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//ajouter la sérialisation
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
+// Ajouter la connexion à la base de données pour CatAclysmeContext
+builder.Services.AddDbContext<CatAclysmeContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Ajouter les services
+builder.Services.AddScoped<GameService>();
+
+// Ajouter les services pour les API controllers (sans vues)
+builder.Services.AddControllers();
+
+// Ajouter CORS pour permettre les appels depuis le frontend Vue.js
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8080", "http://localhost:8081") // Adresse de ton app Vue.js
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
+// Activer Swagger pour la documentation de l'API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Ajouter la configuration de la journalisation
+builder.Logging.ClearProviders(); // Facultatif, pour retirer les autres providers
+builder.Logging.AddConsole();     // Ajouter la sortie dans la console
+builder.Logging.AddDebug(); 
+// Configurer Serilog pour la journalisation dans la console et dans un fichier
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()  // Affichage des logs dans la console
+    .WriteTo.File("Logs/app-log-.txt", rollingInterval: RollingInterval.Day) // Écriture des logs dans un fichier
+    .CreateLogger();
+
+// Utiliser Serilog comme logger principal
+builder.Host.UseSerilog();
+
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
+
+// Ajouter les services de session (si nécessaire)
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Durée de vie de la session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurer le pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatAclysmeApp API V1");
+    });
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Activer CORS pour les appels du frontend
+app.UseCors("AllowVueApp");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+// Activer la gestion des sessions
+app.UseSession();
+
+app.UseAuthorization();
+
+// Map API controllers uniquement (plus besoin de MapControllerRoute pour les vues)
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
