@@ -3,6 +3,7 @@ using CatAclysmeApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Microsoft.AspNetCore.Antiforgery; // Ajout pour IAntiforgery
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +92,22 @@ app.UseCors("AllowVueApp");
 
 // Activer la gestion des sessions
 app.UseSession();
+
+// Si l'environnement n'est pas en développement, activer la validation CSRF
+if (!app.Environment.IsDevelopment())
+{
+    var antiforgery = app.Services.GetRequiredService<IAntiforgery>();
+
+    app.Use(async (context, next) =>
+    {
+        if (HttpMethods.IsPost(context.Request.Method) || HttpMethods.IsPut(context.Request.Method) || HttpMethods.IsDelete(context.Request.Method))
+        {
+            await antiforgery.ValidateRequestAsync(context); // Valider le jeton CSRF pour ces méthodes
+        }
+
+        await next();
+    });
+}
 
 app.UseAuthorization();
 

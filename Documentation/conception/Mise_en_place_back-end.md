@@ -10,8 +10,6 @@
 
 ### 1.2 **La connexion à la base de données**
 
-Voici un guide simple pour les personnes souhaitant configurer la même base de données SQL Server que la vôtre pour le projet **CatAclysme** :
-
 ### Prérequis
 
 1. **SQL Server Express** : Assurez-vous d'avoir SQL Server Express installé sur votre machine ou sur un serveur distant.
@@ -33,7 +31,7 @@ Voici un guide simple pour les personnes souhaitant configurer la même base de 
 
 #### B. Configuration du projet pour se connecter à SQL Server
 
-Dans le fichier **appsettings.json** de votre projet, configurez la connexion à la base de données avec la chaîne de connexion suivante :
+Dans le fichier **appsettings.json**, configure la connexion à la base de données avec la chaîne de connexion suivante :
 
 ```json
 {
@@ -110,7 +108,7 @@ builder.Services.AddDbContext<CatAclysmeContext>(options =>
 
 #### 5. **Créer le modèle de base de données (entités)**
 
-Crée une structure pour les entités de ton application, comme les joueurs (`Player`) et les parties (`Game`). Ces entités seront utilisées pour mapper les données de la base de données.
+Crée une structure pour les entités, comme les joueurs (`Player`) et les parties (`Game`). Ces entités seront utilisées pour mapper les données de la base de données.
 
 Dans le dossier **`Models`**, crée des fichiers comme **Player.cs** et **Game.cs**.
 
