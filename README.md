@@ -22,12 +22,6 @@ Dans ce monde post-apocalyptique rempli de chats guerriers, chaque joueur constr
 
 ![Demo cataclysme](Documentation/conception/Demo.gif)
 
-## Fonctionnalités
-
-- **Gestion des Cartes**
-- **Gestion des Joueurs**
-- **Logique du Jeu**
-
 ## Stack Technologique
 
 - **Backend** : .NET Core, Entity Framework Core, SQL Server Express
